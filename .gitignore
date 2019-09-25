@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.DS_Store
+desmon.Rproj
+README.md
+NEWS
+TODO
+inst
+vignettes
