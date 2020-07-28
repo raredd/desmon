@@ -12,9 +12,6 @@
 #' final analysis, and on the increment in the information being independent of
 #' the current data.
 #' 
-#' @usage
-#' acondpow(za, power, zs, infr)
-#' 
 #' @param za standard normal critical value at final analysis
 #' @param power the overall planned power of the sequential test
 #' @param zs value of the test statistic on the standard normal scale at the
@@ -25,19 +22,20 @@
 #' @return The approximate conditional power (a scalar).
 #' 
 #' @seealso
-#' \code{\link{condpow}}, \code{\link{condpowcure}}
+#' \code{\link{condpow}}; \code{\link{condpowcure}}
 #' 
 #' @keywords design
 #' 
 #' @examples
-#' acondpow(2.0, .85, .32, .41)
+#' acondpow(2.0, 0.85, 0.32, 0.41)
 #' 
 #' @export
 
-acondpow <- function(za,power,zs,infr) {
+acondpow <- function(za, power, zs, infr) {
   # za=normal critical value at final analysis
   # zs=current value of logrank test stat (std normal scale)
   # infr = current information fraction
   # power = power (<1)
-  1-pnorm((za-zs*sqrt(infr))/sqrt(1-infr)-(za+qnorm(power))*sqrt(1-infr))
+  1 - pnorm((za - zs * sqrt(infr)) /
+              sqrt(1 - infr) - (za + qnorm(power)) * sqrt(1 - infr))
 }

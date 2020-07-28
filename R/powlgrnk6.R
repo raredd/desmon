@@ -46,14 +46,6 @@
 #' are probably only appropriate when the study is targeting a proportional
 #' hazards alternative.
 #' 
-#' @usage
-#' powlgrnk6(Npg, control.rate, test.rate, acc.per, total.inf,
-#'           anal.int, min.inf = .25, nsamp = 5000, alpha = .025,
-#'           conf = 1-2*alpha, ratio = control.rate / test.rate,
-#'           use=1, use.rci=use, trunc=alpha/50,
-#'           gft = function(rx,cr,tr,...)
-#'              rexp(length(rx))/(c(cr,tr)[rx+1]), ...)
-#' 
 #' @param Npg Planned number of subjects in the each treatment group (control
 #' and experimental)
 #' @param control.rate Exponential failure rate for the control group
@@ -99,8 +91,8 @@
 #' full information, if reached).
 #' 
 #' @seealso
-#' \code{\link{sequse}}, \code{\link{rci}}, \code{\link{print.powlgrnk6}},
-#' \code{\link{seqopr}}, \code{\link{seqss}}
+#' \code{\link{sequse}}; \code{\link{rci}; \code{\link{print.powlgrnk6}};
+#' \code{\link{seqopr}}; \code{\link{seqss}}
 #' 
 #' @references
 #' Freidlin, Korn and George, 1999. \emph{Controlled Clinical  Trials}
@@ -112,88 +104,90 @@
 #' 
 #' @examples
 #' ## power under the alternative; 7 years accrual, analyses every 1/2 year
-#' ## one-sided .025 test, with an 80% RCI used for early stopping in
+#' ## one-sided 0.025 test, with an 80% RCI used for early stopping in
 #' ## favor of H0
 #' ## use larger nsamp (examples for illustration only)
-#' out <- powlgrnk6(210,.11889,.11889/1.5,7,233,.5,nsamp=10,conf=.80)
-#' table(out[1,])/ncol(out)
-#' apply(out[3:5,],1,mean)
+#' out <- powlgrnk6(210, 0.11889, 0.11889 / 1.5, 7, 233, 0.5, nsamp = 10, conf = 0.80)
+#' table(out[1, ]) / ncol(out)
+#' apply(out[3:5, ], 1, mean)
 #' out
 #' 
 #' ## size under H0; note specification of ratio to keep the stopping rule
 #' ## the same as under the alternative
-#' out <- powlgrnk6(210,.11889,.11889,7,233,.5,nsamp=10,conf=.80,ratio=1.5)
-#' table(out[1,])/ncol(out)
-#' apply(out[3:5,],1,mean)
+#' out <- powlgrnk6(210, 0.11889, 0.11889, 7, 233, 0.5, nsamp = 10,
+#'                  conf = 0.80, ratio = 1.5)
+#' table(out[1, ]) / ncol(out)
+#' apply(out[3:5, ], 1, mean)
 #' 
 #' ## power without RCI
-#' out <- powlgrnk6(210,.11889,.11889/1.5,7,233,.5,nsamp=10,conf=1)
-#' table(out[1,])/ncol(out)
-#' apply(out[3:5,],1,mean)
+#' out <- powlgrnk6(210, 0.11889, 0.11889 / 1.5, 7, 233, 0.5, nsamp = 10, conf = 1)
+#' table(out[1, ]) / ncol(out)
+#' apply(out[3:5, ], 1, mean)
 #' 
 #' ## size without truncation
-#' out <- powlgrnk6(210,.11889,.11889,7,233,.5,nsamp=10,conf=.80,ratio=1.5,
-#'                  trunc=0)
-#' table(out[1,])/ncol(out)
-#' apply(out[3:5,],1,mean)
+#' out <- powlgrnk6(210, 0.11889, 0.11889, 7, 233, 0.5, nsamp = 10,
+#'                  conf = 0.80, ratio = 1.5, trunc=0)
+#' table(out[1, ]) / ncol(out)
+#' apply(out[3:5, ], 1, mean)
 #' 
 #' @export
 
 powlgrnk6 <- function(Npg, control.rate, test.rate, acc.per, total.inf,
-                      anal.int, min.inf = .25, nsamp = 5000, alpha = .025,
-                      conf = 1-2*alpha, ratio = control.rate / test.rate,
-                      use=1, use.rci=use, trunc=alpha/50,
-                      gft = function(rx,cr,tr,...)
-                        rexp(length(rx))/(c(cr,tr)[rx+1]), ...) {
-  if (trunc>0 & trunc<1) trcv <- -qnorm(trunc) else trcv <- 1000
-  nn <- 2*Npg
-  rx <- c(rep(0,Npg),rep(1,Npg))
-  out <- matrix(0,nrow=5,ncol=nsamp)
+                      anal.int, min.inf = 0.25, nsamp = 5000, alpha = 0.025,
+                      conf = 1 - 2 * alpha, ratio = control.rate / test.rate,
+                      use = 1, use.rci = use, trunc = alpha / 50,
+                      gft = function(rx, cr, tr, ...)
+                        rexp(length(rx)) / (c(cr, tr)[rx + 1]), ...) {
+  trcv <- if (trunc > 0 & trunc < 1)
+    -qnorm(trunc) else 1000
+  nn <- 2 * Npg
+  rx <- c(rep(0, Npg), rep(1, Npg))
+  out <- matrix(0, 5L, nsamp)
   for (i in 1:nsamp) {
-  ### generate data
-    enter <- runif(nn)*acc.per
-  ### for non-exponential data, replace the following line
-    ftime <- gft(rx,control.rate,test.rate,...)
-    atm <- quantile(enter+ftime,probs=total.inf/nn+1.e-8)
-    atmin <- quantile(enter+ftime,probs=min.inf*total.inf/nn+1.e-8)
-    at <- atmin-anal.int
+    # generate data
+    enter <- runif(nn) * acc.per
+    # for non-exponential data, replace the following line
+    ftime <- gft(rx, control.rate, test.rate, ...)
+    atm <- quantile(enter + ftime, probs = total.inf / nn + 1e-8)
+    atmin <- quantile(enter + ftime, probs = min.inf * total.inf / nn + 1e-8)
+    at <- atmin - anal.int
     i.times <- NULL
     stop <- FALSE
     styp <- 0
     while (!stop) {
-      at <- min(at+anal.int,atm)
-      sub <- enter<=at
+      at <- min(at + anal.int, atm)
+      sub <- enter <= at
       enters <- enter[sub]
       rxs <- rx[sub]
-      time <- enters+ftime[sub]
-      status <- ifelse(time<=at,1,0)
-      time <- pmin(time,at)-enters
-      it <- sum(status)/total.inf
-      if (it>=min.inf) {
-        i.times <- c(i.times,it)
-        bndry  <- min(rev(sequse(pmin(i.times,1),alpha,use))[1],trcv)
-        z <- do.call('survdiff',list(formula=Surv(time,status)~rxs,
-                     data=data.frame(time,status,rxs)))
-        z <- (z$obs[1]-z$exp[1])/sqrt(z$var[1,1])
-        if (z>= bndry) {
-          styp=1
+      time <- enters + ftime[sub]
+      status <- ifelse(time <= at, 1, 0)
+      time <- pmin(time, at) - enters
+      it <- sum(status) / total.inf
+      if (it >= min.inf) {
+        i.times <- c(i.times, it)
+        bndry <- min(rev(sequse(pmin(i.times, 1), alpha, use))[1L], trcv)
+        z <- do.call('survdiff', list(formula = Surv(time, status) ~ rxs,
+                                      data = data.frame(time, status, rxs)))
+        z <- (z$obs[1L] - z$exp[1L]) / sqrt(z$var[1L, 1L])
+        if ( z>= bndry) {
+          styp <- 1
           stop <- TRUE
         } else {
-          if (1>conf & conf>0) {
-            u <- rci(time,status,rxs,pmin(i.times,1),conf=conf,use=use.rci) 
-            if (u[3]<ratio) {
-              styp=2
+          if (1 > conf & conf > 0) {
+            u <- rci(time, status, rxs, pmin(i.times, 1), conf = conf, use = use.rci)
+            if (u[3L] < ratio) {
+              styp <- 2
               stop <- TRUE
             }
-          } 
+          }
         }
-        if (max(i.times)>=1 & styp<1) {
+        if (max(i.times) >= 1 & styp < 1) {
           styp <- 3
           stop <- TRUE
         }
       }
     }
-    out[,i] <- c(styp,z,it,at,length(i.times))
+    out[, i] <- c(styp, z, it, at, length(i.times))
   }
   class(out) <- 'powlgrnk6'
   out
@@ -212,7 +206,7 @@ powlgrnk6 <- function(Npg, control.rate, test.rate, acc.per, total.inf,
 #' @param ... Not used
 #' 
 #' @return
-#' No value is returned.
+#' No value is returned - used for side-effect of printing to console.
 #' 
 #' @seealso
 #' \code{\link{powlgrnk6}}
@@ -221,16 +215,16 @@ powlgrnk6 <- function(Npg, control.rate, test.rate, acc.per, total.inf,
 #' 
 #' @export
 
-print.powlgrnk6 <- function(x,...) {
-  rejp <- mean(x[1,]==1)
-  cat('Total rejection probability:',format(rejp),'\n')
-  cat('Standard error:',format(sqrt(rejp*(1-rejp)/ncol(x))),'\n')
-  h0 <- mean(x[1,]==2)
-  cat('Stopped in favor of H0:',format(h0),'\n')
-  cat('Standard error:',format(sqrt(h0*(1-h0)/ncol(x))),'\n')
-  cat('Ave inf time at termination:',format(mean(x[3,])),'\n')
-  cat('Ave calendar time at termination:',format(mean(x[4,])),'\n')
+print.powlgrnk6 <- function(x, ...) {
+  rejp <- mean(x[1L, ] == 1)
+  cat('Total rejection probability:', format(rejp), '\n')
+  cat('Standard error:', format(sqrt(rejp * (1 - rejp) / ncol(x))), '\n')
+  h0 <- mean(x[1L, ] == 2)
+  cat('Stopped in favor of H0:', format(h0), '\n')
+  cat('Standard error:', format(sqrt(h0 * (1 - h0) / ncol(x))), '\n')
+  cat('Ave inf time at termination:', format(mean(x[3L, ])), '\n')
+  cat('Ave calendar time at termination:', format(mean(x[4L, ])), '\n')
   cat('Distribution of number of analyses:\n')
-  print(table(x[5,]))
-  invisible()
+  print(table(x[5L, ]))
+  invisible(NULL)
 }

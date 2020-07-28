@@ -4,12 +4,24 @@
 \alias{powlgrnk6}
 \title{Calculate the Power of a Group Sequential Logrank Test}
 \usage{
-powlgrnk6(Npg, control.rate, test.rate, acc.per, total.inf,
-          anal.int, min.inf = .25, nsamp = 5000, alpha = .025,
-          conf = 1-2*alpha, ratio = control.rate / test.rate,
-          use=1, use.rci=use, trunc=alpha/50,
-          gft = function(rx,cr,tr,...)
-             rexp(length(rx))/(c(cr,tr)[rx+1]), ...)
+powlgrnk6(
+  Npg,
+  control.rate,
+  test.rate,
+  acc.per,
+  total.inf,
+  anal.int,
+  min.inf = 0.25,
+  nsamp = 5000,
+  alpha = 0.025,
+  conf = 1 - 2 * alpha,
+  ratio = control.rate/test.rate,
+  use = 1,
+  use.rci = use,
+  trunc = alpha/50,
+  gft = function(rx, cr, tr, ...) rexp(length(rx))/(c(cr, tr)[rx + 1]),
+  ...
+)
 }
 \arguments{
 \item{Npg}{Planned number of subjects in the each treatment group (control
@@ -120,30 +132,31 @@ hazards alternative.
 }
 \examples{
 ## power under the alternative; 7 years accrual, analyses every 1/2 year
-## one-sided .025 test, with an 80\% RCI used for early stopping in
+## one-sided 0.025 test, with an 80\% RCI used for early stopping in
 ## favor of H0
 ## use larger nsamp (examples for illustration only)
-out <- powlgrnk6(210,.11889,.11889/1.5,7,233,.5,nsamp=10,conf=.80)
-table(out[1,])/ncol(out)
-apply(out[3:5,],1,mean)
+out <- powlgrnk6(210, 0.11889, 0.11889 / 1.5, 7, 233, 0.5, nsamp = 10, conf = 0.80)
+table(out[1, ]) / ncol(out)
+apply(out[3:5, ], 1, mean)
 out
 
 ## size under H0; note specification of ratio to keep the stopping rule
 ## the same as under the alternative
-out <- powlgrnk6(210,.11889,.11889,7,233,.5,nsamp=10,conf=.80,ratio=1.5)
-table(out[1,])/ncol(out)
-apply(out[3:5,],1,mean)
+out <- powlgrnk6(210, 0.11889, 0.11889, 7, 233, 0.5, nsamp = 10,
+                 conf = 0.80, ratio = 1.5)
+table(out[1, ]) / ncol(out)
+apply(out[3:5, ], 1, mean)
 
 ## power without RCI
-out <- powlgrnk6(210,.11889,.11889/1.5,7,233,.5,nsamp=10,conf=1)
-table(out[1,])/ncol(out)
-apply(out[3:5,],1,mean)
+out <- powlgrnk6(210, 0.11889, 0.11889 / 1.5, 7, 233, 0.5, nsamp = 10, conf = 1)
+table(out[1, ]) / ncol(out)
+apply(out[3:5, ], 1, mean)
 
 ## size without truncation
-out <- powlgrnk6(210,.11889,.11889,7,233,.5,nsamp=10,conf=.80,ratio=1.5,
-                 trunc=0)
-table(out[1,])/ncol(out)
-apply(out[3:5,],1,mean)
+out <- powlgrnk6(210, 0.11889, 0.11889, 7, 233, 0.5, nsamp = 10,
+                 conf = 0.80, ratio = 1.5, trunc=0)
+table(out[1, ]) / ncol(out)
+apply(out[3:5, ], 1, mean)
 
 }
 \references{
@@ -153,8 +166,7 @@ Freidlin, Korn and George, 1999. \emph{Controlled Clinical  Trials}
 Jennison and Turnbull, 1990, Statistical Science 5:299-317.
 }
 \seealso{
-\code{\link{sequse}}, \code{\link{rci}}, \code{\link{print.powlgrnk6}},
-\code{\link{seqopr}}, \code{\link{seqss}}
+
 }
 \keyword{design}
 \keyword{survival}

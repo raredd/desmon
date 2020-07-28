@@ -5,9 +5,16 @@
 \alias{correl.ratio}
 \title{Compute Power for Failure Time Comparisons in Correlative Studies}
 \usage{
-correl.power(n, nd, r1o2, p1, acc.per, add.fu, alpha2 = .05, int = c(.001,5))
-correl.ratio(n, nd, p1, acc.per, add.fu, power = .8, alpha2 = .05,
-             int = c(.001,5), maxrat = 20, greater = TRUE, less = TRUE)
+correl.power(
+  n,
+  nd,
+  r1o2,
+  p1,
+  acc.per,
+  add.fu,
+  alpha2 = 0.05,
+  int = c(0.001, 5)
+)
 }
 \arguments{
 \item{n}{Total number of cases}
@@ -82,7 +89,6 @@ specified power, \code{correl.ratio} computes the corresponding hazard ratio
 (two ratios are computed, one for the difference in each direction).
 }
 \examples{
-
 correl.power(355,172,1.54,.4,7,4)
 correl.power(355,172,3.36,.92,7,4)
 correl.power(355,172,1.67,.7,7,4)

@@ -4,7 +4,7 @@
 \alias{mcnemar.pow}
 \title{Calculate Power for McNemar's Test}
 \usage{
-mcnemar.pow(n, pdisc, delta, alpha = .025)
+mcnemar.pow(n, pdisc, delta, alpha = 0.025)
 }
 \arguments{
 \item{n}{The total sample size}
@@ -51,8 +51,7 @@ alternative to determine the critical region of the test (under the null)
 and the exact unconditional power (under the specified alternative).
 }
 \examples{
-
-mcnemar.pow(100, .9, .2, delta=.095)
+mcnemar.pow(100, 0.9, 0.2, delta = 0.095)
 
 }
 \author{

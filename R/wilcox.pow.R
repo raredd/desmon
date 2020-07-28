@@ -16,9 +16,6 @@
 #' by specifying \code{tdist=TRUE}.  However, the rejectiion probability is
 #' still computed using the normal distribution.
 #' 
-#' @usage
-#' wilcox.pow(n1, n2 = NULL, del, alpha2 = .05, tdist = FALSE)
-#' 
 #' @param n1 sample size in group 1
 #' @param n2 Sample size in group 2. If NULL, assumes a 1-sample test.
 #' @param del difference as a fraction of the population standard deviation
@@ -26,30 +23,34 @@
 #' @param tdist if TRUE, uses t distribution for the critical value; if FALSE,
 #' uses a normal critical value
 #' 
-#' @return A vector of length two giving the power for the Wilcoxon (frist
-#' component) and t (second component) tests.
+#' @return
+#' A vector of length two giving the power for the Wilcoxon (frist component)
+#' and t (second component) tests.
 #' 
 #' @keywords design
 #' 
 #' @examples
-#' wilcox.pow(24,24,1)
-#' wilcox.pow(24,10,1)
-#' wilcox.pow(10,NULL,.5) ## one-sample test
+#' wilcox.pow(24, 24, 1)
+#' wilcox.pow(24, 10, 1)
+#' wilcox.pow(10, NULL, 0.5) ## one-sample test
 #' 
 #' @export
 
-wilcox.pow <- function(n1, n2 = NULL, del, alpha2 = .05, tdist = FALSE) {
+wilcox.pow <- function(n1, n2 = NULL, del, alpha2 = 0.05, tdist = FALSE) {
   # del=difference in # standard deviations
   # two-sided test
   # del/2 factor is because variance of difference is 2sigma^2 and
   # normal density has a factor of 2pi
-  if (is.null(n2)) df <- n1-1 else df <- n1+n2-2
-  if (tdist) q1 <- qt(1-alpha2/2,df=df) else q1 <- qnorm(1-alpha2/2)
+  df <- if (is.null(n2))
+    n1 - 1 else n1+n2-2
+  q1 <- if (tdist)
+    qt(1 - alpha2 / 2, df = df) else qnorm(1 - alpha2 / 2)
   if (is.null(n2)) {
-    c(wilcox=pnorm((n1*(n1-1)/2+n1/sqrt(2))*del/sqrt(pi)/sqrt(n1*(n1+1)*
-      (2*n1+1)/24)-q1),t=pnorm(sqrt(n1)*del-q1))
+    c(wilcox = pnorm((n1 * (n1 - 1) / 2 + n1 / sqrt(2)) * del / sqrt(pi) /
+                       sqrt(n1 * (n1 + 1) * (2 * n1 + 1) / 24) - q1),
+      t = pnorm(sqrt(n1) * del - q1))
   } else {
-    c(wilcox=pnorm(sqrt(12*n1*n2/((n1+n2+1)*pi))*del/2-q1),
-    t=pnorm(sqrt(n1*n2/(n1+n2))*del-q1))
+    c(wilcox = pnorm(sqrt(12 * n1 * n2 / ((n1 + n2 + 1) * pi)) * del / 2 - q1),
+    t = pnorm(sqrt(n1 * n2 / (n1 + n2)) * del - q1))
   }
 }

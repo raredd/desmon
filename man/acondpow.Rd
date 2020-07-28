@@ -34,10 +34,10 @@ final analysis, and on the increment in the information being independent of
 the current data.
 }
 \examples{
-acondpow(2.0, .85, .32, .41)
+acondpow(2.0, 0.85, 0.32, 0.41)
 
 }
 \seealso{
-\code{\link{condpow}}, \code{\link{condpowcure}}
+\code{\link{condpow}}; \code{\link{condpowcure}}
 }
 \keyword{design}

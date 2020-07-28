@@ -28,8 +28,6 @@
 #' alternative to determine the critical region of the test (under the null)
 #' and the exact unconditional power (under the specified alternative).
 #' 
-#' @usage
-#' mcnemar.pow(n, pdisc, delta, alpha = .025)
 #' 
 #' @param n The total sample size
 #' @param pdisc The combined proportion of discordant pairs
@@ -39,45 +37,41 @@
 #' @return A vector giving the values of \code{n}, p12, p21, the attained exact
 #' size, the exact power, and Mietinen's approximation (Biometrics, 1968, p343)
 #' to the power.
-#' @author Bob Gray
-#' @keywords design htest
-#' @examples
 #' 
-#' mcnemar.pow(100, .9, .2, delta=.095)
+#' @author Bob Gray
+#' 
+#' @keywords design htest
+#' 
+#' @examples
+#' mcnemar.pow(100, 0.9, 0.2, delta = 0.095)
 #' 
 #' @export mcnemar.pow
 
-mcnemar.pow <- function(n, pdisc, delta, alpha = .025) {
+mcnemar.pow <- function(n, pdisc, delta, alpha = 0.025) {
   # pdisc = Combined probability of discordant pairs
   # delta = difference in success probabilities (ie between factor 1 and 2)
   # if the 4 cells in the 2x2 table have multinomial probabilities p11, p12,
   # p21, p22 then pdisc=p12+p21 and delta=p12-p21
-  p12 <- (pdisc+delta)/2
-  p21 <- pdisc-p12
-  #  p11 <- p1-p12
-  #  if (is.null(pnp)) pnp <- (p12-delta)/(1-p1)
-  #  p21 <- (1-p1)*pnp
-  #  p22 <- 1-p1-p21
-  if (min(p12,p21)<0) 
+  p12 <- (pdisc + delta) / 2
+  p21 <- pdisc - p12
+  if (min(p12, p21) < 0)
     stop('Incompatible probabilities specified')
   x <- 1:n
-  xp <- dbinom(x,n,p12+p21)
+  xp <- dbinom(x, n, p12 + p21)
   size <- 0
   pow <- 0
-  p <- max(p12,p21)/(p12+p21)
+  p <- max(p12, p21) / (p12 + p21)
   for (i in x) {
-    z <- qbinom(1-alpha,i,0.5)
-    if (z<i) {
-      size <- size+(1-pbinom(z,i,0.5))*xp[i]
-      pow <- pow+(1-pbinom(z,i,p))*xp[i]
+    z <- qbinom(1 - alpha, i, 0.5)
+    if (z < i) {
+      size <- size + (1 - pbinom(z, i, 0.5)) * xp[i]
+      pow <- pow + (1 - pbinom(z, i, p)) * xp[i]
     }
   }
   # formula zb based on straightforward asymptotics
   # formula zb3 given by Mietinen as the straightforward version
   # formula zb3 from Mietinen Bcs, 1968, p.343 - given as more accurate
-  #  zb <- (qnorm(1-alpha)-delta/sqrt(pdisc/n))/sqrt(1-delta^2/pdisc)
-  #  zb3 <- (qnorm(1-alpha)-delta/sqrt(pdisc/n))/sqrt(1-delta^2/pdisc^2)
-  zb2 <- (qnorm(1-alpha)-abs(delta)/sqrt(pdisc/n))/sqrt(1-delta^2*(3+pdisc)/
-    (4*pdisc^2))
-  c(n=n,p12=p12,p21=p21,size=size,power=pow,approx=1-pnorm(zb2))
+  zb2 <- (qnorm(1 - alpha) - abs(delta) / sqrt(pdisc / n)) /
+    sqrt(1 - delta ^ 2 * (3 + pdisc) / (4 * pdisc ^ 2))
+  c(n = n, p12 = p12, p21 = p21, size = size, power = pow, approx = 1 - pnorm(zb2))
 }

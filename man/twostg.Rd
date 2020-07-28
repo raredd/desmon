@@ -41,8 +41,8 @@ observed.  Subjects are assumed to be independent with a common response
 probability \code{p1}.
 }
 \examples{
-twostg(14, 18, .1, 1, 4)
-twostg(14, 18, .3, 1, 4)
+twostg(14, 18, 0.1, 1, 4)
+twostg(14, 18, 0.3, 1, 4)
 
 }
 \seealso{

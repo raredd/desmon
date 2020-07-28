@@ -4,15 +4,24 @@
 \alias{powlgrnk}
 \title{Computes the power of the logrank test}
 \usage{
-powlgrnk(acc.per, acc.rate, add.fu, alpha = .025, p.con = .5,
-         hazcon = function(x,lc,pc,...) 
-                     {u <- (1 - pc) * exp(-lc * x); lc * u / (pc + u)},
-         survcon = function(x, lc, pc, ...) pc+(1-pc)*exp(-lc*x),
-         haztst = function(x, lt, pt, ...) 
-                     {u <- (1 - pt) * exp(-lt * x); lt * u / (pt + u)},
-         survtst = function(x, lt, pt, ...) pt+(1-pt)*exp(-lt*x),
-         control.rate = NULL, test.rate = NULL, control.cure = 0,
-         test.cure = 0, ...)
+powlgrnk(
+  acc.per,
+  acc.rate,
+  add.fu,
+  alpha = 0.025,
+  p.con = 0.5,
+  hazcon = function(x, lc, pc, ...) {     u <- (1 - pc) * exp(-lc * x)     lc * u/(pc +
+    u) },
+  survcon = function(x, lc, pc, ...) pc + (1 - pc) * exp(-lc * x),
+  haztst = function(x, lt, pt, ...) {     u <- (1 - pt) * exp(-lt * x)     lt * u/(pt +
+    u) },
+  survtst = function(x, lt, pt, ...) pt + (1 - pt) * exp(-lt * x),
+  control.rate = NULL,
+  test.rate = NULL,
+  control.cure = 0,
+  test.cure = 0,
+  ...
+)
 }
 \arguments{
 \item{acc.per}{Planned duration of accrual}
@@ -50,8 +59,8 @@ function at a vector of times}
 }
 \value{
 Returns a vector giving the power of the test under the specified
-conditions (\code{power}), the total sample size (\code{n}) and the expected
-number of events (\code{nd}).
+conditions (\code{power}), the total sample size (\code{n}) and the
+expected number of events (\code{nd}).
 }
 \description{
 Computes the power of the two-group logrank test for arbitrary failure time
@@ -96,28 +105,21 @@ months.
 }
 \examples{
 # Exponential distributions
-powlgrnk(5,200,3,control.rate=.1,test.rate=.075)
-
-#       power            n           nd 
-#   0.7925548 1000.0000000  375.5712999 
+powlgrnk(5, 200, 3, control.rate = 0.1, test.rate = 0.075)
 
 # Cure rate
-powlgrnk(3,200,3,control.rate=log(2)/3,test.rate=log(2)/4,
-  control.cure=.3,test.cure=.4)
-  
-#      power           n          nd 
-#  0.8962665 600.0000000 230.7956591
+powlgrnk(3, 200, 3, control.rate = log(2) / 3, test.rate = log(2) / 4,
+         control.cure = 0.3, test.cure = 0.4)
 
 # Exponential cure-rate with proportional hazards alternative
-ht <- function(x,rat,...) rat*hc(x,...)
-st <- function(x,rat,...) sc(x,...)^rat
-sc <- function(x,pic,lic,...) pic+(1-pic)*exp(-lic*x)
-hc <- function(x,pic,lic,...) {u <- (1-pic)*exp(-lic*x); lic*u/(pic+u)}
-powlgrnk(5,200,3,hazcon=hc,survcon=sc,haztst=ht,survtst=st,lic=log(2)/3,
-  pic=.3,rat=.5)
-  
-#       power            n           nd 
-#   0.8564817 1000.0000000  446.0797311 
+ht <- function(x, rat, ...) rat * hc(x, ...)
+st <- function(x, rat, ...) sc(x, ...) ^ rat
+sc <- function(x, pic, lic, ...) pic + (1 - pic) * exp(-lic * x)
+hc <- function(x, pic, lic, ...) {
+  u <- (1 - pic) * exp(-lic * x); lic * u / (pic + u)
+}
+powlgrnk(5, 200, 3, hazcon = hc, survcon = sc, haztst = ht,
+         survtst = st, lic = log(2) / 3, pic = 0.3, rat = 0.5)
 
 }
 \seealso{

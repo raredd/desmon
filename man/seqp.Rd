@@ -39,11 +39,11 @@ can be computed using the functions \code{seqopr} or \code{lr.inf}.
 standardized to have variance 1 at t=1.)
 }
 \examples{
-seqp((1:4)/4,c(2,2,3,2),eta=3)
-seqp((1:4)/4,c(2,2,3,2),eta=0)
+seqp((1:4) / 4, c(2, 2, 3, 2), eta = 3)
+seqp((1:4) / 4, c(2, 2, 3, 2), eta = 0)
 
 }
 \seealso{
-\code{\link{sequse}}, \code{\link{seqopr}}, \code{\link{lr.inf}}
+\code{\link{sequse}}; \code{\link{seqopr}}; \code{\link{lr.inf}}
 }
 \keyword{design}

@@ -15,10 +15,6 @@
 #' different stratum to allow for different strata to have opened or closed at
 #' different times.
 #' 
-#' @usage
-#' powexp2(acc.rate, acc.per, add.fu, l1, r1o2, p1,
-#'         prop.strat = rep(1, length(l1)), alpha2 = 0.05, nullh = 1)
-#' 
 #' @param acc.rate Accrual rate
 #' @param acc.per Accrual period
 #' @param add.fu Additional follow-up after the end of accrual before data are
@@ -38,43 +34,44 @@
 #' total number of failure events under the alternative (n.fail), and the power
 #' (power).
 #' 
-#' @seealso \code{\link{seqopr}}, \code{\link{powlgrnk}},
-#' \code{\link{correl.power}}
+#' @seealso
+#' \code{\link{seqopr}}; \code{\link{powlgrnk}}; \code{\link{correl.power}}
+#' 
 #' @keywords design
 #' 
 #' @examples
-#' powexp2(200,2,3,log(2)/4,1.5,.5)
-#' powexp2(200,2,3,log(2)/4,1.33,.5)
-#' powexp2(200,2,3,log(2)/4,c(1.5,1),.5,c(.7,.3))
-#' powexp2(10,31.5,13.75,c(log(2)/6,log(2)/8),c(1.4,1.2),.5,c(.9,.1))
-#' powexp2(c(9,1),31.5,13.75,c(log(2)/6,log(2)/8),c(1.4,1.2),.5)
+#' powexp2(200, 2, 3, log(2) / 4, 1.5, 0.5)
+#' powexp2(200, 2, 3, log(2) / 4, 1.33, 0.5)
+#' powexp2(200, 2, 3, log(2) / 4, c(1.5, 1), 0.5, c(0.7, 0.3))
+#' powexp2(10, 31.5, 13.75, c(log(2) / 6, log(2) / 8), c(1.4, 1.2), 0.5, c(0.9, 0.1))
+#' powexp2(c(9, 1), 31.5, 13.75, c(log(2) / 6, log(2) / 8), c(1.4, 1.2), 0.5)
 #' 
 #' @export powexp2
 
-powexp2 <- function(acc.rate, acc.per, add.fu, l1, r1o2, p1, 
-                    prop.strat = rep(1, length(l1)), alpha2 = .05, nullh = 1) {
-  n <- acc.rate*acc.per
-  zc <- qnorm(1-alpha2/2)
-  p.strat <- prop.strat/sum(prop.strat)
-  if (length(n)>1) n.strat <- n
-  else n.strat <- n*p.strat/sum(p.strat)
-  q <- 1-p1
+powexp2 <- function(acc.rate, acc.per, add.fu, l1, r1o2, p1,
+                    prop.strat = rep(1, length(l1)), alpha2 = 0.05, nullh = 1) {
+  n <- acc.rate * acc.per
+  zc <- qnorm(1 - alpha2 / 2)
+  p.strat <- prop.strat / sum(prop.strat)
+  n.strat <- if (length(n) > 1)
+    n else n * p.strat / sum(p.strat)
+  q <- 1 - p1
   a <- add.fu
-  b <- acc.per+add.fu # censoring uniform on (a,b)
-  cpx <- function(l) (exp(-a*l)-exp(-b*l))/(l*acc.per)
-  l2 <- l1/r1o2
-  fp1 <- 1-cpx(l1)
-  fp2 <- 1-cpx(l2)
-  v <- 1/(n.strat*p1*fp1)+1/(n.strat*q*fp2)
-  w <- sum(1/v)
-  sa <- sqrt(1/w)
-  ma <- sum(log(r1o2)/v)/w
+  b <- acc.per + add.fu # censoring uniform on (a,b)
+  cpx <- function(l) (exp(-a * l) - exp(-b * l)) / (l * acc.per)
+  l2 <- l1 / r1o2
+  fp1 <- 1 - cpx(l1)
+  fp2 <- 1 - cpx(l2)
+  v <- 1 / (n.strat * p1 * fp1) + 1 / (n.strat * q * fp2)
+  w <- sum(1 / v)
+  sa <- sqrt(1 / w)
+  ma <- sum(log(r1o2) / v) / w
   # use sa under null and alt, per RGS 1981 -- also, consistent with seqopr
   # and srvpwr
-  #  sa <- sqrt(1/(n*p1*fp1)+1/(n*q*fp2))
-  #  zb <- (zc*sa-abs(log(r1o2)))/sa
-  zb <- (zc*sa-abs(ma-log(nullh)))/sa
-  #  zb2 <- (zc*sn2-abs(log(r1o2)))/sa
-  c(se=sa,me=ma,n.fail=sum(n.strat*fp1*p1+n.strat*fp2*q),
-    power=1-pnorm(zb))
+  # sa <- sqrt(1/(n*p1*fp1)+1/(n*q*fp2))
+  # zb <- (zc*sa-abs(log(r1o2)))/sa
+  zb <- (zc * sa - abs(ma - log(nullh))) / sa
+  # zb2 <- (zc*sn2-abs(log(r1o2)))/sa
+  c(se = sa, me = ma, n.fail = sum(n.strat * fp1 * p1 + n.strat * fp2 * q),
+    power = 1 - pnorm(zb))
 }

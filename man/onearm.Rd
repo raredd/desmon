@@ -4,7 +4,7 @@
 \alias{onearm}
 \title{One Sample Binomial Design}
 \usage{
-onearm(n, p0, pa, alpha = .1)
+onearm(n, p0, pa, alpha = 0.1)
 }
 \arguments{
 \item{n}{sample size}
@@ -30,7 +30,7 @@ computes \code{P(R>=r|p)} for \code{p=p0,pa}.  If \code{p0>pa}, similar
 calculations are done for rejecting in the opposite tail.
 }
 \examples{
-onearm(30,.1,.3)
+onearm(30, 0.1, 0.3)
 
 }
 \seealso{

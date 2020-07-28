@@ -4,8 +4,17 @@
 \alias{rci}
 \title{Repeated Confidence Interval}
 \usage{
-rci(time, status, rx, inf, control = 0, strat, conf = .95,
-    use = 1, crit = NULL)
+rci(
+  time,
+  status,
+  rx,
+  inf,
+  control = 0,
+  strat,
+  conf = 0.95,
+  use = 1,
+  crit = NULL
+)
 }
 \arguments{
 \item{time}{Vector of failure/censoring times}
@@ -55,13 +64,13 @@ normal scale at the current information time \code{crit}.
 }
 \examples{
 set.seed(3)
-ft <- c(rexp(100),rexp(100)/.67)
-ct <- runif(200)*3
-fi <- ifelse(ct<ft,0,1)
-ft <- pmin(ft,ct)
-rx <- c(rep(0,100),rep(1,100))
-rci(ft,fi,rx,inf=c(.25,.54))
-rci(ft,fi,rx,crit=2.4)
+ft <- c(rexp(100), rexp(100) / 0.67)
+ct <- runif(200) * 3
+fi <- ifelse(ct < ft, 0, 1)
+ft <- pmin(ft, ct)
+rx <- c(rep(0, 100), rep(1, 100))
+rci(ft, fi, rx, inf = c(0.25, 0.54))
+rci(ft, fi, rx, crit = 2.4)
 
 }
 \references{

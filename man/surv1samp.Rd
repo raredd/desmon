@@ -4,11 +4,22 @@
 \alias{surv1samp}
 \title{Sample Size Calculation for a One-Sample Exponential}
 \usage{
-surv1samp(control.rate = NULL, pct.imp = NULL, acc.per, add.fu,
-          alpha = .1, power = .9, control.med = NULL,
-          control.survp = NULL, tp = NULL, pct.reduc = NULL,
-          nonpar = FALSE, alt.rate = NULL, alt.med = NULL, 
-          alt.survp = NULL)
+surv1samp(
+  control.rate = NULL,
+  pct.imp = NULL,
+  acc.per,
+  add.fu,
+  alpha = 0.1,
+  power = 0.9,
+  control.med = NULL,
+  control.survp = NULL,
+  tp = NULL,
+  pct.reduc = NULL,
+  nonpar = FALSE,
+  alt.rate = NULL,
+  alt.med = NULL,
+  alt.survp = NULL
+)
 }
 \arguments{
 \item{control.rate}{The hazard rate under the null hypothesis}
@@ -70,9 +81,11 @@ Any combination of parameters determining the null and alternative event
 rates can be specified.
 }
 \examples{
-surv1samp(-1.333*log(.96)/5,33.3,4,3,alpha=.1,power=.95)
-surv1samp(-log(.95)/5,100*(log(.95)/log(.96)-1),4,3,alpha=.1,power=.95)
-surv1samp(-log(.955)/5,100*(log(.955)/log(.965)-1),4,3,alpha=.1,power=.95)
+surv1samp(-1.333 * log(0.96) / 5, 33.3, 4, 3, alpha = 0.1, power = 0.95)
+surv1samp(-log(0.95) / 5, 100 * (log(0.95) / log(0.96) - 1), 4, 3,
+          alpha = 0.1, power = 0.95)
+surv1samp(-log(0.955) / 5, 100 * (log(0.955) / log(0.965) - 1), 4, 3,
+          alpha = 0.1, power = 0.95)
 
 }
 \keyword{design}

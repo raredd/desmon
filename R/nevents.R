@@ -16,9 +16,6 @@
 #' 
 #' Caution: consistent time units must be used for all quantities.
 #' 
-#' @usage
-#' nevents(acc.rate, acc.per, add.fu, haz = NULL, med = NULL)
-#' 
 #' @param acc.rate The accrual rate in patients per time unit
 #' @param acc.per Duration of accrual
 #' @param add.fu Duration of follow-up from end of accrual to analysis
@@ -26,10 +23,14 @@
 #' \code{med} is specified.
 #' @param med Median failure time.  Not needed if \code{haz} is specified.
 #' 
-#' @return A vector of length 3 giving the expected number of failures
+#' @return
+#' A vector of length 3 giving the expected number of failures
 #' \code{nevents}, the failure probability \code{fail.prob} and the total
 #' sample size \code{n}.
-#' @seealso \code{\link{nevents.cure}}
+#' 
+#' @seealso
+#' \code{\link{nevents.cure}}
+#' 
 #' @keywords design survival
 #' 
 #' @examples
@@ -40,16 +41,17 @@
 #' @export nevents
 
 nevents <- function(acc.rate, acc.per, add.fu, haz = NULL, med = NULL) {
-  ### acc.rate=accrual per time unit
-  ### acc.per = accrual period
-  ### add.fu = amount of additional follow-up after end of accrual
-  ### haz = hazard rate
-  ### med = median failure time
-  if (is.null(haz)) haz <- log(2)/med
-  n <- acc.rate*acc.per
-  pcens <- (exp(-add.fu*haz)-exp(-(add.fu+acc.per)*haz))/(acc.per*haz)
-  pfail <- 1-pcens
-  c(nevents=n*pfail,fail.prob=pfail,n=n)
+  # acc.rate=accrual per time unit
+  # acc.per = accrual period
+  # add.fu = amount of additional follow-up after end of accrual
+  # haz = hazard rate
+  # med = median failure time
+  if (is.null(haz))
+    haz <- log(2) / med
+  n <- acc.rate * acc.per
+  pcens <- (exp(-add.fu * haz) - exp(-(add.fu + acc.per) * haz)) / (acc.per * haz)
+  pfail <- 1 - pcens
+  c(nevents = n * pfail, fail.prob = pfail, n = n)
 }
 
 #' Calculates the expected number of events for cure rate failure models
@@ -74,10 +76,6 @@ nevents <- function(acc.rate, acc.per, add.fu, haz = NULL, med = NULL) {
 #' 
 #' Caution: consistent time units must be used for all quantities.
 #' 
-#' @usage
-#' nevents.cure(acc.rate, acc.per, add.fu, cure.rate, 
-#'              haz = NULL, med = NULL, haz.ratio = 1)
-#' 
 #' @param acc.rate The accrual rate in patients per time unit
 #' @param acc.per Duration of accrual
 #' @param add.fu Duration of follow-up from end of accrual to analysis
@@ -89,11 +87,16 @@ nevents <- function(acc.rate, acc.per, add.fu, haz = NULL, med = NULL) {
 #' @param haz.ratio Proportional hazards shift from the exponential cure rate
 #' model
 #' 
-#' @return A vector of length 3 giving the expected number of failures
+#' @return
+#' A vector of length 3 giving the expected number of failures
 #' \code{nevents}, the failure probability \code{fail.prob} and the total
 #' sample size \code{n}.
-#' @seealso \code{\link{nevents}}
+#' 
+#' @seealso
+#' \code{\link{nevents}}
+#' 
 #' @keywords design survival
+#' 
 #' @examples
 #' acc.per <- 2.2
 #' add.fu <- 3.2
@@ -103,23 +106,25 @@ nevents <- function(acc.rate, acc.per, add.fu, haz = NULL, med = NULL) {
 #' @export nevents.cure
 
 nevents.cure <- function(acc.rate, acc.per, add.fu, cure.rate,
-   haz = NULL, med = NULL, haz.ratio = 1) {
-  ### acc.rate=accrual per time unit
-  ### acc.per = accrual period
-  ### add.fu = amount of additional follow-up after end of accrual
-  ### cure.rate = proportion cured
-  ### haz = hazard rate
-  ### med = median failure time
-  ### haz.ratio=hazard ratio from null exponential cure rate model
-  if (is.null(haz)) haz <- log(2)/med
-  n <- acc.rate*acc.per
-  if (haz.ratio==1) {
-    pcens <- cure.rate+(1-cure.rate)*(exp(-add.fu*haz)-
-               exp(-(add.fu+acc.per)*haz))/(acc.per*haz)
+                         haz = NULL, med = NULL, haz.ratio = 1) {
+  # acc.rate=accrual per time unit
+  # acc.per = accrual period
+  # add.fu = amount of additional follow-up after end of accrual
+  # cure.rate = proportion cured
+  # haz = hazard rate
+  # med = median failure time
+  # haz.ratio=hazard ratio from null exponential cure rate model
+  if (is.null(haz))
+    haz <- log(2) / med
+  n <- acc.rate * acc.per
+  if (haz.ratio == 1) {
+    pcens <- cure.rate + (1 - cure.rate) *
+      (exp(-add.fu * haz) - exp(-(add.fu + acc.per) * haz)) / (acc.per * haz)
   } else {
-    f <- function(x) (cure.rate+(1-cure.rate)*exp(-haz*x))^haz.ratio/acc.per
-    pcens <- integrate(f,add.fu,add.fu+acc.per)$value
+    f <- function(x) (cure.rate + (1 - cure.rate) *
+                        exp(-haz * x)) ^ haz.ratio / acc.per
+    pcens <- integrate(f, add.fu, add.fu + acc.per)$value
   }
-  pfail <- 1-pcens
-  c(nevents=n*pfail,fail.prob=pfail,n=n)
+  pfail <- 1 - pcens
+  c(nevents = n * pfail, fail.prob = pfail, n = n)
 }

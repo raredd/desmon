@@ -6,19 +6,23 @@
 \alias{lr.inf}
 \title{Compute Operating Characteristics for Group Sequential Designs}
 \usage{
-seqopr(acc.per, acc.rate, control.rate = NULL, pct.imp = NULL, 
-       a.times, prop.strat = rep(1, length(control.rate)), alpha = 0.025,
-       alphal = 0, p.con = 0.5, use = 6, usel = 6, oftr = alpha/50,
-       oftrl = alphal/50, control.med = NULL, pct.reduc = NULL)
-       
-seqss(power, acc.per, acc.rate, add.fu, anal.int, first.anal = anal.int,
-      control.rate = NULL, pct.imp = NULL, prop.strat = rep(1, length(control.rate)),
-      alpha = 0.025, alphal = 0, p.con = 0.5, use = 6, usel = 6,
-      oftr = alpha/50, oftrl = alphal/50, control.med = NULL, pct.reduc = NULL)
-
-lr.inf(acc.per, acc.rate, add.fu, control.rate = NULL, pct.imp = NULL,
-       prop.strat = rep(1, length(control.rate)), p.con = 0.5,
-       control.med = NULL, pct.reduc = NULL)
+seqopr(
+  acc.per,
+  acc.rate,
+  control.rate = NULL,
+  pct.imp = NULL,
+  a.times,
+  prop.strat = rep(1, length(control.rate)),
+  alpha = 0.025,
+  alphal = 0,
+  p.con = 0.5,
+  use = 6,
+  usel = 6,
+  oftr = alpha/50,
+  oftrl = alphal/50,
+  control.med = NULL,
+  pct.reduc = NULL
+)
 }
 \arguments{
 \item{acc.per}{In \code{sequse} and \code{lr.inf}, the planned accrual
@@ -158,12 +162,12 @@ parameter \code{eta}.  The main use of this function is to get the value of
 \code{eta} for computing the lower boundary in \code{sequse}.
 }
 \examples{
-seqopr(3,200,.1,50,c(2,3,4,5))
-seqss(.8,c(2,6),200,2,.5,2,.1,50)
-lr.inf(3,200,2,.1,50)
+seqopr(3, 200, 0.1, 50, c(2, 3, 4, 5))
+seqss(0.8, c(2, 6), 200, 2, 0.5, 2, 0.1, 50)
+lr.inf(3, 200, 2, 0.1, 50)
 
 }
 \seealso{
-\code{\link{sequse}}, \code{\link{powlgrnk6}}, \code{\link{seqp}}
+\code{\link{sequse}}; \code{\link{powlgrnk6}}; \code{\link{seqp}}
 }
 \keyword{design}

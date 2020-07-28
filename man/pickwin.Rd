@@ -56,11 +56,11 @@ declared superior) includes both the probability that both are declared
 inactive and the probability that both are declared active and are equal.
 }
 \examples{
-pickwin(14,18,.1,.2,0,3)
+pickwin(14, 18, 0.1, 0.2, 0, 3)
 
 }
 \references{
-Simon R, Wittes RE and Ellenberg SS, 1985. Randomized phase II 
+Simon R, Wittes RE and Ellenberg SS, 1985. Randomized phase II
 clinical trials. \emph{Cancer Treat Rep} \strong{69} (12):1375--81.
 }
 \seealso{

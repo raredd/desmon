@@ -4,9 +4,22 @@
 \alias{condpow}
 \title{Perform Simulation to Calculate Conditional Power of a Logrank Test}
 \usage{
-condpow(time, status, rx, nsamp = 500, crit.val = 1.96, control = 0, 
-        control.rate, test.rate, inf.time = 1, total.inf, add.acc = 0, 
-        add.acc.period, p.con = .5, strat = rep(1,length(time)))
+condpow(
+  time,
+  status,
+  rx,
+  nsamp = 500,
+  crit.val = 1.96,
+  control = 0,
+  control.rate,
+  test.rate,
+  inf.time = 1,
+  total.inf,
+  add.acc = 0,
+  add.acc.period,
+  p.con = 0.5,
+  strat = rep(1, length(time))
+)
 }
 \arguments{
 \item{time}{Failure/censoring times in the current data}
@@ -83,22 +96,23 @@ are generated in a new stratum.
 \examples{
 ## current data
 set.seed(3)
-ft <- c(rexp(100), rexp(100) / .95)
+ft <- c(rexp(100), rexp(100) / 0.95)
 ct <- runif(200) * 3
 fi <- ifelse(ct < ft, 0, 1)
 ft <- pmin(ft, ct)
 rx <- c(rep(0, 100), rep(1, 100))
 
-## currently at .43 information -- assume no prior interim analyses
-critv <- sequse(c(.43,.7,1))[-1]
+## currently at 0.43 information -- assume no prior interim analyses
+critv <- sequse(c(0.43, 0.7, 1))[-1]
 
-condpow(ft,fi,rx,nsamp=10,crit.val=critv,control.rate=1,test.rate=.75,
-        inf.time=c(.7,1),total.inf=300,add.acc=200,add.acc.period=1)
+condpow(ft, fi, rx, nsamp = 10, crit.val = critv, control.rate = 1, test.rate = 0.75,
+        inf.time = c(0.7, 1), total.inf = 300, add.acc = 200, add.acc.period = 1)
 
-#use larger nsamp in practice, eg
 \dontrun{
-condpow(ft,fi,rx,nsamp=1000,crit.val=critv,control.rate=1,test.rate=.75,
-        inf.time=c(.7,1),total.inf=300,add.acc=200,add.acc.period=1)}
+# use larger nsamp in practice, eg
+condpow(ft, fi, rx, nsamp = 1000, crit.val = critv, control.rate = 1, test.rate = 0.75,
+        inf.time = c(0.7, 1), total.inf = 300, add.acc = 200, add.acc.period = 1)
+}
 
 }
 \references{
@@ -107,7 +121,7 @@ Jennison and Turnbull (1990). \emph{Statistical Science} \strong{5}:299-317.
 Betensky (1997). \emph{Biometrics} \strong{53}:794-806.
 }
 \seealso{
-\code{\link{condpowcure}}, \code{\link{sequse}}, \code{\link{acondpow}}
+\code{\link{condpowcure}}; \code{\link{sequse}}; \code{\link{acondpow}}
 }
 \keyword{design}
 \keyword{survival}

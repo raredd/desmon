@@ -4,9 +4,23 @@
 \alias{condpowcure}
 \title{Perform Simulation to Calculate Conditional Power of a Logrank Test}
 \usage{
-condpowcure(time, status, rx, nsamp = 500, crit.val = 1.96, control = 0,
-            control.cure, control.rate, test.cure, test.rate,
-            inf.time = 1,total.inf, add.acc=  0, add.acc.period, p.con = .5)
+condpowcure(
+  time,
+  status,
+  rx,
+  nsamp = 500,
+  crit.val = 1.96,
+  control = 0,
+  control.cure,
+  control.rate,
+  test.cure,
+  test.rate,
+  inf.time = 1,
+  total.inf,
+  add.acc = 0,
+  add.acc.period,
+  p.con = 0.5
+)
 }
 \arguments{
 \item{time}{Failure/censoring times in the current data}
@@ -81,26 +95,26 @@ and for the current data.
 \examples{
 ## current data
 set.seed(3)
-ft <- c(ifelse(runif(100)<.6,rexp(100),100),ifelse(runif(100)<.55,
-        rexp(100)/.95,100))
-ct <- runif(200)*4
-fi <- ifelse(ct<ft,0,1)
-ft <- pmin(ft,ct)
-rx <- c(rep(0,100),rep(1,100))
+ft <- c(ifelse(runif(100) < 0.6, rexp(100), 100), ifelse(runif(100) < 0.55,
+        rexp(100) / 0.95, 100))
+ct <- runif(200) * 4
+fi <- ifelse(ct < ft, 0, 1)
+ft <- pmin(ft, ct)
+rx <- c(rep(0, 100), rep(1, 100))
 
-## currently at .375 information -- assume no prior interim analyses
-critv <- sequse(c(.375,.7,1))[-1]
+## currently at 0.375 information -- assume no prior interim analyses
+critv <- sequse(c(0.375, 0.7, 1))[-1]
 
-condpowcure(ft,fi,rx,nsamp=10,crit.val=critv,control.cure=.4,
-            control.rate=1,test.cure=.6,test.rate=.75,
-            inf.time=c(.7,1),total.inf=200,add.acc=200,add.acc.period=1)
-            
-## use larger nsamp in practice:
+condpowcure(ft, fi, rx, nsamp = 10, crit.val = critv, control.cure = 0.4,
+            control.rate = 1, test.cure = 0.6, test.rate = 0.75,
+            inf.time = c(0.7, 1), total.inf = 200, add.acc = 200, add.acc.period = 1)
+
 \dontrun{
-condpowcure(ft, fi, rx, nsamp=1000, crit.val=critv, control.cure=.4,
-            control.rate=1, test.cure=.6, test.rate=.75,
-            inf.time=c(.7,1), total.inf=200, add.acc=200, add.acc.period=1)
-## Observed Z =  1.43 
+## use larger nsamp in practice:
+condpowcure(ft, fi, rx, nsamp = 1000, crit.val = critv, control.cure = 0.4,
+            control.rate = 1, test.cure = 0.6, test.rate = 0.75,
+            inf.time = c(0.7, 1), total.inf = 200, add.acc = 200, add.acc.period = 1)
+## Observed Z =  1.43
 ## [1] 0.958
 }
 
@@ -111,7 +125,7 @@ Jennison and Turnbull (1990). \emph{Statistical Science} \strong{5}:299-317.
 Betensky (1997). \emph{Biometrics}, \strong{53}:794-806.
 }
 \seealso{
-\code{\link{condpow}}, \code{\link{sequse}}, \code{\link{acondpow}}
+\code{\link{condpow}}; \code{\link{sequse}}; \code{\link{acondpow}}
 }
 \keyword{design}
 \keyword{survival}

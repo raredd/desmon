@@ -3,7 +3,6 @@
 \docType{package}
 \name{desmon}
 \alias{desmon}
-\alias{desmon-package}
 \title{Functions for design and monitoring of clincal trials}
 \description{
 Performs various calculations related to design of studies with either

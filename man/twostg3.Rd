@@ -65,8 +65,7 @@ corresponding disjoint cells in the trinomial model (that is, \code{pstab}
 is the probability that a case will be stable but not a response).
 }
 \examples{
-
-twostg3(20,40,.05,.10,1,3,5,22)
+twostg3(20, 40, 0.05, 0.10, 1, 3, 5, 22)
 
 }
 \seealso{

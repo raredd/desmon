@@ -48,13 +48,6 @@
 #' approximation. In large samples, this test is equivalent to the score and 
 #' partial likelihood ratio tests for this hypothesis.
 #' 
-#' @usage
-#' intpow(n, prx, prz, ri, rt, rf, l0, acc.per, add.fu, 
-#'        alpha2 = .05, hazs = NULL)
-#' hazsf(prx, prz, ri, rt, rf, l0)
-#' expinf(prx, prz, hazs, acc.per, add.fu)
-#' siminf(prx, prz, hazs, acc.per, add.fu, n)
-#' 
 #' @param n Sample size
 #' @param prx Proportion randomized to treatment 1 (x=1)
 #' @param prz Proportion positive for the marker (z=1)
@@ -82,16 +75,17 @@
 #' 
 #' \code{siminf} returns a vector containing the Wald test statistic and the
 #' estimated variance of the interaction term
+#' 
 #' @keywords design survival
+#' 
 #' @examples
-#' intpow(n = 2800, prx = .5, prz = .25, ri = .6, rt = .8, rf = 2, 
-#'        l0 = .045, acc.per = 2.5, add.fu = 3)
+#' intpow(n = 2800, prx = 0.5, prz = 0.25, ri = 0.6, rt = 0.8, rf = 2,
+#'        l0 = 0.045, acc.per = 2.5, add.fu = 3)
 #' 
 #' @export intpow
 
-#' @export
 intpow <- function(n, prx, prz, ri, rt, rf, l0, acc.per, add.fu, 
-                   alpha2 = .05, hazs = NULL) {
+                   alpha2 = 0.05, hazs = NULL) {
   # power for treatment by biologic marker interaction tests
   # n=total sample size
   # prx= proportion randomized to first treatment
@@ -104,119 +98,125 @@ intpow <- function(n, prx, prz, ri, rt, rf, l0, acc.per, add.fu,
   # acc.per=time in years to accrue n patients
   # add.fu= additional years follow-up after end of accrual
   # alpha2=two-sided type I error
-  if (is.null(hazs)) hazs <- hazsf(prx=prx,prz=prz,ri=ri,rt=rt,rf=rf,l0=l0)
-  else ri <- hazs[4]*hazs[1]/(hazs[2]*hazs[3])
-  u1 <- expinf(prx=prx,prz=prz,hazs=hazs,acc.per=acc.per,add.fu=add.fu)
-  u1i <- solve(u1)/n
-  pxz <- c((1-prx)*c((1-prz),prz),prx*c((1-prz),prz))
-  nev <- rep(0,length(pxz))
-  for (i in 1:length(pxz)) nev[i] <- nevents(n*pxz[i]/acc.per,acc.per,
-                                             add.fu,haz=hazs[i])[1]
+  if (is.null(hazs))
+    hazs <- hazsf(prx = prx, prz = prz, ri = ri, rt = rt, rf = rf, l0 = l0)
+  else
+    ri <- hazs[4L] * hazs[1L] / (hazs[2L] * hazs[3L])
+  u1 <- expinf(prx = prx, prz = prz, hazs = hazs, acc.per = acc.per, add.fu = add.fu)
+  u1i <- solve(u1) / n
+  pxz <- c((1 - prx) * c((1 - prz), prz), prx * c((1 - prz), prz))
+  nev <- rep(0, length(pxz))
+  for (i in 1:length(pxz))
+    nev[i] <- nevents(n * pxz[i] / acc.per, acc.per, add.fu, haz = hazs[i])[1L]
   names(nev) <- names(hazs)
-  list(power=1-pnorm(qnorm(1-alpha2/2)-abs(log(ri))/sqrt(u1i[3,3])),
-       hazards=c(hazs),var=u1i,nevents=nev)
+  list(power = 1 - pnorm(qnorm(1 - alpha2 / 2) - abs(log(ri)) / sqrt(u1i[3, 3])),
+       hazards = c(hazs), var = u1i, nevents = nev)
 }
 
 #' @export
-siminf <- function(prx,prz,hazs,acc.per,add.fu,n) {
-  pxz <- round(c((1-prx)*c((1-prz),prz),prx*c((1-prz),prz))*n)
-  grp <- rep(1:4,pxz)
-  cov <- (rbind(c(0,0,0),c(0,1,0),c(1,0,0),c(1,1,1)))[grp,]
-  ft <- rexp(n)/hazs[grp]
-  ct <- runif(n)*(acc.per)+add.fu
-  status <- ifelse(ct<ft,0,1)
-  ft <- pmin(ft,ct)
-  z <- coxph(Surv(ft,status)~cov[,1]+cov[,2]+cov[,3])
-  c(abs(z$coef)[3]/sqrt(z$var[3,3]),z$var[3,3])
+siminf <- function(prx, prz, hazs, acc.per, add.fu, n) {
+  pxz <- round(c((1 - prx) * c((1 - prz), prz), prx * c((1 - prz), prz)) * n)
+  grp <- rep(1:4, pxz)
+  cov <- (rbind(c(0, 0, 0), c(0, 1, 0), c(1, 0, 0), c(1, 1, 1)))[grp, ]
+  ft <- rexp(n) / hazs[grp]
+  ct <- runif(n) * (acc.per) + add.fu
+  status <- ifelse(ct < ft, 0, 1)
+  ft <- pmin(ft, ct)
+  z <- coxph(Surv(ft, status) ~ cov[, 1L] + cov[, 2L] + cov[, 3L])
+  c(abs(z$coef)[3L] / sqrt(z$var[3L, 3L]), z$var[3L, 3L])
 }
 
 #' @export
-expinf <- function(prx,prz,hazs,acc.per,add.fu) {
+expinf <- function(prx, prz, hazs, acc.per, add.fu) {
   # Cox model expected information per subject
   # constant hazards in each group
-  pxz <- c((1-prx)*c((1-prz),prz),prx*c((1-prz),prz))
-  u2 <- u <- matrix(0,3,3)
-  g <- function(t,ap,add.fu) {#censoring survivor function
-    pmin(1,pmax((ap+add.fu-t)/ap,0))
+  pxz <- c((1 - prx) * c((1 - prz), prz), prx * c((1 - prz), prz))
+  u2 <- u <- matrix(0, 3L, 3L)
+  g <- function(t, ap, add.fu) {# censoring survivor function
+    pmin(1, pmax((ap + add.fu - t) / ap, 0))
   }
-  f1 <- function(x,hazs,pxz,comp,ap,add.fu,g) {
-    pxz[comp]*hazs[comp]*exp(-x*hazs[comp])*g(x,ap,add.fu)
+  f1 <- function(x, hazs, pxz, comp, ap, add.fu, g) {
+    pxz[comp] * hazs[comp] * exp(-x * hazs[comp]) * g(x, ap, add.fu)
   }
-  f2 <- function(x,hazs,pxz,c1,c2,ap,add.fu,g) {
-    w <- hazs*pxz
-    u <- cbind(w[1]*exp(-x*hazs[1]),w[2]*exp(-x*hazs[2]),w[3]*exp(-x*hazs[3]),
-               w[4]*exp(-x*hazs[4]))*g(x,ap,add.fu)
-    u2 <- c(u %*% rep(1,4))
-    u3 <- if (length(c1)>1) c(u[,c1] %*% rep(1,length(c1))) else c(u[,c1])
-    u4 <- if (length(c2)>1) c(u[,c2] %*% rep(1,length(c2))) else c(u[,c2])
-    ifelse(u2>0,u3*u4/u2,0)
+  f2 <- function(x, hazs, pxz, c1, c2, ap, add.fu, g) {
+    w <- hazs * pxz
+    u <- cbind(w[1L] * exp(-x * hazs[1L]), w[2L] * exp(-x * hazs[2L]),
+               w[3L] * exp(-x * hazs[3L]), w[4L] * exp(-x * hazs[4L])) *
+      g(x, ap, add.fu)
+    u2 <- c(u %*% rep(1, 4))
+    u3 <- if (length(c1) > 1)
+      c(u[, c1] %*% rep(1, length(c1))) else c(u[, c1])
+    u4 <- if (length(c2) > 1)
+      c(u[, c2] %*% rep(1, length(c2))) else c(u[, c2])
+    ifelse(u2 > 0, u3 * u4 / u2, 0)
   }
-  u[1,1] <- u[2,2] <- u[1,2] <- u[1,3] <- u[2,3] <- u[3,3] <- 
-    do.call('integrate',list(f=f1,lower=0,upper=acc.per+add.fu,hazs=hazs,
-                             pxz=pxz,comp=4,ap=acc.per,add.fu=add.fu,g=g))[[1]]
-  u[1,1] <- u[1,1]+
-    do.call('integrate',list(f=f1,lower=0,upper=acc.per+add.fu,hazs=hazs,
-                             pxz=pxz,comp=3,ap=acc.per,add.fu=add.fu,g=g))[[1]]
-  u[2,2] <- u[2,2]+
-    do.call('integrate',list(f=f1,lower=0,upper=acc.per+add.fu,hazs=hazs,
-                             pxz=pxz,comp=2,ap=acc.per,add.fu=add.fu,g=g))[[1]]
-  #  print(c(failprob=(u[1,1]+u[2,2]-u[3,3]+
-  #                   do.call('integrate',
-  #                           list(f=f1,lower=0,upper=acc.per+add.fu,hazs=hazs,
-  #                                pxz=pxz,comp=1,ap=acc.per,
-  #                                add.fu=add.fu,g=g))[[1]])))
-  u2[1,1] <- do.call('integrate',
-                     list(f=f2,lower=0,upper=acc.per+add.fu,hazs=hazs,
-                          pxz=pxz,c1=c(3,4),c2=c(3,4),ap=acc.per,
-                          add.fu=add.fu,g=g))[[1]]
-  u2[1,2] <- do.call('integrate',
-                     list(f=f2,lower=0,upper=acc.per+add.fu,hazs=hazs,
-                          pxz=pxz,c1=c(3,4),c2=c(2,4),ap=acc.per,
-                          add.fu=add.fu,g=g))[[1]]
-  u2[1,3] <- do.call('integrate',
-                     list(f=f2,lower=0,upper=acc.per+add.fu,hazs=hazs,
-                          pxz=pxz,c1=c(3,4),c2=c(4),ap=acc.per,
-                          add.fu=add.fu,g=g))[[1]]
-  u2[2,2] <- do.call('integrate',
-                     list(f=f2,lower=0,upper=acc.per+add.fu,hazs=hazs,
-                          pxz=pxz,c1=c(2,4),c2=c(2,4),ap=acc.per,
-                          add.fu=add.fu,g=g))[[1]]
-  u2[2,3] <- do.call('integrate',
-                     list(f=f2,lower=0,upper=acc.per+add.fu,hazs=hazs,
-                          pxz=pxz,c1=c(2,4),c2=c(4),ap=acc.per,
-                          add.fu=add.fu,g=g))[[1]]
-  u2[3,3] <- do.call('integrate',
-                     list(f=f2,lower=0,upper=acc.per+add.fu,hazs=hazs,
-                          pxz=pxz,c1=c(4),c2=c(4),ap=acc.per,
-                          add.fu=add.fu,g=g))[[1]]
-  u <- u-u2
-  u[2:3,1] <- u[1,2:3]
-  u[3,2] <- u[2,3]
+  u[1L, 1L] <- u[2L, 2L] <- u[1L, 2L] <- u[1L, 3L] <- u[2L, 3L] <- u[3L, 3L] <-
+    do.call('integrate',
+            list(f = f1, lower = 0, upper = acc.per + add.fu, hazs = hazs,
+                 pxz = pxz, comp = 4, ap = acc.per, add.fu = add.fu, g = g))[[1L]]
+  u[1L, 1L] <- u[1L, 1L] +
+    do.call('integrate',
+            list(f = f1, lower = 0, upper = acc.per + add.fu, hazs = hazs,
+                 pxz = pxz, comp = 3, ap = acc.per, add.fu = add.fu, g = g))[[1L]]
+  u[2L, 2L] <- u[2L, 2L] +
+    do.call('integrate',
+            list(f = f1, lower = 0, upper = acc.per + add.fu, hazs = hazs,
+                 pxz = pxz, comp = 2, ap = acc.per, add.fu = add.fu, g = g))[[1L]]
+  u2[1L, 1L] <-
+    do.call('integrate',
+            list(f = f2, lower = 0, upper = acc.per + add.fu, hazs = hazs,
+                 pxz = pxz, c1 = c(3, 4), c2 = c(3, 4), ap = acc.per,
+                 add.fu = add.fu, g = g))[[1L]]
+  u2[1L, 2L] <-
+    do.call('integrate',
+            list(f = f2, lower = 0, upper = acc.per + add.fu, hazs = hazs,
+                 pxz = pxz, c1 = c(3, 4), c2 = c(2, 4), ap = acc.per,
+                 add.fu = add.fu, g = g))[[1L]]
+  u2[1L, 3L] <-
+    do.call('integrate',
+            list(f = f2, lower = 0, upper = acc.per + add.fu, hazs = hazs,
+                 pxz = pxz, c1 = c(3, 4), c2 = 4, ap = acc.per,
+                 add.fu = add.fu, g = g))[[1L]]
+  u2[2L, 2L] <-
+    do.call('integrate',
+            list(f = f2, lower = 0, upper = acc.per + add.fu, hazs = hazs,
+                 pxz = pxz, c1 = c(2, 4), c2 = c(2, 4), ap = acc.per,
+                 add.fu = add.fu, g = g))[[1L]]
+  u2[2L, 3L] <-
+    do.call('integrate',
+            list(f = f2, lower = 0, upper = acc.per + add.fu, hazs = hazs,
+                 pxz = pxz, c1 = c(2, 4), c2 = 4, ap = acc.per,
+                 add.fu = add.fu, g = g))[[1L]]
+  u2[3L, 3L] <-
+    do.call('integrate',
+            list(f = f2, lower = 0, upper = acc.per + add.fu, hazs = hazs,
+                 pxz = pxz, c1 = 4, c2 = 4, ap = acc.per,
+                 add.fu = add.fu, g = g))[[1L]]
+  u <- u - u2
+  u[2:3, 1L] <- u[1L, 2:3]
+  u[3L, 2L] <- u[2L, 3L]
   u
 }
 
 #' @export
-hazsf <- function(prx,prz,ri,rt,rf,l0) {
+hazsf <- function(prx, prz, ri, rt, rf, l0) {
   # calculate hazards for 4 groups such that the interaction ri is as 
   # specified and the marginal ratios and average rate constraints are met.
   # called by intpow
-  pxz <- c((1-prx)*c((1-prz),prz),prx*c((1-prz),prz))
-  u <- rbind(c((1-prx)*c(-rf,1),prx*c(-rf,1)),
-             c(-rt*c(1-prz,prz),1-prz,prz),pxz)
-  rhs <- c(0,0,l0)
-  a1 <- svd(u,3,4)
-  ns <- a1$v[,4]
-  ps <- a1$v[,1:3] %*% ((t(a1$u) %*% rhs)/a1$d)
-  aa <- ns[1]*ns[4]-ri*ns[2]*ns[3]
-  cc <- ps[1]*ps[4]-ri*ps[2]*ps[3]
-  bb <- ps[1]*ns[4]+ps[4]*ns[1]-ri*(ns[2]*ps[3]+ns[3]*ps[2])
-  u2 <- (-bb+c(-1,1)*sqrt(bb*bb-4*aa*cc))/(2*aa)
-  #  print(u2)
-  h1 <- ps+u2[1]*ns
-  if (min(h1) <= 0) h1 <- ps+u2[2]*ns
-  #  u3 <- h1*pxz
-  #  print(c(sum(u3),sum(u3[3:4])/sum(u3[1:2]),sum(u3[c(2,4)])/sum(u3[c(1,3)]),
-  #        u3[1]*u3[4]/(u3[2]*u3[3]))) # checks constraints
-  names(h1)=c('x0z0','x0z1','x1z0','x1z1')
+  pxz <- c((1 - prx) * c((1 - prz), prz), prx * c((1 - prz), prz))
+  u <- rbind(c((1 - prx) * c(-rf, 1), prx * c(-rf, 1)),
+             c(-rt * c(1 - prz, prz), 1 - prz, prz), pxz)
+  rhs <- c(0, 0, l0)
+  a1 <- svd(u, 3, 4)
+  ns <- a1$v[, 4L]
+  ps <- a1$v[, 1:3] %*% ((t(a1$u) %*% rhs) / a1$d)
+  aa <- ns[1L] * ns[4L] - ri * ns[2L] * ns[3L]
+  cc <- ps[1L] * ps[4L] - ri * ps[2L] * ps[3L]
+  bb <- ps[1L] * ns[4L] + ps[4L] * ns[1L] - ri * (ns[2L] * ps[3L] + ns[3L] * ps[2L])
+  u2 <- (-bb + c(-1, 1) * sqrt(bb * bb - 4 * aa * cc)) / (2 * aa)
+  h1 <- ps + u2[1L] * ns
+  if (min(h1) <= 0)
+    h1 <- ps + u2[2L] * ns
+  names(h1) <- c('x0z0', 'x0z1', 'x1z0', 'x1z1')
   h1
 }

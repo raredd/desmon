@@ -4,8 +4,17 @@
 \alias{powexp2}
 \title{Power for two sample exponential (or logrank)}
 \usage{
-powexp2(acc.rate, acc.per, add.fu, l1, r1o2, p1,
-        prop.strat = rep(1, length(l1)), alpha2 = 0.05, nullh = 1)
+powexp2(
+  acc.rate,
+  acc.per,
+  add.fu,
+  l1,
+  r1o2,
+  p1,
+  prop.strat = rep(1, length(l1)),
+  alpha2 = 0.05,
+  nullh = 1
+)
 }
 \arguments{
 \item{acc.rate}{Accrual rate}
@@ -53,15 +62,14 @@ different stratum to allow for different strata to have opened or closed at
 different times.
 }
 \examples{
-powexp2(200,2,3,log(2)/4,1.5,.5)
-powexp2(200,2,3,log(2)/4,1.33,.5)
-powexp2(200,2,3,log(2)/4,c(1.5,1),.5,c(.7,.3))
-powexp2(10,31.5,13.75,c(log(2)/6,log(2)/8),c(1.4,1.2),.5,c(.9,.1))
-powexp2(c(9,1),31.5,13.75,c(log(2)/6,log(2)/8),c(1.4,1.2),.5)
+powexp2(200, 2, 3, log(2) / 4, 1.5, 0.5)
+powexp2(200, 2, 3, log(2) / 4, 1.33, 0.5)
+powexp2(200, 2, 3, log(2) / 4, c(1.5, 1), 0.5, c(0.7, 0.3))
+powexp2(10, 31.5, 13.75, c(log(2) / 6, log(2) / 8), c(1.4, 1.2), 0.5, c(0.9, 0.1))
+powexp2(c(9, 1), 31.5, 13.75, c(log(2) / 6, log(2) / 8), c(1.4, 1.2), 0.5)
 
 }
 \seealso{
-\code{\link{seqopr}}, \code{\link{powlgrnk}},
-\code{\link{correl.power}}
+\code{\link{seqopr}}; \code{\link{powlgrnk}}; \code{\link{correl.power}}
 }
 \keyword{design}

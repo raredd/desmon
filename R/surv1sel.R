@@ -16,9 +16,6 @@
 #' specified hazard rates and the proportion of the samples for which each
 #' group is selected as the best is calculated.
 #' 
-#' @usage
-#' surv1sel(ng, npg, acc.per, nevents, haz, nsamp = 1000)
-#' 
 #' @param ng Number of groups
 #' @param npg Number of subjects per group (the same scalar value is assumed
 #' for all groups)
@@ -39,7 +36,7 @@
 #' @keywords design survival
 #' 
 #' @examples
-#' surv1sel(6,55,12,40*6,log(2)/c(7.2,4.8,4.8,4.8,4.8,4.8))
+#' surv1sel(6, 55, 12, 40 * 6, log(2) / c(7.2, 4.8, 4.8, 4.8, 4.8, 4.8))
 #' 
 #' @export
 
@@ -52,25 +49,26 @@ surv1sel <- function(ng, npg, acc.per, nevents, haz, nsamp = 1000) {
   # nsamp = number of samples generated in the simulation
   # output is a vector of length nsamp giving specifying which group has the 
   #   lowest estimated failure hazard rate for each sample
-  n <- ng*npg
-  rx <- rep((1:ng),rep(npg,ng))
+  n <- ng * npg
+  rx <- rep((1:ng), rep(npg, ng))
   haz2 <- haz[rx]
   rx <- as.factor(rx)
-  out <- rep(0,nsamp)
+  out <- rep(0, nsamp)
   for (i in 1:nsamp) {
-    entry <- runif(n)*acc.per
-    failtime <- rexp(n)/haz2
-    u <- entry+failtime
-    uc <- quantile(u,probs=nevents/n)
-    failind <- ifelse(u<=uc,1,0)
-    failtime <- ifelse(failind==1,failtime,uc-entry)
-    z <- coxph(Surv(failtime,failind)~C(rx,contr.treatment))
+    entry <- runif(n) * acc.per
+    failtime <- rexp(n) / haz2
+    u <- entry + failtime
+    uc <- quantile(u, probs = nevents / n)
+    failind <- ifelse(u <= uc, 1, 0)
+    failtime <- ifelse(failind == 1, failtime, uc - entry)
+    z <- coxph(Surv(failtime, failind) ~ C(rx, contr.treatment))
     z <- z$coef
-    if (min(z)>0) {
+    if (min(z) > 0) {
       out[i] <- 1
     } else {
       out[i] <- min((1:length(z))[z==min(z)])+1
     }
   }
-  table(out)/nsamp
+  
+  table(out) / nsamp
 }

@@ -4,7 +4,7 @@
 \alias{wilcox.pow}
 \title{Compute Power for the Wilcoxon and T Tests}
 \usage{
-wilcox.pow(n1, n2 = NULL, del, alpha2 = .05, tdist = FALSE)
+wilcox.pow(n1, n2 = NULL, del, alpha2 = 0.05, tdist = FALSE)
 }
 \arguments{
 \item{n1}{sample size in group 1}
@@ -19,8 +19,8 @@ wilcox.pow(n1, n2 = NULL, del, alpha2 = .05, tdist = FALSE)
 uses a normal critical value}
 }
 \value{
-A vector of length two giving the power for the Wilcoxon (frist
-component) and t (second component) tests.
+A vector of length two giving the power for the Wilcoxon (frist component)
+and t (second component) tests.
 }
 \description{
 Computes an approximation to the power of the Wilcoxon signed rank or
@@ -40,9 +40,9 @@ by specifying \code{tdist=TRUE}.  However, the rejectiion probability is
 still computed using the normal distribution.
 }
 \examples{
-wilcox.pow(24,24,1)
-wilcox.pow(24,10,1)
-wilcox.pow(10,NULL,.5) ## one-sample test
+wilcox.pow(24, 24, 1)
+wilcox.pow(24, 10, 1)
+wilcox.pow(10, NULL, 0.5) ## one-sample test
 
 }
 \keyword{design}

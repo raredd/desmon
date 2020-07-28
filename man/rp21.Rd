@@ -29,9 +29,7 @@ Computations assume two independent binomials R1 and R2, with R1 distributed
 Binomal(n,p1) and R2 distributed Binomial(n,p2)
 }
 \examples{
-rp21(32,.2,.1)
-# P(R1>R2+crit) P(|R1-R2|<=crit)    P(R1<R2-crit)
-#    0.83185555       0.07500744       0.09313701 
+rp21(32, 0.2, 0.1)
 
 }
 \seealso{

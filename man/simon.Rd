@@ -4,8 +4,16 @@
 \alias{simon}
 \title{Optimal Two-Stage Single-Arm Designs}
 \usage{
-simon(p0, pa, n1max = 0, ntmax = 1e+05, alpha = 0.1, beta = 0.1,
-      del = 1, minimax = FALSE)
+simon(
+  p0,
+  pa,
+  n1max = 0,
+  ntmax = 1e+05,
+  alpha = 0.1,
+  beta = 0.1,
+  del = 1,
+  minimax = FALSE
+)
 }
 \arguments{
 \item{p0}{Null hypothesis response probability}
@@ -70,8 +78,8 @@ designs meeting the criteria that have expected sample sizes under the null
 within \code{del} of the optimal design will also be retained.
 }
 \examples{
-simon(.05, .20)
-simon(.05, .20, minimax = TRUE)
+simon(0.05, 0.20)
+simon(0.05, 0.20, minimax = TRUE)
 
 }
 \references{
@@ -79,7 +87,7 @@ Simon R (1989). Optimal two-stage designs for phase II clinical
 trials. \emph{Controlled Clinical Trials} \strong{10}:1-10.
 }
 \seealso{
-\code{\link{twostg}}, \code{\link{bin1samp}},
-\code{\link{pickwin}}, \code{\link{rp21}}
+\code{\link{twostg}}; \code{\link{bin1samp}}; \code{\link{pickwin}};
+\code{\link{rp21}}
 }
 \keyword{design}

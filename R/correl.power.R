@@ -29,11 +29,6 @@
 #' 
 #' @aliases correl.power correl.ratio
 #' 
-#' @usage
-#' correl.power(n, nd, r1o2, p1, acc.per, add.fu, alpha2 = .05, int = c(.001,5))
-#' correl.ratio(n, nd, p1, acc.per, add.fu, power = .8, alpha2 = .05,
-#'              int = c(.001,5), maxrat = 20, greater = TRUE, less = TRUE)
-#' 
 #' @param n Total number of cases
 #' @param nd Total number of failures
 #' @param r1o2 Ratio of the hazard in Group 1 over that in Group 2
@@ -67,13 +62,14 @@
 #' outcome on group 1 (\code{r1o2.1worse} and \code{r1o2.1better}).
 #' 
 #' @seealso \code{\link{powlgrnk}}
+#' 
 #' @references
 #' Rubinstein, Gail, Santner (1981). \emph{J Chron Dis} \strong{8}: 67-74.
 #' Rubinstein, Gail, Santner (1981). \emph{J Chron Dis} \strong{34}: 469-479.
+#' 
 #' @keywords design survival
 #' 
 #' @examples
-#' 
 #' correl.power(355,172,1.54,.4,7,4)
 #' correl.power(355,172,3.36,.92,7,4)
 #' correl.power(355,172,1.67,.7,7,4)
@@ -88,46 +84,46 @@
 #' 
 #' @export correl.power
 
-correl.power <- function(n,nd,r1o2,p1,acc.per,add.fu,alpha2=.05,int=c(.001,5)) {
-  zc <- qnorm(1-alpha2/2)
-  q <- 1-p1
-  fpnull <- nd/n
+correl.power <- function(n, nd, r1o2, p1, acc.per, add.fu,
+                         alpha2 = 0.05, int = c(0.001, 5)) {
+  zc <- qnorm(1 - alpha2 / 2)
+  q <- 1 - p1
+  fpnull <- nd / n
   a <- add.fu
-  b <- acc.per+add.fu # censoring uniform on (a,b)
-  cpx <- function(l) (exp(-a*l)-exp(-b*l))/(l*acc.per)
-  fp <- function(l) {h <- r1o2*l
-                     1-q*cpx(l)-p1*cpx(h)-fpnull}
-  z <- uniroot(fp,int)
-  h <- z[[1]]
-  l <- h*r1o2
-  fp1 <- 1-cpx(l)
-  fp2 <- 1-cpx(h)
-#  sn <- sqrt(1/(n*p1*fpnull)+1/(n*q*fpnull))
-#  sn2 <- sqrt(1/(n*p1*fp1)+1/(n*q*fp1))
-# use sa under null and alt, per RGS 1981 -- also, consistent with seqopr
-# and srvpwr
-  sa <- sqrt(1/(n*p1*fp1)+1/(n*q*fp2))
-  zb <- (zc*sa-abs(log(r1o2)))/sa
-#  zb2 <- (zc*sn2-abs(log(r1o2)))/sa
-  c(lambda1=l,lambda2=h,fp1=fp1,fp2=fp2,se=sa,n.fail=n*(fp1*p1+fp2*q),
-    zbeta=zb,power=1-pnorm(zb))
+  b <- acc.per + add.fu # censoring uniform on (a,b)
+  cpx <- function(l) (exp(-a * l) - exp(-b * l)) / (l * acc.per)
+  fp <- function(l) {
+    h <- r1o2 * l
+    1 - q * cpx(l) - p1 * cpx(h) - fpnull
+  }
+  z <- uniroot(fp, int)
+  h <- z[[1L]]
+  l <- h * r1o2
+  fp1 <- 1 - cpx(l)
+  fp2 <- 1 - cpx(h)
+  # use sa under null and alt, per RGS 1981 -- also, consistent with seqopr and srvpwr
+  sa <- sqrt(1 / (n * p1 * fp1) + 1 / (n * q * fp2))
+  zb <- (zc * sa - abs(log(r1o2))) / sa
+  c(lambda1 = l, lambda2 = h, fp1 = fp1, fp2 = fp2, se = sa,
+    n.fail = n * (fp1 * p1 + fp2 * q), zbeta = zb, power = 1 - pnorm(zb))
 }
 
 #' @export
-correl.ratio <- function(n, nd, p1, acc.per, add.fu, power = .8, alpha2 = .05,
-                         int = c(.001,5), maxrat = 20, greater = TRUE, 
+correl.ratio <- function(n, nd, p1, acc.per, add.fu, power = 0.8, alpha2 = 0.05,
+                         int = c(0.001, 5), maxrat = 20, greater = TRUE,
                          less = TRUE) {
-## given power and information, find the ratio
-  F1 <- function(rat,nd,p1,n,acc.per,add.fu,alpha2,power,intb) {
-    correl.power(n,nd,rat,p1,acc.per,add.fu,alpha2,intb)[8]-power
+  ## given power and information, find the ratio
+  F1 <- function(rat, nd, p1, n, acc.per, add.fu, alpha2, power, intb) {
+    correl.power(n, nd, rat, p1, acc.per, add.fu, alpha2, intb)[8L] - power
   }
-  if (greater) 
-    u1 <- uniroot(F1,c(1.01,maxrat),n=n,nd=nd,p1=p1,acc.per=acc.per,
-                  add.fu=add.fu,alpha2=alpha2,power=power,intb=int)$root 
-  else u1 <- NULL
-  if (less) 
-    u2 <- uniroot(F1,c(.99,1/maxrat),n=n,nd=nd,p1=p1,acc.per=acc.per,
-                  add.fu=add.fu,alpha2=alpha2,power=power,intb=int)$root 
-  else u2 <- NULL
-  c(n.fail=nd,pr.g1=p1,r1o2.1worse=u1,r1o2.1better=u2)
+  u1 <- if (greater) {
+    uniroot(F1, c(1.01, maxrat), n = n, nd = nd, p1 = p1, acc.per = acc.per,
+            add.fu = add.fu, alpha2 = alpha2, power = power, intb = int)$root
+  } else NULL
+  u2 <- if (less) {
+    uniroot(F1, c(0.99, 1 / maxrat), n = n, nd = nd, p1 = p1, acc.per = acc.per,
+            add.fu = add.fu, alpha2 = alpha2, power = power, intb = int)$root
+  } else NULL
+  
+  c(n.fail = nd, pr.g1 = p1, r1o2.1worse = u1, r1o2.1better = u2)
 }

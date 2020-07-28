@@ -4,8 +4,16 @@
 \alias{sequse}
 \title{Compute Group Sequential Use Function Boundaries}
 \usage{
-sequse(inf, alpha = .025, use = 6, eta = 0, alphal = 0,
-       usel = 6, oftr = alpha / 50, oftrl = alphal / 50)
+sequse(
+  inf,
+  alpha = 0.025,
+  use = 6,
+  eta = 0,
+  alphal = 0,
+  usel = 6,
+  oftr = alpha/50,
+  oftrl = alphal/50
+)
 }
 \arguments{
 \item{inf}{information times of analyses (length <= 30); must be positive,
@@ -87,9 +95,9 @@ written by Kyungmann Kim and modified for truncated O-F boundaries and
 asymmetric lower boundaries by Bob Gray
 }
 \examples{
-sequse((1:4)/4)
-sequse((1:4)/4, use = 6)
-sequse((1:4)/4, use = 6, alphal = .025, eta = 2)
+sequse((1:4) / 4)
+sequse((1:4) / 4, use = 6)
+sequse((1:4) / 4, use = 6, alphal = 0.025, eta = 2)
 
 }
 \references{
@@ -100,6 +108,6 @@ Kim and DeMets (1987). \emph{Biometrika}.
 Jennison and Turnbull (1990). \emph{Statistical Science} \strong{5}:299-317.
 }
 \seealso{
-\code{\link{seqopr}}, \code{\link{lr.inf}}, \code{\link{seqp}}
+\code{\link{seqopr}}; \code{\link{lr.inf}}; \code{\link{seqp}}
 }
 \keyword{design}

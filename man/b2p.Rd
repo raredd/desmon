@@ -6,9 +6,7 @@
 \alias{b2diff}
 \title{Power for Comparing Two Binomials}
 \usage{
-b2p(p1, p2, n1, n2, alpha = .025, exact = TRUE)
-b2n(p1, p2, power = .8, r = .5, alpha = .025)
-b2diff(p, r, n, alpha = .025, power = .8, exact = TRUE)
+b2p(p1, p2, n1, n2, alpha = 0.025, exact = TRUE)
 }
 \arguments{
 \item{p1}{Success probability in group 1}
@@ -87,9 +85,9 @@ specified.  This is generally not regarded as an appropriate procedure in
 practice.
 }
 \examples{
-b2diff(.3,.1,400)
-b2n(.4,.2)
-b2p(.4,.2,100,100)
+b2diff(0.3, 0.1, 400)
+b2n(0.4, 0.2)
+b2p(0.4, 0.2, 100, 100)
 
 }
 \references{

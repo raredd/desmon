@@ -4,8 +4,17 @@
 \alias{binsim}
 \title{Simulation for Power of a Sequential Fisher's Exact Test}
 \usage{
-binsim(nsamp, n, p1, p2, inf.times, upper, 
-       lower = rep(1.5, length(inf.times)), p.con = .5, alt = 'less')
+binsim(
+  nsamp,
+  n,
+  p1,
+  p2,
+  inf.times,
+  upper,
+  lower = rep(1.5, length(inf.times)),
+  p.con = 0.5,
+  alt = "less"
+)
 }
 \arguments{
 \item{nsamp}{Number of simulated trials}
@@ -38,16 +47,16 @@ Performs a simulation to estimate the power of Fisher's Exect under group
 sequential monitoring.
 }
 \details{
-Calls \code{\link{fisher.test}}.  If the experimental group (2) has a higher 
+Calls \code{\link{fisher.test}}. If the experimental group (2) has a higher 
 event rate than the control group (1), then 'less' is the appropriate 
 direction for a one-sided test.
 }
 \examples{
-binsim(20, 50, .1, .5, c(.5,1), c(.05, .05), c(.5, .5), alt = 'less')
+binsim(20, 50, 0.1, 0.5, c(0.5, 1), c(0.05, 0.05), c(0.5, 0.5), alt = 'less')
 
 }
 \seealso{
-\code{\link{b2p}}, \code{\link{fisher.test}}
+\code{\link{b2p}}; \code{\link{fisher.test}}
 }
 \author{
 R Gray

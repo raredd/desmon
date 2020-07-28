@@ -7,11 +7,19 @@
 \alias{siminf}
 \title{Approximate Power of Cox Model Interaction Tests}
 \usage{
-intpow(n, prx, prz, ri, rt, rf, l0, acc.per, add.fu, 
-       alpha2 = .05, hazs = NULL)
-hazsf(prx, prz, ri, rt, rf, l0)
-expinf(prx, prz, hazs, acc.per, add.fu)
-siminf(prx, prz, hazs, acc.per, add.fu, n)
+intpow(
+  n,
+  prx,
+  prz,
+  ri,
+  rt,
+  rf,
+  l0,
+  acc.per,
+  add.fu,
+  alpha2 = 0.05,
+  hazs = NULL
+)
 }
 \arguments{
 \item{n}{Sample size}
@@ -102,8 +110,8 @@ approximation. In large samples, this test is equivalent to the score and
 partial likelihood ratio tests for this hypothesis.
 }
 \examples{
-intpow(n = 2800, prx = .5, prz = .25, ri = .6, rt = .8, rf = 2, 
-       l0 = .045, acc.per = 2.5, add.fu = 3)
+intpow(n = 2800, prx = 0.5, prz = 0.25, ri = 0.6, rt = 0.8, rf = 2,
+       l0 = 0.045, acc.per = 2.5, add.fu = 3)
 
 }
 \keyword{design}

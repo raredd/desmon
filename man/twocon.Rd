@@ -4,7 +4,7 @@
 \alias{twocon}
 \title{Confidence Interval on the Response Rate from a Two Stage Study}
 \usage{
-twocon(n1, n2, r1, r, conf = .95, dp = 1)
+twocon(n1, n2, r1, r, conf = 0.95, dp = 1)
 }
 \arguments{
 \item{n1}{Number of cases entered during the first stage}
@@ -58,8 +58,8 @@ the outcomes that are more extreme in the low response direction are those
 with \code{R/(N^dp) <= r/(n^dp)}.
 }
 \examples{
-twocon(14,18,3,4,dp=0)
-twocon(14,18,3,4,dp=1)
+twocon(14, 18, 3, 4, dp = 0)
+twocon(14, 18, 3, 4, dp = 1)
 
 }
 \references{

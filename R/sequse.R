@@ -37,10 +37,6 @@
 #' incompatible combinations for the upper and lower boundary, especially if
 #' \code{alpha} or \code{alphal} is very large or if \code{eta} is small.
 #' 
-#' @usage
-#' sequse(inf, alpha = .025, use = 6, eta = 0, alphal = 0,
-#'        usel = 6, oftr = alpha / 50, oftrl = alphal / 50)
-#' 
 #' @param inf information times of analyses (length <= 30); must be positive,
 #' increasing and <= 1
 #' @param alpha one-sided significance level of the group sequential test
@@ -70,47 +66,54 @@
 #' @note Interface to the Fortran code for the program \code{sequse}, which was
 #' written by Kyungmann Kim and modified for truncated O-F boundaries and
 #' asymmetric lower boundaries by Bob Gray
-#' @seealso \code{\link{seqopr}}, \code{\link{lr.inf}}, \code{\link{seqp}}
+#' 
+#' @seealso
+#' \code{\link{seqopr}}; \code{\link{lr.inf}}; \code{\link{seqp}}
+#' 
 #' @references 
 #' Lan and DeMets (1983). \emph{Biometrika}.
 #' 
 #' Kim and DeMets (1987). \emph{Biometrika}.
 #' 
 #' Jennison and Turnbull (1990). \emph{Statistical Science} \strong{5}:299-317.
+#' 
 #' @keywords design
 #' 
 #' @examples
-#' sequse((1:4)/4)
-#' sequse((1:4)/4, use = 6)
-#' sequse((1:4)/4, use = 6, alphal = .025, eta = 2)
+#' sequse((1:4) / 4)
+#' sequse((1:4) / 4, use = 6)
+#' sequse((1:4) / 4, use = 6, alphal = 0.025, eta = 2)
 #' 
 #' @export sequse
 
-sequse <- function(inf, alpha = .025, use = 6, eta = 0, alphal = 0,
+sequse <- function(inf, alpha = 0.025, use = 6, eta = 0, alphal = 0,
                    usel = 6, oftr = alpha / 50, oftrl = alphal / 50) {
-  ###use=type use function 1=OF, 2=Pocock, 3=linear, 4=1^1.5, 5=t^2
-  ### 6=truncated O-F
-  if (min(inf)<=0 | max(inf)>1) 
+  # use=type use function 1=OF, 2=Pocock, 3=linear, 4=1^1.5, 5=t^2
+  # 6=truncated O-F
+  if (min(inf) <= 0 | max(inf) > 1)
     stop('inf must be >0, <=1')
-  if (length(inf)>30) stop('inf too long')
-  if (alpha <= 0 | alpha >= .5) 
+  if (length(inf) > 30)
+    stop('inf too long')
+  if (alpha <= 0 | alpha >= 0.5)
     stop('alpha out of range')
-  if (use<1 | use>6) stop('use must be >=1, <=6')
+  if (use < 1 | use > 6)
+    stop('use must be >=1, <=6')
   inf <- sort(inf)
-  z <- .Fortran('squse',as.double(alpha),as.double(alphal),
-                as.integer(length(inf)),as.double(c(0,inf)),
-                as.integer(use),as.integer(usel),
-                as.double(oftr),as.double(oftrl),as.double(eta),
-                double(length(inf)),double(length(inf)),ierr=integer(1),
-                PACKAGE="desmon")[10:12]
-  if (z$ierr>0) stop('Boundaries could not be computed')
+  z <- .Fortran(
+    'squse', as.double(alpha), as.double(alphal), as.integer(length(inf)),
+    as.double(c(0, inf)), as.integer(use), as.integer(usel), as.double(oftr),
+    as.double(oftrl), as.double(eta), double(length(inf)), double(length(inf)),
+    ierr = integer(1), PACKAGE = 'desmon'
+  )[10:12]
+  if (z$ierr > 0)
+    stop('Boundaries could not be computed')
   if (alphal <= 0) {
-    out <- as.matrix(z[[1]])
-    dimnames(out) <- list(format(round(inf,2)),'upper')
+    out <- as.matrix(z[[1L]])
+    dimnames(out) <- list(format(round(inf, 2L)), 'upper')
     out
   } else {
-    out <- cbind(z[[1]],z[[2]])
-    dimnames(out) <- list(format(round(inf,2)),c('upper','lower'))
+    out <- cbind(z[[1L]], z[[2L]])
+    dimnames(out) <- list(format(round(inf, 2L)), c('upper', 'lower'))
     out
   }
 }

@@ -2,9 +2,10 @@
 .Rhistory
 .RData
 .DS_Store
-desmon.Rproj
-README.md
+*.Rproj
 NEWS
-TODO
-inst
-vignettes
+src/*.o
+src/*.so
+src/*.dll
+vignettes/*.R
+vignettes/*.html

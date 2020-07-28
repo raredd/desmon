@@ -13,7 +13,7 @@
 arguments are ignored.}
 }
 \value{
-No value is returned.
+No value is returned - used for side-effect of printing to console.
 }
 \description{
 Prints a summary of the output from \code{\link{twostg}}

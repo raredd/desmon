@@ -4,14 +4,9 @@
 #' sequential monitoring.
 #' 
 #' @details
-#' Calls \code{\link{fisher.test}}.  If the experimental group (2) has a higher 
+#' Calls \code{\link{fisher.test}}. If the experimental group (2) has a higher 
 #' event rate than the control group (1), then 'less' is the appropriate 
 #' direction for a one-sided test.
-#' 
-#' @usage
-#' binsim(nsamp, n, p1, p2, inf.times, upper, 
-#'        lower = rep(1.5, length(inf.times)), p.con = .5, alt = 'less')
-#' 
 #' 
 #' @param nsamp Number of simulated trials
 #' @param n Total sample size for each trial
@@ -32,36 +27,36 @@
 #' @author R Gray
 #' 
 #' @seealso
-#' \code{\link{b2p}}, \code{\link{fisher.test}}
+#' \code{\link{b2p}}; \code{\link{fisher.test}}
 #' 
 #' @keywords design
 #' 
 #' @examples
-#' binsim(20, 50, .1, .5, c(.5,1), c(.05, .05), c(.5, .5), alt = 'less')
+#' binsim(20, 50, 0.1, 0.5, c(0.5, 1), c(0.05, 0.05), c(0.5, 0.5), alt = 'less')
 #' 
 #' @export
 
 binsim <- function(nsamp, n, p1, p2, inf.times, upper,
-                   lower = rep(1.5, length(inf.times)), p.con = .5, 
+                   lower = rep(1.5, length(inf.times)), p.con = 0.5,
                    alt = 'less') {
-  ## upper and lower need to be in terms of one-sided p-values
-  if (length(upper) != length(inf.times)) 
+  # upper and lower need to be in terms of one-sided p-values
+  if (length(upper) != length(inf.times))
     stop('length upper != length inf.times')
-  out <- rep(0,nsamp)
+  out <- rep(0, nsamp)
   for (i in 1:nsamp) {
-    n1 <- c(0,round(p.con*inf.times*n))
-    n2 <- c(0,round((1-p.con)*inf.times*n))
-    x1 <- cumsum(rbinom(length(inf.times),diff(n1),p1))
-    x2 <- cumsum(rbinom(length(inf.times),diff(n1),p2))
-#print(c(n1,n2))
-#print(c(x1,x2))
+    n1 <- c(0, round(p.con * inf.times * n))
+    n2 <- c(0, round((1 - p.con) * inf.times * n))
+    x1 <- cumsum(rbinom(length(inf.times), diff(n1), p1))
+    x2 <- cumsum(rbinom(length(inf.times), diff(n1), p2))
     j <- 0
-    while (j<length(inf.times) & out[i]==0) {
-      j <- j+1
-      u <- fisher.test(matrix(c(x1[j],x2[j],n1[j+1]-x1[j],n2[j+1]-x2[j]),2),
-                       alternative=alt)$p.value
-      if (u<=upper[j]) out[i] <- 1
-      if (u>=lower[j]) out[i] <- -1
+    while (j < length(inf.times) & out[i] == 0) {
+      j <- j + 1
+      u <- matrix(c(x1[j], x2[j], n1[j + 1L] - x1[j], n2[j + 1L] - x2[j]), 2L)
+      u <- fisher.test(u, alternative = alt)$p.value
+      if (u <= upper[j])
+        out[i] <- 1
+      if (u >= lower[j])
+        out[i] <- -1
     }
   }
   out

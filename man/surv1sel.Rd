@@ -44,7 +44,7 @@ specified hazard rates and the proportion of the samples for which each
 group is selected as the best is calculated.
 }
 \examples{
-surv1sel(6,55,12,40*6,log(2)/c(7.2,4.8,4.8,4.8,4.8,4.8))
+surv1sel(6, 55, 12, 40 * 6, log(2) / c(7.2, 4.8, 4.8, 4.8, 4.8, 4.8))
 
 }
 \seealso{

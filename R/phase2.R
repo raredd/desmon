@@ -7,34 +7,37 @@
 #' binomial proportion.  The precision of the solution is the default in
 #' \code{uniroot}.
 #' 
-#' @usage
-#' binci(r, n, conf = .95)
-#' 
 #' @param r number of successes
 #' @param n total number of trials
 #' @param conf confidence level
 #' 
-#' @return Returns a vector containing the two confidence limits. Returns 0 for
+#' @return
+#' Returns a vector containing the two confidence limits. Returns 0 for
 #' the lower limit if r=0, and returns 1 for the upper limit if r=n.
 #' 
-#' @seealso \code{\link{twocon}}
+#' @seealso
+#' \code{\link{twocon}}
+#' 
 #' @keywords htest
+#' 
 #' @examples
-#' binci(54,88)
+#' binci(54, 88)
 #' 
 #' @export binci
 
-binci <- function(r, n, conf = .95) { 
-  if (r<0 | r>n) stop("invalid value for r")
-  if (conf <= 0 | conf >= 1) stop("must have 0<conf<1")
-  alpha <- (1-conf)/2
-  ff <- function(p,r,n,alpha) 1-pbinom(r-1,n,p)-alpha
-  pl <- if (r <= 0) 0 else
-    uniroot(ff,c(1e-8,1-1e-8),r=r,n=n,alpha=alpha)$root
-  ff2 <- function(p,r,n,alpha) pbinom(r,n,p)-alpha
-  pu <- if (r >= n) 1 else
-    uniroot(ff2,c(1e-8,1-1e-8),r=r,n=n,alpha=alpha)$root
-  c(pl,pu)
+binci <- function(r, n, conf = 0.95) { 
+  if (r < 0 | r > n)
+    stop('invalid value for r')
+  if (conf <= 0 | conf >= 1)
+    stop('must have 0 < conf <1')
+  alpha <- (1 - conf) / 2
+  ff <- function(p, r, n, alpha) 1 - pbinom(r - 1, n, p) - alpha
+  pl <- if (r <= 0)
+    0 else uniroot(ff, c(1e-8, 1 - 1e-8), r = r, n = n, alpha = alpha)$root
+  ff2 <- function(p, r, n, alpha) pbinom(r, n, p) - alpha
+  pu <- if (r >= n)
+    1 else uniroot(ff2, c(1e-8, 1 - 1e-8), r = r, n = n, alpha = alpha)$root
+  c(pl, pu)
 }
 
 #' One Sample Binomial Design
@@ -48,9 +51,6 @@ binci <- function(r, n, conf = .95) {
 #' computes \code{P(R>=r|p)} for \code{p=p0,pa}.  If \code{p0>pa}, similar
 #' calculations are done for rejecting in the opposite tail.
 #' 
-#' @usage
-#' onearm(n, p0, pa, alpha = .1)
-#' 
 #' @param n sample size
 #' @param p0 The null response probability
 #' @param pa The alternative response probability
@@ -58,23 +58,28 @@ binci <- function(r, n, conf = .95) {
 #' @return A vector giving the critical value and the rejection probabilities
 #' under the null and alternative.
 #' 
-#' @seealso \code{\link{bin1samp}}
+#' @seealso
+#' \code{\link{bin1samp}}
+#' 
 #' @keywords design
+#' 
 #' @examples
-#' onearm(30,.1,.3)
+#' onearm(30, 0.1, 0.3)
 #' 
 #' @export onearm
 
-onearm <- function(n, p0, pa, alpha = .1) {
-  #single arm single stage evaluation
-  u <- pbinom(0:n,n,p0) #P(<=)
-  if (p0>pa) {
-    index <- max((1:(n+1))[u<=alpha])
-    c("rej if <="=index-1,"size"=u[index],"power"=pbinom(index-1,n,pa))
+onearm <- function(n, p0, pa, alpha = 0.1) {
+  # single arm single stage evaluation
+  u <- pbinom(0:n, n, p0) # P(<=)
+  if (p0 > pa) {
+    index <- max((1:(n + 1))[u <= alpha])
+    c('rej if <=' = index - 1, size = u[index],
+      power = pbinom(index - 1, n, pa))
   } else {
-    u <- c(1,1-u[-n-1]) #P(>=)
-    index <- min((1:(n+1))[u <= alpha])
-    c("rej if >="=index-1,"size"=u[index],"power"=1-pbinom(index-2,n,pa))
+    u <- c(1, 1 - u[-n - 1]) # P(>=)
+    index <- min((1:(n + 1))[u <= alpha])
+    c('rej if >=' = index - 1, size = u[index],
+      power = 1 - pbinom(index - 2, n, pa))
   }
 }
 
@@ -88,34 +93,33 @@ onearm <- function(n, p0, pa, alpha = .1) {
 #' Computations assume two independent binomials R1 and R2, with R1 distributed
 #' Binomal(n,p1) and R2 distributed Binomial(n,p2)
 #' 
-#' @usage
-#' rp21(n, p1, p2, crit = 0)
-#' 
 #' @param n Planned number of subjects per arm
 #' @param p1 Success probability for treatment 1
 #' @param p2 Success probability for treatment 2
 #' @param crit Maximum difference in number of responses that would be viewed
 #' as an equivalent outcome
 #' 
-#' @return A vector giving P(R1>R2+crit), P(|R1-R2|<=crit) and P(R1<R2-crit).
+#' @return
+#' A vector giving P(R1>R2+crit), P(|R1-R2|<=crit) and P(R1<R2-crit).
 #' 
-#' @seealso \code{\link{pickwin}}
+#' @seealso
+#' \code{\link{pickwin}}
+#' 
 #' @keywords design
+#' 
 #' @examples
-#' rp21(32,.2,.1)
-#' # P(R1>R2+crit) P(|R1-R2|<=crit)    P(R1<R2-crit)
-#' #    0.83185555       0.07500744       0.09313701 
+#' rp21(32, 0.2, 0.1)
 #' 
 #' @export rp21
 
 rp21 <- function(n, p1, p2, crit = 0) {
-  #computes joint probs for two indep binom(n,p1), n(p2)
+  # computes joint probs for two indep binom(n, p1), n(p2)
 	probs <- outer(dbinom(0:n, n, p1), dbinom(0:n, n, p2))
 	rw <- row(probs)
 	cl <- col(probs)
-	c("P(R1>R2+crit)" = sum(probs[rw > cl+crit]), 
-    "P(|R1-R2|<=crit)" = sum(probs[abs(rw - cl)<=crit]), 
-		"P(R1<R2-crit)" = sum(probs[rw < cl-crit]))
+	c('P(R1>R2+crit)' = sum(probs[rw > cl + crit]),
+    'P(|R1-R2|<=crit)' = sum(probs[abs(rw - cl) <= crit]),
+		'P(R1<R2-crit)' = sum(probs[rw < cl - crit]))
 }
 
 #' Two-Stage Randomized Phase II Designs
@@ -139,9 +143,6 @@ rp21 <- function(n, p1, p2, crit = 0) {
 #' declared superior) includes both the probability that both are declared
 #' inactive and the probability that both are declared active and are equal.
 #' 
-#' @usage
-#' pickwin(n1, n2, p1, p2, r1, r2, r3 = r1, r4 = r2)
-#' 
 #' @param n1 first stage sample size (assumed to be the same for both
 #' treatments)
 #' @param n2 addition accrual during the second stage (assumed to be the same
@@ -157,18 +158,23 @@ rp21 <- function(n, p1, p2, crit = 0) {
 #' @param r4 The maximum number of total responses over both stages to declare
 #' treatment 2 inactive
 #' 
-#' @return Returns a vector of length 9, whose components are (in order)
+#' @return
+#' Returns a vector of length 9, whose components are (in order)
 #' P(X1<=r1, X2>r4), P(r1<X1<=r2, X2>r4), P(X1>r2, X2>X1, X2>r4), P(X2<=r3,
 #' X1>r2), P(r3<X2<=r4, X1>r2), P(X1>r2, X2>r4, X1>X2), P(X1<=r2, X2<=r4),
 #' P(X1>r2, X2>r4, X1=X2), and the sum of the first 8 terms.
 #' 
-#' @seealso \code{\link{b2p}}
-#' @references Simon R, Wittes RE and Ellenberg SS, 1985. Randomized phase II 
+#' @seealso
+#' \code{\link{b2p}}
+#' 
+#' @references
+#' Simon R, Wittes RE and Ellenberg SS, 1985. Randomized phase II
 #' clinical trials. \emph{Cancer Treat Rep} \strong{69} (12):1375--81.
+#' 
 #' @keywords design
 #' 
 #' @examples
-#' pickwin(14,18,.1,.2,0,3)
+#' pickwin(14, 18, 0.1, 0.2, 0, 3)
 #' 
 #' @export pickwin
 
@@ -181,51 +187,52 @@ pickwin <- function(n1, n2, p1, p2, r1, r2, r3 = r1, r4 = r2) {
   # r3,r4 = corresponding values of r1,r2 for trt 2
   # prob( both are active and get the same # responses) included in p(neither
   #    better)
-  if (n1<1 | n2<0 | r1<0 | r3<0 | r2<0 | r4<0 | p1<=0 | p2<=0 | r1>n1 | 
-      r3>n1 | r2>n2+n1 | r4>n2+n1 |p1>=1 | p2>=1) stop('invalid arguments')
+  if (n1 < 1 | n2 < 0 | r1 < 0 | r3 < 0 | r2 < 0 | r4 < 0 | p1 <= 0 | p2 <= 0 |
+      r1 > n1 | r3 > n1 | r2 > n2 + n1 | r4 > n2 + n1 | p1 >= 1 | p2 >=1)
+    stop('invalid arguments')
   x1 <- 0:n1
   x2 <- 0:n2
-  w1 <- dbinom(x1,n1,p1)
-  w2 <- dbinom(x1,n1,p2)
-  w3 <- dbinom(x2,n2,p1)
-  w4 <- dbinom(x2,n2,p2)
-  # b1=marginal dist of # responses in group 1
-  u1 <- c(outer(x1[-(1:(r1+1))],x2,'+'))
-  u2 <- c(outer(w1[-(1:(r1+1))],w3))
-  b1 <- c(w1[1:(r1+1)],tapply(u2,u1,sum))
-  # b2=marginal dist of # responses in group 2
-  u1 <- c(outer(x1[-(1:(r3+1))],x2,'+'))
-  u2 <- c(outer(w2[-(1:(r3+1))],w4))
-  b2 <- c(w2[1:(r3+1)],tapply(u2,u1,sum))
-  #  print(c(sum(b1),sum(b2)))
+  w1 <- dbinom(x1, n1, p1)
+  w2 <- dbinom(x1, n1, p2)
+  w3 <- dbinom(x2, n2, p1)
+  w4 <- dbinom(x2, n2, p2)
+  # b1 = marginal dist of # responses in group 1
+  u1 <- c(outer(x1[-(1:(r1 + 1))], x2, '+'))
+  u2 <- c(outer(w1[-(1:(r1 + 1))], w3))
+  b1 <- c(w1[1:(r1 + 1)], tapply(u2, u1, sum))
+  # b2 = marginal dist of # responses in group 2
+  u1 <- c(outer(x1[-(1:(r3 + 1))], x2, '+'))
+  u2 <- c(outer(w2[-(1:(r3 + 1))], w4))
+  b2 <- c(w2[1:(r3 + 1)], tapply(u2, u1, sum))
+  # print(c(sum(b1), sum(b2)))
 
-  cat('RX1 is declared inactive if <=',format(r1),'responses are observed',
-    ' in\nthe first',format(n1),'cases or <=',format(r2),'responses are',
-    'observed in the first',format(n1+n2),'cases\n')
-  cat('P(RX1 declared inactive) =',format(signif(sum(b1[1:(r2+1)]),3)),'\n\n')
-  cat('RX2 is declared inactive if <=',format(r3),'responses are observed',
-    ' in\nthe first',format(n1),'cases or <=',format(r4),'responses are',
-    'observed in the first',format(n1+n2),'cases\n')
-  cat('P(RX2 declared inactive) =',format(signif(sum(b2[1:(r4+1)]),3)),'\n\n')
-  a1 <- sum(b1[1:(r1+1)])*sum(b2[(r4+2):length(b2)])
-  if (r2>r1) 
-    a2 <- sum(b1[(r1+2):(r2+1)])*sum(b2[(r4+2):length(b2)]) else a2 <- 0
+  cat('RX1 is declared inactive if <=', format(r1), 'responses are observed',
+      ' in\nthe first', format(n1), 'cases or <=', format(r2), 'responses are',
+      'observed in the first', format(n1 + n2), 'cases\n')
+  cat('P(RX1 declared inactive) =', format(signif(sum(b1[1:(r2 + 1)]), 3)), '\n\n')
+  cat('RX2 is declared inactive if <=', format(r3), 'responses are observed',
+      ' in\nthe first', format(n1), 'cases or <=', format(r4), 'responses are',
+      'observed in the first', format(n1 + n2), 'cases\n')
+  cat('P(RX2 declared inactive) =', format(signif(sum(b2[1:(r4 + 1)]), 3)), '\n\n')
+  a1 <- sum(b1[1:(r1 + 1)]) * sum(b2[(r4 + 2):length(b2)])
+  a2 <- if (r2 > r1)
+    sum(b1[(r1 + 2):(r2 + 1)]) * sum(b2[(r4 + 2):length(b2)]) else 0
   a3 <- 0
-  for (i in (r2+2):(length(b1)-1)) 
-    a3 <- a3+b1[i]*sum(b2[(max(i+1,r4+2)):length(b2)])
-  cat('prob RX2 declared better:',format(signif(a1+a2+a3,3)),'\n')
-  a4 <- sum(b2[1:(r3+1)])*sum(b1[(r2+2):length(b1)])
-  if (r4>r3) 
-    a5 <- sum(b2[(r3+2):(r4+1)])*sum(b1[(r2+2):length(b1)]) else a5 <- 0
+  for (i in (r2 + 2):(length(b1) - 1))
+    a3 <- a3 + b1[i] * sum(b2[(max(i + 1, r4 + 2)):length(b2)])
+  cat('prob RX2 declared better:', format(signif(a1 + a2 + a3, 3)), '\n')
+  a4 <- sum(b2[1:(r3 + 1)]) * sum(b1[(r2 + 2):length(b1)])
+  a5 <- if (r4 > r3)
+    sum(b2[(r3 + 2):(r4 + 1)]) * sum(b1[(r2 + 2):length(b1)]) else 0
   a6 <- 0
-  for (i in (r4+2):(length(b2)-1)) 
-    a6 <- a6+b2[i]*sum(b1[(max(i+1,r2+2)):length(b1)])
-  cat('prob RX1 declared better:',format(signif(a4+a5+a6,3)),'\n')
-  a7 <- sum(b1[1:(r2+1)])*sum(b2[1:(r4+1)])
-  i <- (max(r2+2,r4+2)):length(b1)
-  a8 <- sum(b1[i]*b2[i])
-  cat('prob neither declared better:',format(signif(a7+a8,3)),'\n')
-  c(a1,a2,a3,a4,a5,a6,a7,a8,a1+a2+a3+a4+a5+a6+a7+a8)
+  for (i in (r4 + 2):(length(b2) - 1))
+    a6 <- a6 + b2[i] * sum(b1[(max(i + 1, r2 + 2)):length(b1)])
+  cat('prob RX1 declared better:', format(signif(a4 + a5 + a6, 3)), '\n')
+  a7 <- sum(b1[1:(r2 + 1)]) * sum(b2[1:(r4 + 1)])
+  i <- (max(r2 + 2, r4 + 2)):length(b1)
+  a8 <- sum(b1[i] * b2[i])
+  cat('prob neither declared better:', format(signif(a7 + a8, 3)), '\n')
+  c(a1, a2, a3, a4, a5, a6, a7, a8, a1 + a2 + a3 + a4 + a5 + a6 + a7 + a8)
 }
 
 #' Confidence Interval on the Response Rate from a Two Stage Study
@@ -260,9 +267,6 @@ pickwin <- function(n1, n2, p1, p2, r1, r2, r3 = r1, r4 = r2) {
 #' the outcomes that are more extreme in the low response direction are those
 #' with \code{R/(N^dp) <= r/(n^dp)}.
 #' 
-#' @usage
-#' twocon(n1, n2, r1, r, conf = .95, dp = 1)
-#' 
 #' @param n1 Number of cases entered during the first stage
 #' @param n2 Number of additional cases to be entered during the second stage
 #' @param r1 max number of responses that can be observed in the first stage
@@ -272,62 +276,72 @@ pickwin <- function(n1, n2, p1, p2, r1, r2, r3 = r1, r4 = r2) {
 #' interval
 #' @param dp Affects the ordering of outcomes within the sample space (see
 #' below)
-#' @return A vector with the lower confidence limit, the upper confidence
+#' 
+#' @return
+#' A vector with the lower confidence limit, the upper confidence
 #' limit, the bias corrected MLE, the MLE, and the unbiased estimator.
-#' @seealso \code{\link{binci}}
-#' @references Atkinson and Brown (1985), BIOMETRICS 741-744.
+#' 
+#' @seealso
+#' \code{\link{binci}}
+#' 
+#' @references
+#' Atkinson and Brown (1985), BIOMETRICS 741-744.
+#' 
 #' @keywords htest
+#' 
 #' @examples
-#' twocon(14,18,3,4,dp=0)
-#' twocon(14,18,3,4,dp=1)
+#' twocon(14, 18, 3, 4, dp = 0)
+#' twocon(14, 18, 3, 4, dp = 1)
 #' 
 #' @export twocon
 
-twocon <- function(n1, n2, r1, r, conf = .95, dp = 1) {
+twocon <- function(n1, n2, r1, r, conf = 0.95, dp = 1) {
   # confidence interval for two-stage phase II
-  # n1=# entered at first stage, n2=additional # entered at second stage
-  # r1=max number responses stage 1 trt 1 and still stop
-  # r= total number responses observed
-  if (n1<1 | n2<1 | r1<0  | r1>n1 | r<0 |
-      r>n2+n1 | conf<=0 | conf >= 1) stop('invalid arguments')
-  alpha <- (1-conf)/2
+  # n1 = # entered at first stage, n2=additional # entered at second stage
+  # r1 = max number responses stage 1 trt 1 and still stop
+  # r = total number responses observed
+  if (n1 < 1 | n2 < 1 | r1 < 0 | r1 > n1 | r < 0 |
+      r > n2 + n1 | conf <= 0 | conf >= 1)
+    stop('invalid arguments')
+  alpha <- (1 - conf) / 2
   x1 <- 0:n1
   x2 <- 0:n2
-  u1 <- c(outer(x1[-(1:(r1+1))],x2,'+'))
-  dbin2 <- function(p1,x1,x2,u1,n1,n2,r1) {
-    w1 <- dbinom(x1,n1,p1)
-    w3 <- dbinom(x2,n2,p1)
-    u2 <- c(outer(w1[-(1:(r1+1))],w3))
-  # ith component is P(R=i-1)
-    c(w1[1:(r1+1)],tapply(u2,u1,sum))
+  u1 <- c(outer(x1[-(1:(r1 + 1))], x2, '+'))
+  dbin2 <- function(p1, x1, x2, u1, n1, n2, r1) {
+    w1 <- dbinom(x1, n1, p1)
+    w3 <- dbinom(x2, n2, p1)
+    u2 <- c(outer(w1[-(1:(r1 + 1))], w3))
+    # ith component is P(R=i-1)
+    c(w1[1:(r1 + 1)], tapply(u2, u1, sum))
   }
-  n <- n1+n2
-  mle <- if (r>r1) r/n else r/n1
+  n <- n1 + n2
+  mle <- if (r > r1) r/n else r / n1
   # bias corrected estimator
-  mm <- c((0:r1)/n1,(r1+1):n/n)
-  ff <- function(p,x1,x2,u1,n1,n2,r1,mm,dbin2,mle)
-    sum(dbin2(p,x1,x2,u1,n1,n2,r1)*mm)-mle
-  pm <- if (r <= 0) 0 else if (r >= n) 1 else
-    uniroot(ff,c(1e-8,1-1e-8),x1=x1,x2=x2,u1=u1,n1=n1,n2=n2,r1=r1,mm=mm,
-            dbin2=dbin2,mle=mle)$root
+  mm <- c((0:r1) / n1, (r1 + 1):n / n)
+  ff <- function(p, x1, x2, u1, n1, n2, r1, mm, dbin2, mle)
+    sum(dbin2(p, x1, x2, u1, n1, n2, r1) * mm) - mle
+  pm <- if (r <= 0)
+    0 else if (r >= n)
+      1 else uniroot(ff, c(1e-8, 1 - 1e-8), x1 = x1, x2 = x2, u1 = u1, n1 = n1,
+                     n2 = n2, r1 = r1, mm = mm, dbin2 = dbin2, mle = mle)$root
   # unbiased estimator
-  if (r1>=r) { 
-    ube <- r/n1
+  ube <- if (r1 >= r) {
+    r/n1
   } else {
-    aa <- dhyper((r1+1):r,n1,n2,r)
-    ube <- sum(((r1+1):r)*aa)/(n1*sum(aa))
+    aa <- dhyper((r1 + 1):r, n1, n2, r)
+    sum(((r1 + 1):r) * aa) / (n1 * sum(aa))
   }
-  mm <- if (r>r1) c((n/n1)^dp*(0:r1),(r1+1):n)
-    else c(0:r1,(n1/n)^dp*((r1+1):n))
-  s1 <- mm >= r  #for P(R>=r)
+  mm <- if (r > r1)
+    c((n / n1) ^ dp * (0:r1),( r1 + 1):n) else c(0:r1,(n1 / n) ^ dp * ((r1 + 1):n))
+  s1 <- mm >= r # for P(R>=r)
   s2 <- mm <= r
-  ff2 <- function(p,x1,x2,u1,n1,n2,r1,s,dbin2,alpha)
-    sum(dbin2(p,x1,x2,u1,n1,n2,r1)[s])-alpha
-  pl <- if (r <= 0) 0 else 
-    uniroot(ff2,c(1e-8,1-1e-8),x1=x1,x2=x2,u1=u1,n1=n1,n2=n2,r1=r1,s=s1,
-            dbin2=dbin2,alpha=alpha)$root
-  pu <- if (r >= n) 1 else
-    uniroot(ff2,c(1e-8,1-1e-8),x1=x1,x2=x2,u1=u1,n1=n1,n2=n2,r1=r1,s=s2,
-            dbin2=dbin2,alpha=alpha)$root
-  c(lower=pl,upper=pu,bcmle=pm,mle=mle,unbiased=ube)
+  ff2 <- function(p, x1, x2, u1, n1, n2, r1, s, dbin2, alpha)
+    sum(dbin2(p, x1, x2, u1, n1, n2, r1)[s]) - alpha
+  pl <- if (r <= 0)
+    0 else uniroot(ff2, c(1e-8, 1 - 1e-8), x1 = x1, x2 = x2, u1 = u1, n1 = n1,
+                   n2 = n2, r1 = r1, s = s1, dbin2 = dbin2, alpha = alpha)$root
+  pu <- if (r >= n)
+    1 else uniroot(ff2, c(1e-8, 1 - 1e-8), x1 = x1, x2 = x2, u1 = u1, n1 = n1,
+                   n2 = n2, r1 = r1, s = s2, dbin2 = dbin2, alpha = alpha)$root
+  c(lower = pl, upper = pu, bcmle = pm, mle = mle, unbiased = ube)
 }

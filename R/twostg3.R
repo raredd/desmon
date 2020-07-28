@@ -31,9 +31,6 @@
 #' corresponding disjoint cells in the trinomial model (that is, \code{pstab}
 #' is the probability that a case will be stable but not a response).
 #' 
-#' @usage
-#' twostg3(n1, n2, presp, pstab, r1, s1, r2, s2)
-#' 
 #' @param n1 Number of subjects enrolled in the first stage
 #' @param n2 Number of additional subjects enrolled in the second stage
 #' @param presp The probability of the best (response) category
@@ -51,11 +48,13 @@
 #' (\code{p.stop.1}) and the overall probability that the treatment is declared
 #' inactive (\code{p.inactive}).
 #' 
-#' @seealso \code{\link{twostg}}
-#' @keywords design
-#' @examples
+#' @seealso
+#' \code{\link{twostg}}
 #' 
-#' twostg3(20,40,.05,.10,1,3,5,22)
+#' @keywords design
+#' 
+#' @examples
+#' twostg3(20, 40, 0.05, 0.10, 1, 3, 5, 22)
 #' 
 #' @export twostg3
 
@@ -73,27 +72,27 @@ twostg3 <- function(n1, n2, presp, pstab, r1, s1, r2, s2) {
   # rejp is the probability of concluding the drug is not active 
   # (rejecting the drug), which is 1 - the probability of rejecting the 
   # null hypothesis 
-  if (n1<1 | n2<1 | r1<0 | r2<0 | s1<0 | s2<0 | presp<=0 | pstab<=0 | 
-      r1+s1>n1 | r2+s2>n2+n1 | presp>=1| pstab>=1) 
+  if (n1 < 1 | n2 < 1 | r1 < 0 | r2 < 0 | s1 < 0 | s2 < 0 | presp <= 0 |
+      pstab<=0 | r1 + s1 > n1 | r2 + s2 > n2 + n1 | presp >= 1| pstab >= 1)
     stop('invalid arguments')
-  p2 <- pstab/(1-presp) # cond prob stable given not a response
+  p2 <- pstab / (1 - presp) # cond prob stable given not a response
   rejp1 <- rejp <- 0
-  for (i1 in 0:(min(r2,n1))) {
-    u1 <- dbinom(i1,n1,presp)
-    for (i2 in 0:min(n1-i1,s2-i1)) {
-      u2 <- dbinom(i2,n1-i1,p2)
-      if (i1<=r1 & (i1+i2)<=s1) {
-        rejp1 <- rejp1+u1*u2
+  for (i1 in 0:(min(r2, n1))) {
+    u1 <- dbinom(i1, n1, presp)
+    for (i2 in 0:min(n1 - i1, s2 - i1)) {
+      u2 <- dbinom(i2, n1 - i1, p2)
+      if (i1 <= r1 & (i1 + i2) <= s1) {
+        rejp1 <- rejp1 + u1 * u2
       } else {
-        for (i3 in 0:min(n2,r2-i1,s2-i2-i1)) {
-          u3 <- dbinom(i3,n2,presp)
-          for (i4 in 0:min(n2-i3,s2-i1-i2-i3)) {
-            u4 <- dbinom(i4,n2-i3,p2)
-            rejp <- rejp+u1*u2*u3*u4
+        for (i3 in 0:min(n2, r2 - i1, s2 - i2 - i1)) {
+          u3 <- dbinom(i3, n2, presp)
+          for (i4 in 0:min(n2 - i3, s2 - i1 - i2 - i3)) {
+            u4 <- dbinom(i4, n2 - i3, p2)
+            rejp <- rejp + u1 * u2 * u3 * u4
           }
         }
       }
     }
   }
-  c(p.stop.1=rejp1,p.inactive=rejp+rejp1)
+  c(p.stop.1 = rejp1, p.inactive = rejp + rejp1)
 }

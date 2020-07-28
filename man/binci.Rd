@@ -4,7 +4,7 @@
 \alias{binci}
 \title{Exact Binomial Confidence Limits}
 \usage{
-binci(r, n, conf = .95)
+binci(r, n, conf = 0.95)
 }
 \arguments{
 \item{r}{number of successes}
@@ -26,7 +26,7 @@ binomial proportion.  The precision of the solution is the default in
 \code{uniroot}.
 }
 \examples{
-binci(54,88)
+binci(54, 88)
 
 }
 \seealso{

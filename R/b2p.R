@@ -38,11 +38,6 @@
 #' specified.  This is generally not regarded as an appropriate procedure in
 #' practice.
 #' 
-#' @usage
-#' b2p(p1, p2, n1, n2, alpha = .025, exact = TRUE)
-#' b2n(p1, p2, power = .8, r = .5, alpha = .025)
-#' b2diff(p, r, n, alpha = .025, power = .8, exact = TRUE)
-#' 
 #' @param p1 Success probability in group 1
 #' @param p2 Success probability in group 2.  Must be \code{< p1}.
 #' @param n1 Number of subjects in group 1
@@ -81,95 +76,100 @@
 #' @keywords design htest
 #' 
 #' @examples
-#' b2diff(.3,.1,400)
-#' b2n(.4,.2)
-#' b2p(.4,.2,100,100)
+#' b2diff(0.3, 0.1, 400)
+#' b2n(0.4, 0.2)
+#' b2p(0.4, 0.2, 100, 100)
 #' 
 #' @export
 
-b2p <- function(p1, p2, n1, n2, alpha = .025, exact = TRUE) {
-  if (min(p1,p2,alpha)<=0 | max(p1,p2,alpha)>=1) 
-    stop('p1,p2,alpha must be between 0 and 1')
-  if (p2>=p1) stop('p1 must be > p2')
-  if (min(n1,n2)<1) stop('n1,n2 must be positive')
-  r=n2/n1
-  pd=p1-p2
-  pb=(p1+r*p2)/(r+1)
-  t1=sqrt(pb*(1-pb)*(1+r)/n2)
-  t2=sqrt(p1*(1-p1)/n1+p2*(1-p2)/n2)
-  al1=1.-alpha
-  zs=qnorm(al1)
-  zb=(zs*t1-pd)/t2
-  b1=1-pnorm(zb)
-  zb=zb+(r+1)/(2*n2*t2)
-  b2=1-pnorm(zb)
+b2p <- function(p1, p2, n1, n2, alpha = 0.025, exact = TRUE) {
+  if (min(p1, p2, alpha) <= 0 | max(p1, p2, alpha) >= 1)
+    stop('p1, p2, alpha must be between 0 and 1')
+  if (p2 >= p1)
+    stop('p1 must be > p2')
+  if (min(n1, n2) < 1)
+    stop('n1, n2 must be positive')
+  r <- n2 / n1
+  pd <- p1 - p2
+  pb <- (p1 + r * p2) / (r + 1)
+  t1 <- sqrt(pb * (1 - pb) * (1 + r) / n2)
+  t2 <- sqrt(p1 * (1 - p1) / n1 + p2 * (1 - p2) / n2)
+  al1 <- 1 - alpha
+  zs <- qnorm(al1)
+  zb <- (zs * t1 - pd) / t2
+  b1 <- 1 - pnorm(zb)
+  zb <- zb + (r + 1) / (2 * n2 * t2)
+  b2 <- 1 - pnorm(zb)
   if (exact) {
-    u <- .Fortran('pfishr',as.double(alpha),as.double(p1),as.double(p2),
-                  as.integer(n1),as.integer(n2),double(n1+n2+1),
-                  double(n1+n2+1),double(n1+1),double(n2+1),double(n1+1),
-                  double(n2+1),double(1),double(1),PACKAGE="desmon")[12:13]
-    c(approx.cor=b2,approx.unc=b1,fisher=u[[1]],UMPU=u[[2]])
-  } else {
-    c(approx.cor=b2,approx.unc=b1,fisher=NULL,UMPU=NULL)
-  }
+    u <- .Fortran('pfishr', as.double(alpha), as.double(p1), as.double(p2),
+                  as.integer(n1), as.integer(n2), double(n1 + n2 + 1),
+                  double(n1 + n2 + 1), double(n1 + 1), double(n2 + 1),
+                  double(n1 + 1), double(n2 + 1), double(1), double(1),
+                  PACKAGE = 'desmon')[12:13]
+    c(approx.cor = b2, approx.unc = b1, fisher = u[[1L]], UMPU = u[[2L]])
+  } else c(approx.cor = b2, approx.unc = b1, fisher = NULL, UMPU = NULL)
 }
 
 #' @export
-b2n <- function(p1, p2, power = .8, r = .5, alpha = .025) {
-  if (min(r,p1,p2,alpha,power)<=0 | max(p1,p2,r,alpha,power)>=1) 
-    stop('p1,p2,r,alpha,power must be between 0 and 1')
-  if (p2>=p1) stop('p1 must be > p2')
-  r=(1.-r)/r
-  pb=(p1+r*p2)/(r+1.)
-  qb=1.-pb
-  pd=p1-p2
-  al1=1.-alpha
-  zs=qnorm(al1)
-  b=1.-power
-  zb=qnorm(b)
-  t1=sqrt((r+1)*pb*qb)
-  t2=sqrt(r*p1*(1.-p1)+p2*(1.-p2))
-  s1=(zs*t1-zb*t2)/pd
-  s1=s1*s1/r
-  s2=sqrt(1.+2*(r+1)/(s1*r*pd))
-  s2=s1*(1.+s2)*(1.+s2)/4.
-  s1=(r+1)*s1
-  s2=(r+1)*s2
-  c(cont.cor=s2,uncor=s1)
+b2n <- function(p1, p2, power = 0.8, r = 0.5, alpha = 0.025) {
+  if (min(r, p1, p2, alpha, power) <= 0 | max(p1, p2, r, alpha, power) >= 1)
+    stop('p1, p2, r, alpha, power must be between 0 and 1')
+  if (p2 >= p1)
+    stop('p1 must be > p2')
+  r <- (1 - r) / r
+  pb <- (p1 + r * p2) / (r + 1)
+  qb <- 1 - pb
+  pd <- p1 - p2
+  al1 <- 1 - alpha
+  zs <- qnorm(al1)
+  b <- 1 - power
+  zb <- qnorm(b)
+  t1 <- sqrt((r + 1) * pb * qb)
+  t2 <- sqrt(r * p1 * (1 - p1) + p2 * (1 - p2))
+  s1 <- (zs * t1 - zb * t2) / pd
+  s1 <- s1 * s1 / r
+  s2 <- sqrt(1 + 2 * (r + 1) / (s1 * r * pd))
+  s2 <- s1 * (1 + s2) * (1 + s2) / 4
+  s1 <- (r + 1) * s1
+  s2 <- (r + 1) * s2
+  c(cont.cor = s2, uncor = s1)
 }
 
 #' @export
 b2diff <- function(p, r, n, alpha = .025, power = .8, exact = TRUE) {
   # given sample size and overall response prob, 
   # find the difference with specified power
-  S1 <- function(p1,p,r,n) {
-    if (p1<p) {
-      n2 <- round(n*r)
-      n1 <- n-n2
+  S1 <- function(p1, p, r, n) {
+    if (p1 < p) {
+      n2 <- round(n * r)
+      n1 <- n - n2
       p2 <- p1
-      p1 <- (n*p-n2*p2)/n1
+      p1 <- (n * p - n2 * p2) / n1
     } else {
-      n1 <- round(n*r)
-      n2 <- n-n1
-      p2 <- (n*p-n1*p1)/n2
+      n1 <- round(n * r)
+      n2 <- n - n1
+      p2 <- (n * p - n1 * p1) / n2
     }
-    c(n1,n2,p1,p2)
+    c(n1, n2, p1, p2)
   }
-  S2 <- function(p1,p,r,n,alpha,power,exact) {
-    u <- S1(p1,p,r,n)
-    u <- b2p(u[3],u[4],u[1],u[2],alpha,exact)
-    if (exact) u[3]-power else u[1]-power
+  
+  S2 <- function(p1, p, r, n, alpha, power, exact) {
+    u <- S1(p1, p, r, n)
+    u <- b2p(u[3L], u[4L], u[1L], u[2L], alpha, exact)
+    if (exact)
+      u[3L] - power else u[1L] - power
   }
-  minv <- p+.0001
-  n1 <- round(n*r)
-  maxv <- min(n*p/n1-.0001,.9999)
-  u1 <- uniroot(S2,c(minv,maxv),p=p,r=r,n=n,alpha=alpha,
-                power=power,exact=exact)$root
-  maxv <- p-.0001
-  minv <- max((n*p-n+n1)/n1+.0001,.0001)
-  u2 <- uniroot(S2,c(minv,maxv),p=p,r=r,n=n,alpha=alpha,
-                power=power,exact=exact)$root
-  u3 <- S1(u1,p,r,n)
-  u4 <- S1(u2,p,r,n)
-  c(p,r,u3[3:4],u4[4:3])
+  
+  minv <- p + 0.0001
+  n1 <- round(n * r)
+  maxv <- min(n * p / n1 - 0.0001, 0.9999)
+  u1 <- uniroot(S2, c(minv, maxv), p = p, r = r, n = n, alpha = alpha,
+                power = power, exact = exact)$root
+  maxv <- p - 0.0001
+  minv <- max((n * p - n + n1) / n1 + 0.0001, 0.0001)
+  u2 <- uniroot(S2, c(minv, maxv), p = p, r = r, n = n, alpha = alpha,
+                power = power, exact = exact)$root
+  u3 <- S1(u1, p, r, n)
+  u4 <- S1(u2, p, r, n)
+  c(p, r, u3[3:4], u4[4:3])
 }

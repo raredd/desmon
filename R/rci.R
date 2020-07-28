@@ -16,10 +16,6 @@
 #' \code{conf}, or can specify the boundary critical value on the standard
 #' normal scale at the current information time \code{crit}.
 #' 
-#' @usage
-#' rci(time, status, rx, inf, control = 0, strat, conf = .95,
-#'     use = 1, crit = NULL)
-#' 
 #' @param time Vector of failure/censoring times
 #' @param status Vector of failure indicators (1=failure, 0=censored)
 #' @param rx Treatment variable
@@ -39,45 +35,51 @@
 #' the hazard ratio, the estimated ratio, the upper confidence limit, and the
 #' critical value on the standard normal scale at the current analysis.
 #' 
-#' @seealso \code{\link{sequse}}
+#' @seealso
+#' \code{\link{sequse}}
+#' 
 #' @references Jennison and Turnbull (1990). \emph{Statistical Science} 
 #' \strong{5}:299-317.
+#' 
 #' @keywords survival
 #' 
 #' @examples
 #' set.seed(3)
-#' ft <- c(rexp(100),rexp(100)/.67)
-#' ct <- runif(200)*3
-#' fi <- ifelse(ct<ft,0,1)
-#' ft <- pmin(ft,ct)
-#' rx <- c(rep(0,100),rep(1,100))
-#' rci(ft,fi,rx,inf=c(.25,.54))
-#' rci(ft,fi,rx,crit=2.4)
+#' ft <- c(rexp(100), rexp(100) / 0.67)
+#' ct <- runif(200) * 3
+#' fi <- ifelse(ct < ft, 0, 1)
+#' ft <- pmin(ft, ct)
+#' rx <- c(rep(0, 100), rep(1, 100))
+#' rci(ft, fi, rx, inf = c(0.25, 0.54))
+#' rci(ft, fi, rx, crit = 2.4)
 #' 
 #' @export rci
 
-rci <- function(time, status, rx, inf, control = 0, strat, conf = .95,
+rci <- function(time, status, rx, inf, control = 0, strat, conf = 0.95,
                 use = 1, crit = NULL) {
-  if (length(time) != length(status) | length(time) != length(rx)) 
+  if (length(time) != length(status) | length(time) != length(rx))
     stop('lengths incompatible')
   if (is.null(crit)) {
-    if (min(inf)<=0 | max(inf)>1) stop('inf out of range')
-    if (conf<=0 | conf>=1) stop('conf must be in (0,1)')
-    alpha <- (1-conf)/2
-    crit <- rev(sequse(inf,alpha,use))[1]
+    if (min(inf) <= 0 | max(inf) > 1)
+      stop('inf out of range')
+    if (conf <= 0 | conf >= 1)
+      stop('conf must be in (0,1)')
+    alpha <- (1 - conf) / 2
+    crit <- rev(sequse(inf, alpha, use))[1L]
   }
-  #  rx <- as.numeric(rx == control)
+  # rx <- as.numeric(rx == control)
   rx <- as.numeric(rx != control)
   if (missing(strat)) {
-    z <- do.call('coxph',list(formula=Surv(time,status)~rx,
-                              data=data.frame(time,status,rx)))
+    z <- do.call('coxph', list(formula = Surv(time, status) ~ rx,
+                               data = data.frame(time, status, rx)))
   } else {
-    if (length(strat) != length(time)) stop('lengths incompatible')
-    z <- do.call('coxph',list(formula=Surv(time,status)~rx+strata(strat),
-                              data=data.frame(time,status,rx,strat)))
+    if (length(strat) != length(time))
+      stop('lengths incompatible')
+    z <- do.call('coxph', list(formula = Surv(time, status) ~ rx + strata(strat),
+                               data = data.frame(time, status, rx, strat)))
   }
-  z <- c(exp(z$coef+c(-1,0,1)*crit*sqrt(z$var)),crit)
-  #  names(z) <- c('lcl','ehr(C/E)','ucl','crit')
-  names(z) <- c('lcl','ehr(E/C)','ucl','crit')
+  z <- c(exp(z$coef + c(-1, 0, 1) * crit * c(sqrt(z$var))), crit)
+  # names(z) <- c('lcl', 'ehr(C/E)', 'ucl', 'crit')
+  names(z) <- c('lcl', 'ehr(E/C)', 'ucl', 'crit')
   z
 }

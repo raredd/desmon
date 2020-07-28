@@ -4,8 +4,15 @@
 \alias{nevents.cure}
 \title{Calculates the expected number of events for cure rate failure models}
 \usage{
-nevents.cure(acc.rate, acc.per, add.fu, cure.rate, 
-             haz = NULL, med = NULL, haz.ratio = 1)
+nevents.cure(
+  acc.rate,
+  acc.per,
+  add.fu,
+  cure.rate,
+  haz = NULL,
+  med = NULL,
+  haz.ratio = 1
+)
 }
 \arguments{
 \item{acc.rate}{The accrual rate in patients per time unit}

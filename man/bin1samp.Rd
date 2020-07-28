@@ -4,7 +4,7 @@
 \alias{bin1samp}
 \title{Sample Size for One-sample Exact Binomial Tests}
 \usage{
-bin1samp(p0, pa, alpha = .1, beta = .1, n.min = 20)
+bin1samp(p0, pa, alpha = 0.1, beta = 0.1, n.min = 20L)
 }
 \arguments{
 \item{p0}{Null hypothesis response probability}
@@ -44,12 +44,12 @@ by 1 and tries again.
 \code{bin1samp}.
 }
 \examples{
-bin1samp(.9, .95, n.min = 100)
-bin1samp(.1, .05, n.min = 100)
+bin1samp(0.9, 0.95, n.min = 100)
+bin1samp(0.1, 0.05, n.min = 100)
 
 }
 \seealso{
-\code{\link{print.bin1samp}}, \code{\link{pickwin}}, \code{\link{rp21}},
-\code{\link{twostg}}, \code{\link{simon}}
+\code{\link{print.bin1samp}}; \code{\link{pickwin}}; \code{\link{rp21}};
+\code{\link{twostg}}; \code{\link{simon}}
 }
 \keyword{design}
