@@ -22,6 +22,10 @@ In R,
 devtools::install_github('raredd/desmon', build_vignettes = TRUE)
 ```
 
+Note that building the package from source may require some additional
+build tools to compile FORTRAN code. If the above throws errors regarding
+compilation, try the steps below for the relevant platform.
+
 ### Windows
 
 In R,

@@ -42,7 +42,7 @@ wilcox.pow <- function(n1, n2 = NULL, del, alpha2 = 0.05, tdist = FALSE) {
   # del/2 factor is because variance of difference is 2sigma^2 and
   # normal density has a factor of 2pi
   df <- if (is.null(n2))
-    n1 - 1 else n1+n2-2
+    n1 - 1 else n1 + n2 - 2
   q1 <- if (tdist)
     qt(1 - alpha2 / 2, df = df) else qnorm(1 - alpha2 / 2)
   if (is.null(n2)) {
@@ -51,6 +51,6 @@ wilcox.pow <- function(n1, n2 = NULL, del, alpha2 = 0.05, tdist = FALSE) {
       t = pnorm(sqrt(n1) * del - q1))
   } else {
     c(wilcox = pnorm(sqrt(12 * n1 * n2 / ((n1 + n2 + 1) * pi)) * del / 2 - q1),
-    t = pnorm(sqrt(n1 * n2 / (n1 + n2)) * del - q1))
+      t = pnorm(sqrt(n1 * n2 / (n1 + n2)) * del - q1))
   }
 }
