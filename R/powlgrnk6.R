@@ -91,7 +91,7 @@
 #' full information, if reached).
 #' 
 #' @seealso
-#' \code{\link{sequse}}; \code{\link{rci}; \code{\link{print.powlgrnk6}};
+#' \code{\link{sequse}}; \code{\link{rci}}; \code{\link{print.powlgrnk6}};
 #' \code{\link{seqopr}}; \code{\link{seqss}}
 #' 
 #' @references

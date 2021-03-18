@@ -166,7 +166,8 @@ Freidlin, Korn and George, 1999. \emph{Controlled Clinical  Trials}
 Jennison and Turnbull, 1990, Statistical Science 5:299-317.
 }
 \seealso{
-
+\code{\link{sequse}}; \code{\link{rci}}; \code{\link{print.powlgrnk6}};
+\code{\link{seqopr}}; \code{\link{seqss}}
 }
 \keyword{design}
 \keyword{survival}
