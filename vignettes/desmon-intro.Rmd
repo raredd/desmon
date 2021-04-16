@@ -18,7 +18,7 @@ txt <- sapply(rawr::lsp(desmon, 'exports'), function(x)
     c(sprintf('## `%s`: %s', x, rawr::helpExtract(x, show.sections = TRUE)[1]),
       '',
       rawr::helpExtract(x, section = 'desc'),
-      '','',
+      '', '',
       gsub('`r', '`{r}', rawr::helpExtract(x, section = 'exam',
                                            type = 'md_code')),
       '', ''),
@@ -95,6 +95,7 @@ Performs a simulation to estimate the power of Fisher's Exect under group sequen
 
 
 ```{r}
+set.seed(2)
 binsim(20, 50, 0.1, 0.5, c(0.5, 1), c(0.05, 0.05), c(0.5, 0.5), alt = 'less')
 ```
 
@@ -496,5 +497,5 @@ wilcox.pow(10, NULL, 0.5)
 
 
 ```{r}
-sessionInfo()
+within.list(sessionInfo(), loadedOnly <- NULL)
 ```
