@@ -1,11 +1,11 @@
 #' Compute Operating Characteristics for Group Sequential Designs
-#' 
+#'
 #' Computes operating characteristics (seqopr) and sample size (seqss) for
 #' group sequential logrank tests in the setting of phase III studies with
 #' failure time endpoints.
-#' 
+#'
 #' @aliases seqopr seqss lr.inf
-#' 
+#'
 #' @details
 #' Assumes accrual is uniform at the rate \code{acc.rate} for \code{acc.per}
 #' units of time, so the total number of subjects is \code{acc.rate * acc.per},
@@ -28,7 +28,7 @@
 #' hazard ratio through hazard ratio = \code{1/(1+pct.imp/100)}.  Alternately,
 #' the percent reduction in the hazard rate (\code{pct.reduc}) can be
 #' specified.
-#' 
+#'
 #' Given the specifications above, \code{seqopr} computes the boundaries,
 #' power, boundary crossing probabilities and expected stopping times.  The
 #' expected stopping times under the null are computed using the specified
@@ -37,7 +37,7 @@
 #' times as determined under the alternative.  They therefore do not typically
 #' give the correct expected stopping times under the design as it will be
 #' implemented in practice.
-#' 
+#'
 #' In \code{seqss}, the desired power is specified, and a range is given for
 #' the accrual period.  The program then searches for the accrual period that
 #' gives the desired power.  The timing of the final analysis after the
@@ -51,12 +51,12 @@
 #' algorithm should give an error message stating that the values at the end
 #' points are not of opposite signs.  If this occurs, try increasing the width
 #' of the interval.
-#' 
+#'
 #' Given accrual and follow-up information and failure rates, \code{lr.inf}
 #' computes the total planned information and the Brownian motion mean
 #' parameter \code{eta}.  The main use of this function is to get the value of
 #' \code{eta} for computing the lower boundary in \code{sequse}.
-#' 
+#'
 #' @param acc.per In \code{sequse} and \code{lr.inf}, the planned accrual
 #' period for the study.  In \code{seqss}, a vector of length 2 giving the min
 #' and max values of the range of possible accrual periods over which to
@@ -97,8 +97,8 @@
 #' \code{anal.int} time units on the chronological time scale, beginning at
 #' \code{first.anal}
 #' @param first.anal Time of the first planned interim analysis
-#' 
-#' @return 
+#'
+#' @return
 #' \code{seqopr} returns a list with the following components (except
 #' \code{acc.per}).  \code{seqss} returns a list with the following components
 #' computed from the final design.  \item{Expected.inf }{A matrix giving the
@@ -114,21 +114,21 @@
 #' expected stopping times} \item{eta }{The Brownian motion mean parameter}
 #' \item{call }{The call to \code{seqopr}} \item{acc.per}{The accrual period
 #' that gives the desired power}
-#' 
+#'
 #' \code{lr.inf} returns a vector giving the values of the Brownian motion mean
 #' parameter \code{eta} and the expected number of failures under the
 #' alternative.
-#' 
+#'
 #' @seealso
 #' \code{\link{sequse}}; \code{\link{powlgrnk6}}; \code{\link{seqp}}
-#' 
+#'
 #' @keywords design
-#' 
+#'
 #' @examples
 #' seqopr(3, 200, 0.1, 50, c(2, 3, 4, 5))
 #' seqss(0.8, c(2, 6), 200, 2, 0.5, 2, 0.1, 50)
 #' lr.inf(3, 200, 2, 0.1, 50)
-#' 
+#'
 #' @export seqopr
 
 seqopr <- function(acc.per, acc.rate, control.rate = NULL, pct.imp = NULL, a.times,
@@ -191,7 +191,7 @@ seqopr <- function(acc.per, acc.rate, control.rate = NULL, pct.imp = NULL, a.tim
     e = double(8), pnu0 = double(na1), pnl0 = double(na1), eta = double(1),
     ierr = integer(1), PACKAGE = 'desmon'
   )[-c(1:15)]
-  
+
   if (u2$ierr > 0)
     stop('Boundaries could not be computed')
   w1 <- cbind(u2$pt[-1L], u2$ft0, u2$ft1, u2$ac)

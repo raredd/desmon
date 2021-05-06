@@ -1,8 +1,8 @@
 #' Operating Characteristics of Two-Stage Phase II Designs
-#' 
-#' Calculates the operating characteristics of single arm, two-stage phase II 
+#'
+#' Calculates the operating characteristics of single arm, two-stage phase II
 #' designs.
-#' 
+#'
 #' @details
 #' In the first stage, \code{n1} cases are accrued and the study is stopped if
 #' \code{r1} or fewer responses are observed.  If more than \code{r1} responses
@@ -11,30 +11,30 @@
 #' are observed, and worth further study if more than \code{r2} responses are
 #' observed.  Subjects are assumed to be independent with a common response
 #' probability \code{p1}.
-#' 
+#'
 #' @param n1 Number of cases accrued in the first stage
 #' @param n2 Number of additional cases accrued in the second stage
 #' @param p1 Response probability
 #' @param r1 max number responses in first stage where drug would still be
 #' declared ineffective
 #' @param r2 max number of total responses for drug to be declared ineffective
-#' 
+#'
 #' @return \code{twostg} returns a list of class \code{twostg}, with components
 #' \item{inputs }{a vector containing the input values} \item{prob.inactive}{a
 #' vector giving the total probability of \code{r2} or fewer responses and the
 #' probability of \code{r1} or fewer in the first stage}
-#' 
+#'
 #' \code{print.twostg} prints a summary of the input data and the probability
 #' of being declared ineffective overall and at the first stage.
-#' 
+#'
 #' @seealso \code{\link{pickwin}}, \code{\link{rp21}}, \code{\link{simon}},
 #' \code{\link{bin1samp}}
 #' @keywords design
-#' 
+#'
 #' @examples
 #' twostg(14, 18, 0.1, 1, 4)
 #' twostg(14, 18, 0.3, 1, 4)
-#' 
+#'
 #' @export twostg
 
 twostg <- function(n1, n2, p1, r1, r2) {
@@ -54,7 +54,7 @@ twostg <- function(n1, n2, p1, r1, r2) {
   u1 <- c(outer(x1[-(1:(r1 + 1))], x2, '+'))
   u2 <- c(outer(w1[-(1:(r1 + 1))], w3))
   b1 <- c(w1[1:(r1 + 1)], tapply(u2, u1, sum))
-  
+
   structure(
     list(inputs = c(n1 = n1, n2 = n2, p1 = p1, r1 = r1, r2 = r2),
          prob.inactive = c(total = sum(b1[1:(r2 + 1)]), sum(b1[1:(r1 + 1)]))),
@@ -63,21 +63,21 @@ twostg <- function(n1, n2, p1, r1, r2) {
 }
 
 #' Print a summary of the output from twostg
-#' 
+#'
 #' Prints a summary of the output from \code{\link{twostg}}
-#' 
+#'
 #' @details
 #' Prints operating characteristics and stopping rules of \code{\link{twostg}}
-#' 
+#'
 #' @param x An object of class \code{twostg} (output of \code{twostg})
-#' @param \dots included for compatibility with generic.  Any additional
+#' @param ... included for compatibility with generic.  Any additional
 #' arguments are ignored.
-#' 
+#'
 #' @return
 #' No value is returned - used for side-effect of printing to console.
-#' 
+#'
 #' @seealso \code{\link{twostg}}
-#' 
+#'
 #' @export
 
 print.twostg <- function(x, ...) {
@@ -91,11 +91,11 @@ print.twostg <- function(x, ...) {
 }
 
 #' Optimal Two-Stage Single-Arm Designs
-#' 
+#'
 #' For studies with binary endpoints, searches for two-stage sampling designs
 #' that minimize the expected number of subjects under the null, subject to
 #' various constraints.
-#' 
+#'
 #' @details
 #' For two-stage phase II designs for studies with binary endpoints, searches
 #' over possible two-stage sampling designs to find those that minimize the
@@ -107,20 +107,20 @@ print.twostg <- function(x, ...) {
 #' total subjects are considered.  Setting \code{ntmax} to a large value (as in
 #' the default), effectively allows the search to consider all possible
 #' designs.
-#' 
+#'
 #' If \code{minimax=TRUE}, then the minimax designs of Simon (1989), which
 #' minimize the maximum sample size, are considered.  As there are typically
 #' multiple designs with the same minimum max sample size, the program still
 #' selects among the designs in this class based on the the expected sample
 #' size under the null.
-#' 
+#'
 #' Designs which optimize one particular criterion sometimes have other
 #' undesirable properties.  By specifying a value of \code{del > 0}, alternate
 #' designs meeting the criteria that have expected sample sizes under the null
 #' within \code{del} of the optimal design will also be retained.
-#' 
+#'
 #' @aliases simon
-#' 
+#'
 #' @param p0 Null hypothesis response probability
 #' @param pa Alternative hypothesis response probability
 #' @param n1max The maximum number of subjects entered during the first stage.
@@ -132,7 +132,7 @@ print.twostg <- function(x, ...) {
 #' the null is within \code{del} of the minimum possible value
 #' @param minimax If \code{TRUE}, only searches for designs with the total
 #' sample size equal to the minimum possible value
-#' 
+#'
 #' @return
 #' Returns a list with components \item{designs }{A matrix with a row
 #' giving a summary of each design meeting the criteria.  The columns are
@@ -146,21 +146,21 @@ print.twostg <- function(x, ...) {
 #' expected \# subjects under H0.} \item{call }{The call to \code{simon()}.}
 #' \item{description }{A text string giving a brief description of the columns
 #' in \code{$designs}.}
-#' 
+#'
 #' @seealso
 #' \code{\link{twostg}}; \code{\link{bin1samp}}; \code{\link{pickwin}};
 #' \code{\link{rp21}}
-#' 
+#'
 #' @references
 #' Simon R (1989). Optimal two-stage designs for phase II clinical
 #' trials. \emph{Controlled Clinical Trials} \strong{10}:1-10.
-#' 
+#'
 #' @keywords design
-#' 
+#'
 #' @examples
 #' simon(0.05, 0.20)
 #' simon(0.05, 0.20, minimax = TRUE)
-#' 
+#'
 #' @export simon
 
 simon <- function(p0, pa, n1max = 0, ntmax = 1e5, alpha = 0.1, beta = 0.1,
@@ -186,7 +186,7 @@ simon <- function(p0, pa, n1max = 0, ntmax = 1e5, alpha = 0.1, beta = 0.1,
     n1max <- if (n1max > 0) min(n1max, u1[1L]) else u1[1L]
   } else stop('no valid designs')
   n1max <- min(n1max, ntmax)
-  # determine min total sample size (use randomized decision rule on 
+  # determine min total sample size (use randomized decision rule on
   # boundary for single sample)
   b <- 0
   n <- u1[1L]
@@ -246,7 +246,7 @@ simon <- function(p0, pa, n1max = 0, ntmax = 1e5, alpha = 0.1, beta = 0.1,
             j <- j + 1
             if (minimax) {
               if (i + j > ntmax)
-                q <- 1 
+                q <- 1
             } else {
               if (e1 > e0 + del | i + j > ntmax)
                 q <- 1

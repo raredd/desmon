@@ -1,9 +1,9 @@
 #' Compute operating characteristics of two-stage trinomial-outcome designs
-#' 
+#'
 #' For a phase II study with three possible ordered outcomes (e.g., response,
 #' stable, progression), computes the probability of not rejecting the null
 #' hypothesis for a specified two-stage design.
-#' 
+#'
 #' @details
 #' Consider a phase II study with an ordered categorical outcome with three
 #' categories, which are referred to here as response, stable and progression
@@ -13,7 +13,7 @@
 #' or stable).  In the designs considered here, the treatment is declared to be
 #' active (or sufficiently active to be worth studying further) if it shows a
 #' sufficient level of activity for either response or disease stabilization.
-#' 
+#'
 #' More formally, let \code{R1} be the number of patients observed to respond
 #' and \code{S1} be the number of patients observed to be stable (but not
 #' responses) during the first stage of accrual, and similarly let \code{R2}
@@ -26,11 +26,11 @@
 #' \code{R1+R2+S1+S2 <= s2}.  The treatment is considered sufficiently active
 #' for further investigation if either \code{R1+R2 > r2} or \code{R1+R2+S1+S2 >
 #' s2}.
-#' 
+#'
 #' Note that \code{presp} and \code{pstab} are the probabilities of the
 #' corresponding disjoint cells in the trinomial model (that is, \code{pstab}
 #' is the probability that a case will be stable but not a response).
-#' 
+#'
 #' @param n1 Number of subjects enrolled in the first stage
 #' @param n2 Number of additional subjects enrolled in the second stage
 #' @param presp The probability of the best (response) category
@@ -43,19 +43,19 @@
 #' observed without declaring the treatment to be effective
 #' @param s2 Max number of cases from stages 1 and 2 combined that can have
 #' responses or stable outcomes without declaring the treatment to be effective
-#' 
+#'
 #' @return A vector giving the probability of stopping after the first stage
 #' (\code{p.stop.1}) and the overall probability that the treatment is declared
 #' inactive (\code{p.inactive}).
-#' 
+#'
 #' @seealso
 #' \code{\link{twostg}}
-#' 
+#'
 #' @keywords design
-#' 
+#'
 #' @examples
 #' twostg3(20, 40, 0.05, 0.10, 1, 3, 5, 22)
-#' 
+#'
 #' @export twostg3
 
 twostg3 <- function(n1, n2, presp, pstab, r1, s1, r2, s2) {
@@ -69,9 +69,9 @@ twostg3 <- function(n1, n2, presp, pstab, r1, s1, r2, s2) {
   # s2=max # stable or response total and still accept H0
   # i1=# responses first stage; i2=#stable (non-response) 1st stg
   # i3=# add responses 2nd stage; i4=# add stable 2nd stg
-  # rejp is the probability of concluding the drug is not active 
-  # (rejecting the drug), which is 1 - the probability of rejecting the 
-  # null hypothesis 
+  # rejp is the probability of concluding the drug is not active
+  # (rejecting the drug), which is 1 - the probability of rejecting the
+  # null hypothesis
   if (n1 < 1 | n2 < 1 | r1 < 0 | r2 < 0 | s1 < 0 | s2 < 0 | presp <= 0 |
       pstab<=0 | r1 + s1 > n1 | r2 + s2 > n2 + n1 | presp >= 1| pstab >= 1)
     stop('invalid arguments')

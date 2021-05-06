@@ -1,13 +1,13 @@
 #' Simulation for Power of a Sequential Fisher's Exact Test
-#' 
-#' Performs a simulation to estimate the power of Fisher's Exect under group
+#'
+#' Performs a simulation to estimate the power of Fisher's Exact under group
 #' sequential monitoring.
-#' 
+#'
 #' @details
-#' Calls \code{\link{fisher.test}}. If the experimental group (2) has a higher 
-#' event rate than the control group (1), then 'less' is the appropriate 
+#' Calls \code{\link{fisher.test}}. If the experimental group (2) has a higher
+#' event rate than the control group (1), then 'less' is the appropriate
 #' direction for a one-sided test.
-#' 
+#'
 #' @param nsamp Number of simulated trials
 #' @param n Total sample size for each trial
 #' @param p1 Success probability for group 1 (control)
@@ -18,22 +18,22 @@
 #' @param lower Lower boundary (p-value scale)
 #' @param p.con Proportion randomized to control (group 1)
 #' @param alt Direction of the alternative (one of greater, less or two.sided)
-#' 
+#'
 #' @return A vector of length \code{nsamp}, giving the test result for each
 #' simulated trial, coded 1 if the upper boundary was crossed, -1 if the lower
 #' boundary was crossed, and coded 0 if neither was (only the first boundary
 #' crossing is recorded).
-#' 
+#'
 #' @author R Gray
-#' 
+#'
 #' @seealso
 #' \code{\link{b2p}}; \code{\link{fisher.test}}
-#' 
+#'
 #' @keywords design
-#' 
+#'
 #' @examples
 #' binsim(20, 50, 0.1, 0.5, c(0.5, 1), c(0.05, 0.05), c(0.5, 0.5), alt = 'less')
-#' 
+#'
 #' @export
 
 binsim <- function(nsamp, n, p1, p2, inf.times, upper,

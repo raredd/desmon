@@ -1,8 +1,8 @@
 #' Calculate Power for McNemar's Test
-#' 
+#'
 #' Given a specified alternative distribution, this function computes the exact
 #' power for NcNemar's Test
-#' 
+#'
 #' @details
 #' When two binary (for convenience, called positive vs. negative) factors are
 #' measured on the same set of subjects, McNemar's test can be used to test
@@ -10,7 +10,7 @@
 #' For example, this could be of interest if the same quantity is measured
 #' before and after treatment, or if two different assays supposedly measuring
 #' the same quantity are being compared.
-#' 
+#'
 #' For the values of the two factors, let p11=the proportion of the \code{n}
 #' subjects positive for both, p22= the proportion negative for both, p12=the
 #' proportion positive for factor 1 and negative for 2, and p21= the proportion
@@ -18,8 +18,8 @@
 #' of these parameters, the input quantities are \code{pdisc} = p12+p21 and
 #' \code{delta} = p12-p21.  If an alternative with p21>p12 is of interest, then
 #' \code{delta} should be negative.
-#' 
-#' McNemar's test is a conditional test of H0: p12=p21 (or equivalently the the
+#'
+#' McNemar's test is a conditional test of H0: p12=p21 (or equivalently the
 #' marginal probabilities p11+p12 = p11+p21) based on the discordant pairs.
 #' For the exact conditional test of one-sided size \code{alpha}, this function
 #' uses the marginal distribution of the number of discordant pairs under the
@@ -27,8 +27,8 @@
 #' positive for factor 1 and negative for factor 2 under the null and the
 #' alternative to determine the critical region of the test (under the null)
 #' and the exact unconditional power (under the specified alternative).
-#' 
-#' 
+#'
+#'
 #' @param n The total sample size
 #' @param pdisc The combined proportion of discordant pairs
 #' @param delta The difference in the discordant cell rates (factor 1 pos and
@@ -37,14 +37,14 @@
 #' @return A vector giving the values of \code{n}, p12, p21, the attained exact
 #' size, the exact power, and Mietinen's approximation (Biometrics, 1968, p343)
 #' to the power.
-#' 
+#'
 #' @author Bob Gray
-#' 
+#'
 #' @keywords design htest
-#' 
+#'
 #' @examples
 #' mcnemar.pow(100, 0.9, 0.2, delta = 0.095)
-#' 
+#'
 #' @export mcnemar.pow
 
 mcnemar.pow <- function(n, pdisc, delta, alpha = 0.025) {

@@ -1,14 +1,14 @@
 #' Power for Comparing Two Binomials
-#' 
-#' Calculates power (\code{b2p}) and sample size (\code{b2n}) for a two sample 
-#' binomial test based on a normal approximation with and without continuity 
-#' correction. \code{b2p} also computes the exact power of Fisher's exact test 
-#' and the exact UMP unbiased test.  Given combined sample size and response 
-#' probability, \code{b2diff} calculates the difference corresponding to a 
+#'
+#' Calculates power (\code{b2p}) and sample size (\code{b2n}) for a two sample
+#' binomial test based on a normal approximation with and without continuity
+#' correction. \code{b2p} also computes the exact power of Fisher's exact test
+#' and the exact UMP unbiased test. Given combined sample size and response
+#' probability, \code{b2diff} calculates the difference corresponding to a
 #' specified power.
-#' 
+#'
 #' @aliases b2p b2n b2diff
-#' 
+#'
 #' @details
 #' The power is computed for the one-sided test for the alternative that
 #' \code{p1 > p2} against the null of equal rates.  For a one-sided test in the
@@ -19,25 +19,25 @@
 #' each direction. This function does not give correct results for more
 #' general two-sided exact tests that divide the error asymmetrically between
 #' the two tails unless the correct one-sided error corresponding to the
-#' asymmetric test is used.  The normal approximations are based on formulas
+#' asymmetric test is used. The normal approximations are based on formulas
 #' from Fleiss (Statistical Methods for Rates and Proportions, 2nd ed, 1981).
-#' 
+#'
 #' \code{b2diff} is intended for facilitating power calculations when a new
-#' (binary) marker will be measured on an existing sample.  Then the combined
-#' samples size \code{n} and overall response rate is known.  \code{r} gives
+#' (binary) marker will be measured on an existing sample. Then the combined
+#' samples size \code{n} and overall response rate is known. \code{r} gives
 #' the expected proportion of the sample in group 1 (defined by the new
 #' marker). \code{b2diff} then calculates the response probabilities in the
 #' two groups that give a difference for which the two-sample comparison will
 #' have the specified power, subject to the overall response probability and
-#' sample size constraints.  The probabilities are computed for the one-sided
+#' sample size constraints. The probabilities are computed for the one-sided
 #' tests in each direction (higher response rates in group 1 and lower response
 #' rates in group 1)
-#' 
+#'
 #' The uniformly most powerful unbiased test uses a randomized rejection rule
 #' on the boundary of the critical region to give the exact type I error rate
-#' specified.  This is generally not regarded as an appropriate procedure in
+#' specified. This is generally not regarded as an appropriate procedure in
 #' practice.
-#' 
+#'
 #' @param p1 Success probability in group 1
 #' @param p2 Success probability in group 2.  Must be \code{< p1}.
 #' @param n1 Number of subjects in group 1
@@ -48,7 +48,7 @@
 #' @param r Proportion in group 1
 #' @param p The overall (average) response probability in the two groups
 #' @param n The combined number of subjects in the two groups
-#' 
+#'
 #' @return
 #' \code{b2p} returns a vector of length 4 giving the power based on the
 #' normal approximation with continuity correction (\code{approx.cor}), the
@@ -56,30 +56,30 @@
 #' for Fisher's exact test (\code{fisher}), and the exact power for the
 #' uniformly most powerful unbiased test (\code{UMPU}), which uses a randomized
 #' rejection rule on the boundary of the critical region.
-#' 
+#'
 #' \code{b2n} returns a vector of length 2 giving the approximate sample size
 #' for the continuity corrected statistic (\code{cont.cor}) and the uncorrected
 #' (\code{uncor}) statistics.
-#' 
+#'
 #' \code{b2diff} returns a vector of length 6 giving the input values of
 #' \code{p} and \code{r}, the response probabilities in groups 1 and 2
 #' corresponding to the difference with larger response in group 1, and the
 #' response probabilities in groups 1 and 2 corresponding to the difference
 #' with lower response in group 1.
-#' 
+#'
 #' @references
 #' Fleiss (1981). \emph{Statistical Methods for Rates and Proportions}. 2nd ed.
-#' 
+#'
 #' @seealso
 #' \code{\link{pickwin}}
-#' 
+#'
 #' @keywords design htest
-#' 
+#'
 #' @examples
 #' b2diff(0.3, 0.1, 400)
 #' b2n(0.4, 0.2)
 #' b2p(0.4, 0.2, 100, 100)
-#' 
+#'
 #' @export
 
 b2p <- function(p1, p2, n1, n2, alpha = 0.025, exact = TRUE) {
@@ -137,7 +137,7 @@ b2n <- function(p1, p2, power = 0.8, r = 0.5, alpha = 0.025) {
 
 #' @export
 b2diff <- function(p, r, n, alpha = .025, power = .8, exact = TRUE) {
-  # given sample size and overall response prob, 
+  # given sample size and overall response prob,
   # find the difference with specified power
   S1 <- function(p1, p, r, n) {
     if (p1 < p) {
@@ -152,14 +152,14 @@ b2diff <- function(p, r, n, alpha = .025, power = .8, exact = TRUE) {
     }
     c(n1, n2, p1, p2)
   }
-  
+
   S2 <- function(p1, p, r, n, alpha, power, exact) {
     u <- S1(p1, p, r, n)
     u <- b2p(u[3L], u[4L], u[1L], u[2L], alpha, exact)
     if (exact)
       u[3L] - power else u[1L] - power
   }
-  
+
   minv <- p + 0.0001
   n1 <- round(n * r)
   maxv <- min(n * p / n1 - 0.0001, 0.9999)

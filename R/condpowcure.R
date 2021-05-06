@@ -1,35 +1,35 @@
 #' Perform Simulation to Calculate Conditional Power of a Logrank Test
-#' 
+#'
 #' Performs a simulation to calculate conditional power of a logrank test in a
 #' group sequential experiment with failure times generated from a cure rate
 #' model.
-#' 
+#'
 #' @details
 #' Adds \code{add.acc} cases and generates additional follow-up for subjects
-#' already entered but censored in the current data.  Failure times are
+#' already entered but censored in the current data. Failure times are
 #' generated from exponential cure rate models, with fractions
 #' \code{control.cure} and \code{test.cure} that will never fail and
 #' exponential distributions for the failure times of those who will eventually
 #' fail.
-#' 
-#' Additional interim analyses are performed when \code{inf.time *total.inf} 
-#' failures are observed.  The critical values used for rejecting
+#'
+#' Additional interim analyses are performed when \code{inf.time * total.inf}
+#' failures are observed. The critical values used for rejecting
 #' the null at these additional interim analyses are specified in
-#' \code{crit.value}.  The number of additional analyses is the length of
-#' \code{inf.time} and \code{crit.value}.  The information of the current data
-#' should not be included.  Full information (\code{inf.time = 1}) must be
-#' explicitly included.  Information times should be in increasing order.
-#' 
+#' \code{crit.value}. The number of additional analyses is the length of
+#' \code{inf.time} and \code{crit.value}. The information of the current data
+#' should not be included. Full information (\code{inf.time = 1}) must be
+#' explicitly included. Information times should be in increasing order.
+#'
 #' After generating the additional data, the function performs the interim
 #' analyses, and determines whether the upper boundary is crossed.  This is
 #' repeated \code{nsamp} times, giving an estimate of the probability of
 #' eventually rejecting the null under the specified distributions, conditional
-#' on the current data.  Low conditional power under the target alternative for
+#' on the current data. Low conditional power under the target alternative for
 #' the study might be justification for stopping early.
-#' 
+#'
 #' It is very important that consistent time units be used for all arguments
 #' and for the current data.
-#' 
+#'
 #' @param time Failure/censoring times in the current data
 #' @param status failure indicator for current data (1=failure, 0=censored)
 #' @param rx treatment variable in current data
@@ -48,24 +48,24 @@
 #' @param add.acc.period Duration of time over which the \code{add.acc} cases
 #' will be accrued
 #' @param p.con The proportion randomized to the control group
-#' 
+#'
 #' @return
 #' Returns the proportion of samples where the upper boundary was
-#' crossed, and its simulation standard error.  Also prints the value of the
+#' crossed, and its simulation standard error. Also prints the value of the
 #' logrank statistic for the current data.
-#' 
+#'
 #' @seealso
 #' \code{\link{condpow}}; \code{\link{sequse}}; \code{\link{acondpow}}
-#' 
-#' @references 
+#'
+#' @references
 #' Jennison and Turnbull (1990). \emph{Statistical Science} \strong{5}:299-317.
-#' 
+#'
 #' Betensky (1997). \emph{Biometrics}, \strong{53}:794-806.
-#' 
+#'
 #' @keywords survival design
-#' 
+#'
 #' @import survival
-#' 
+#'
 #' @examples
 #' ## current data
 #' set.seed(3)
@@ -75,23 +75,23 @@
 #' fi <- ifelse(ct < ft, 0, 1)
 #' ft <- pmin(ft, ct)
 #' rx <- c(rep(0, 100), rep(1, 100))
-#' 
+#'
 #' ## currently at 0.375 information -- assume no prior interim analyses
 #' critv <- sequse(c(0.375, 0.7, 1))[-1]
-#' 
+#'
 #' condpowcure(ft, fi, rx, nsamp = 10, crit.val = critv, control.cure = 0.4,
 #'             control.rate = 1, test.cure = 0.6, test.rate = 0.75,
 #'             inf.time = c(0.7, 1), total.inf = 200, add.acc = 200, add.acc.period = 1)
-#' 
+#'
 #' \dontrun{
 #' ## use larger nsamp in practice:
 #' condpowcure(ft, fi, rx, nsamp = 1000, crit.val = critv, control.cure = 0.4,
 #'             control.rate = 1, test.cure = 0.6, test.rate = 0.75,
 #'             inf.time = c(0.7, 1), total.inf = 200, add.acc = 200, add.acc.period = 1)
-#' ## Observed Z =  1.43
+#' ## Observed Z = 1.43
 #' ## [1] 0.958
 #' }
-#' 
+#'
 #' @export
 
 condpowcure <- function(time, status, rx, nsamp = 500, crit.val = 1.96, control = 0,

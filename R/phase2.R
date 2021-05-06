@@ -1,31 +1,31 @@
 #' Exact Binomial Confidence Limits
-#' 
+#'
 #' Calculates exact confidence bounds on a single binomial probability
-#' 
+#'
 #' @details
 #' Calculates exact \code{1-(1-conf)/2} upper and lower confidence limits for a
 #' binomial proportion.  The precision of the solution is the default in
 #' \code{uniroot}.
-#' 
+#'
 #' @param r number of successes
 #' @param n total number of trials
 #' @param conf confidence level
-#' 
+#'
 #' @return
 #' Returns a vector containing the two confidence limits. Returns 0 for
 #' the lower limit if r=0, and returns 1 for the upper limit if r=n.
-#' 
+#'
 #' @seealso
 #' \code{\link{twocon}}
-#' 
+#'
 #' @keywords htest
-#' 
+#'
 #' @examples
 #' binci(54, 88)
-#' 
+#'
 #' @export binci
 
-binci <- function(r, n, conf = 0.95) { 
+binci <- function(r, n, conf = 0.95) {
   if (r < 0 | r > n)
     stop('invalid value for r')
   if (conf <= 0 | conf >= 1)
@@ -41,31 +41,31 @@ binci <- function(r, n, conf = 0.95) {
 }
 
 #' One Sample Binomial Design
-#' 
+#'
 #' Determines the critical value and power for an exact one sample binomial
 #' test
-#' 
+#'
 #' @details
 #' Let \code{R} be the number of responses.  If \code{p0<pa}, determines the
 #' smallest critical value \code{r} such that \code{P(R>=r|p0)<=alpha}, and
 #' computes \code{P(R>=r|p)} for \code{p=p0,pa}.  If \code{p0>pa}, similar
 #' calculations are done for rejecting in the opposite tail.
-#' 
+#'
 #' @param n sample size
 #' @param p0 The null response probability
 #' @param pa The alternative response probability
 #' @param alpha The one-sided type I error rate
 #' @return A vector giving the critical value and the rejection probabilities
 #' under the null and alternative.
-#' 
+#'
 #' @seealso
 #' \code{\link{bin1samp}}
-#' 
+#'
 #' @keywords design
-#' 
+#'
 #' @examples
 #' onearm(30, 0.1, 0.3)
-#' 
+#'
 #' @export onearm
 
 onearm <- function(n, p0, pa, alpha = 0.1) {
@@ -84,32 +84,32 @@ onearm <- function(n, p0, pa, alpha = 0.1) {
 }
 
 #' Outcome Probabilities for Randomized Phase II Designs
-#' 
+#'
 #' For a single stage randomized phase II study, computes the probability that
 #' the difference in the number of responses is larger than a specified
 #' critical value.
-#' 
+#'
 #' @details
 #' Computations assume two independent binomials R1 and R2, with R1 distributed
 #' Binomal(n,p1) and R2 distributed Binomial(n,p2)
-#' 
+#'
 #' @param n Planned number of subjects per arm
 #' @param p1 Success probability for treatment 1
 #' @param p2 Success probability for treatment 2
 #' @param crit Maximum difference in number of responses that would be viewed
 #' as an equivalent outcome
-#' 
+#'
 #' @return
 #' A vector giving P(R1>R2+crit), P(|R1-R2|<=crit) and P(R1<R2-crit).
-#' 
+#'
 #' @seealso
 #' \code{\link{pickwin}}
-#' 
+#'
 #' @keywords design
-#' 
+#'
 #' @examples
 #' rp21(32, 0.2, 0.1)
-#' 
+#'
 #' @export rp21
 
 rp21 <- function(n, p1, p2, crit = 0) {
@@ -123,10 +123,10 @@ rp21 <- function(n, p1, p2, crit = 0) {
 }
 
 #' Two-Stage Randomized Phase II Designs
-#' 
+#'
 #' Calculates operating characteristics of pick the winner rules for two stage
 #' randomized phase II designs
-#' 
+#'
 #' @details
 #' Assumes that during the first stage of accrual \code{n1} patients are
 #' randomized to each treatment (RX1 and RX2).  If more than \code{r1}
@@ -134,7 +134,7 @@ rp21 <- function(n, p1, p2, crit = 0) {
 #' \code{n2} patients will be accrued to treatment RX1 (RX2).  If more than
 #' \code{r2} (\code{r4}) total responses are seen on RX1 (RX2), then RX1 (RX2)
 #' will be declared active.
-#' 
+#'
 #' Let X1 and X2 be the number of responses observed on treatments 1 and 2.
 #' This function computes and prints P(X1<=r2)=P(RX1 declared inactive),
 #' P(X2<=r4)=P(RX2 declared inactive), P(X2>r4 and X2>X1)=P(RX2 declared
@@ -142,7 +142,7 @@ rp21 <- function(n, p1, p2, crit = 0) {
 #' (X1<=r2 and X2<=r4))=P(neither declared superior).  Note that P(neither
 #' declared superior) includes both the probability that both are declared
 #' inactive and the probability that both are declared active and are equal.
-#' 
+#'
 #' @param n1 first stage sample size (assumed to be the same for both
 #' treatments)
 #' @param n2 addition accrual during the second stage (assumed to be the same
@@ -157,25 +157,25 @@ rp21 <- function(n, p1, p2, crit = 0) {
 #' the first stage
 #' @param r4 The maximum number of total responses over both stages to declare
 #' treatment 2 inactive
-#' 
+#'
 #' @return
 #' Returns a vector of length 9, whose components are (in order)
 #' P(X1<=r1, X2>r4), P(r1<X1<=r2, X2>r4), P(X1>r2, X2>X1, X2>r4), P(X2<=r3,
 #' X1>r2), P(r3<X2<=r4, X1>r2), P(X1>r2, X2>r4, X1>X2), P(X1<=r2, X2<=r4),
 #' P(X1>r2, X2>r4, X1=X2), and the sum of the first 8 terms.
-#' 
+#'
 #' @seealso
 #' \code{\link{b2p}}
-#' 
+#'
 #' @references
 #' Simon R, Wittes RE and Ellenberg SS, 1985. Randomized phase II
 #' clinical trials. \emph{Cancer Treat Rep} \strong{69} (12):1375--81.
-#' 
+#'
 #' @keywords design
-#' 
+#'
 #' @examples
 #' pickwin(14, 18, 0.1, 0.2, 0, 3)
-#' 
+#'
 #' @export pickwin
 
 pickwin <- function(n1, n2, p1, p2, r1, r2, r3 = r1, r4 = r2) {
@@ -236,20 +236,20 @@ pickwin <- function(n1, n2, p1, p2, r1, r2, r3 = r1, r4 = r2) {
 }
 
 #' Confidence Interval on the Response Rate from a Two Stage Study
-#' 
+#'
 #' Computes a confidence interval and several estimators of the response rate
 #' using data from a phase II study with two-stage sampling
-#' 
+#'
 #' @details
 #' First \code{n1} patients are entered on the study.  If more than \code{r1}
 #' responses are observed, then an additional \code{n2} patients are entered.
 #' This function assumes that if the observed number of response \code{r < r1},
 #' then only \code{n1} patients were entered.
-#' 
+#'
 #' The estimators computed are the MLE (the observed proportion of responses),
 #' a bias corrected MLE, and an unbiased estimator, which is sometimes
 #' incorrectly described as the UMVUE.
-#' 
+#'
 #' The confidence interval is based on the exact sampling distribution.
 #' However, there is not a universally accepted ordering on the sample space in
 #' two-stage designs.  The parameter \code{dp} can be used to modify the
@@ -266,7 +266,7 @@ pickwin <- function(n1, n2, p1, p2, r1, r2, r3 = r1, r4 = r2) {
 #' \code{r} and \code{n} are the observed values of \code{R} and \code{N}, and
 #' the outcomes that are more extreme in the low response direction are those
 #' with \code{R/(N^dp) <= r/(n^dp)}.
-#' 
+#'
 #' @param n1 Number of cases entered during the first stage
 #' @param n2 Number of additional cases to be entered during the second stage
 #' @param r1 max number of responses that can be observed in the first stage
@@ -276,23 +276,23 @@ pickwin <- function(n1, n2, p1, p2, r1, r2, r3 = r1, r4 = r2) {
 #' interval
 #' @param dp Affects the ordering of outcomes within the sample space (see
 #' below)
-#' 
+#'
 #' @return
 #' A vector with the lower confidence limit, the upper confidence
 #' limit, the bias corrected MLE, the MLE, and the unbiased estimator.
-#' 
+#'
 #' @seealso
 #' \code{\link{binci}}
-#' 
+#'
 #' @references
 #' Atkinson and Brown (1985), BIOMETRICS 741-744.
-#' 
+#'
 #' @keywords htest
-#' 
+#'
 #' @examples
 #' twocon(14, 18, 3, 4, dp = 0)
 #' twocon(14, 18, 3, 4, dp = 1)
-#' 
+#'
 #' @export twocon
 
 twocon <- function(n1, n2, r1, r, conf = 0.95, dp = 1) {

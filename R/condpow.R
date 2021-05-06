@@ -1,8 +1,8 @@
 #' Perform Simulation to Calculate Conditional Power of a Logrank Test
-#' 
+#'
 #' Performs a simulation to calculate conditional power of a logrank test in a
 #' group sequential experiment with exponential failure times.
-#' 
+#'
 #' @details
 #' Adds \code{add.acc} cases and generates additional follow-up for subjects
 #' already entered but censored in the current data. Failure times are
@@ -13,23 +13,23 @@
 #' analyses is the length of \code{inf.time} and \code{crit.value}. The
 #' information of the current data should not be included. Full information
 #' (\code{inf.time = 1}) must be explicitly included.  Information times should
-#' be in increasing order. 
-#' 
-#' After generating the additional data, the function performs the interim 
-#' analyses, and determines whether the upper boundary is crossed (note that 
-#' all analyses are performed, to calculate additional quantities, even if the 
-#' boundary is crossed at an early analysis). This is repeated \code{nsamp} 
-#' times, giving an estimate of the probability of eventually rejecting the 
-#' null under the specified distributions, conditional on the current data. 
-#' Low conditional power under the target alternative for the study might be 
+#' be in increasing order.
+#'
+#' After generating the additional data, the function performs the interim
+#' analyses, and determines whether the upper boundary is crossed (note that
+#' all analyses are performed, to calculate additional quantities, even if the
+#' boundary is crossed at an early analysis). This is repeated \code{nsamp}
+#' times, giving an estimate of the probability of eventually rejecting the
+#' null under the specified distributions, conditional on the current data.
+#' Low conditional power under the target alternative for the study might be
 #' justification for stopping early.
-#' 
+#'
 #' It is very important that consistent time units be used for all arguments
 #' and for the current data.
-#' 
+#'
 #' If \code{strat} is used and \code{add.acc > 0}, then the new observations
 #' are generated in a new stratum.
-#' 
+#'
 #' @param time Failure/censoring times in the current data
 #' @param status failure indicator for current data (1=failure, 0=censored)
 #' @param rx treatment variable in current data
@@ -46,7 +46,7 @@
 #' will be accrued
 #' @param p.con The proportion randomized to the control group
 #' @param strat Variable defining the strata for a stratified test
-#' 
+#'
 #' @return Returns the estimated rejection probability and its simulation
 #' standard error.  Also prints the value of the logrank statistic for the
 #' current data, several approximations to the conditional power (based on
@@ -55,19 +55,19 @@
 #' average number of events in each group at full information, the average
 #' increment in the logrank score from the current data to full information,
 #' and the average calendar time of full information.
-#' 
+#'
 #' @seealso
 #' \code{\link{condpowcure}}; \code{\link{sequse}}; \code{\link{acondpow}}
-#' 
-#' @references 
+#'
+#' @references
 #' Jennison and Turnbull (1990). \emph{Statistical Science} \strong{5}:299-317.
-#' 
+#'
 #' Betensky (1997). \emph{Biometrics} \strong{53}:794-806.
-#' 
+#'
 #' @keywords survival design
-#' 
+#'
 #' @import survival
-#' 
+#'
 #' @examples
 #' ## current data
 #' set.seed(3)
@@ -76,19 +76,19 @@
 #' fi <- ifelse(ct < ft, 0, 1)
 #' ft <- pmin(ft, ct)
 #' rx <- c(rep(0, 100), rep(1, 100))
-#' 
+#'
 #' ## currently at 0.43 information -- assume no prior interim analyses
 #' critv <- sequse(c(0.43, 0.7, 1))[-1]
-#' 
+#'
 #' condpow(ft, fi, rx, nsamp = 10, crit.val = critv, control.rate = 1, test.rate = 0.75,
 #'         inf.time = c(0.7, 1), total.inf = 300, add.acc = 200, add.acc.period = 1)
-#' 
+#'
 #' \dontrun{
 #' # use larger nsamp in practice, eg
 #' condpow(ft, fi, rx, nsamp = 1000, crit.val = critv, control.rate = 1, test.rate = 0.75,
 #'         inf.time = c(0.7, 1), total.inf = 300, add.acc = 200, add.acc.period = 1)
 #' }
-#' 
+#'
 #' @export
 
 condpow <- function(time, status, rx, nsamp = 500, crit.val = 1.96,

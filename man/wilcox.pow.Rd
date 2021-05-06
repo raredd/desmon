@@ -19,7 +19,7 @@ wilcox.pow(n1, n2 = NULL, del, alpha2 = 0.05, tdist = FALSE)
 uses a normal critical value}
 }
 \value{
-A vector of length two giving the power for the Wilcoxon (frist component)
+A vector of length two giving the power for the Wilcoxon (first component)
 and t (second component) tests.
 }
 \description{

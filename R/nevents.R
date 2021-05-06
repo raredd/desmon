@@ -1,9 +1,9 @@
-#' Calculates the expected number of events exponential failure models
-#' 
+' Calculates the expected number of events exponential failure models
+#'
 #' Given a uniform accrual period, specified accrual rate and follow-up period,
 #' and specified parameters for the exponential failure distribution, computes
 #' the expected number of failures
-#' 
+#'
 #' @details
 #' The exponential distribution has survivor function S(t) equal to
 #' \code{exp(-l*t)}, where \code{l = haz}.  \code{haz} and \code{med} are
@@ -13,31 +13,31 @@
 #' time units, so censoring will be uniform on \code{[add.fu,add.fu+acc.per]}.
 #' The failure probability under the specified failure distribution is then
 #' computed, as is the expected number of failures, \code{n*fail.prob}.
-#' 
+#'
 #' Caution: consistent time units must be used for all quantities.
-#' 
+#'
 #' @param acc.rate The accrual rate in patients per time unit
 #' @param acc.per Duration of accrual
 #' @param add.fu Duration of follow-up from end of accrual to analysis
 #' @param haz Exponential hazard rate for failure times.  Not needed if
 #' \code{med} is specified.
 #' @param med Median failure time.  Not needed if \code{haz} is specified.
-#' 
+#'
 #' @return
 #' A vector of length 3 giving the expected number of failures
 #' \code{nevents}, the failure probability \code{fail.prob} and the total
 #' sample size \code{n}.
-#' 
+#'
 #' @seealso
 #' \code{\link{nevents.cure}}
-#' 
+#'
 #' @keywords design survival
-#' 
+#'
 #' @examples
 #' acc.per <- 2.2
 #' add.fu <- 3.2
 #' nevents(240,acc.per,add.fu,med=1.7)
-#' 
+#'
 #' @export nevents
 
 nevents <- function(acc.rate, acc.per, add.fu, haz = NULL, med = NULL) {
@@ -55,11 +55,11 @@ nevents <- function(acc.rate, acc.per, add.fu, haz = NULL, med = NULL) {
 }
 
 #' Calculates the expected number of events for cure rate failure models
-#' 
+#'
 #' Given a uniform accrual period, specified accrual rate and follow-up period,
 #' and specified parameters for the exponential cure rate failure model,
 #' computes the expected number of failures
-#' 
+#'
 #' @details
 #' The exponential cure rate model has survivor function S(t) equal to
 #' \code{p+(1-p)*exp(-l*t)}, where \code{p = cure.rate} and \code{l = haz}.
@@ -73,9 +73,9 @@ nevents <- function(acc.rate, acc.per, add.fu, haz = NULL, med = NULL) {
 #' \code{[add.fu,add.fu+acc.per]}.  The failure probability under the specified
 #' failure distribution is then computed, as is the expected number of
 #' failures, \code{n*fail.prob}.
-#' 
+#'
 #' Caution: consistent time units must be used for all quantities.
-#' 
+#'
 #' @param acc.rate The accrual rate in patients per time unit
 #' @param acc.per Duration of accrual
 #' @param add.fu Duration of follow-up from end of accrual to analysis
@@ -86,23 +86,23 @@ nevents <- function(acc.rate, acc.per, add.fu, haz = NULL, med = NULL) {
 #' \code{haz} is specified.
 #' @param haz.ratio Proportional hazards shift from the exponential cure rate
 #' model
-#' 
+#'
 #' @return
 #' A vector of length 3 giving the expected number of failures
 #' \code{nevents}, the failure probability \code{fail.prob} and the total
 #' sample size \code{n}.
-#' 
+#'
 #' @seealso
 #' \code{\link{nevents}}
-#' 
+#'
 #' @keywords design survival
-#' 
+#'
 #' @examples
 #' acc.per <- 2.2
 #' add.fu <- 3.2
 #' nevents.cure(240,acc.per,add.fu,cure.rate=.38,med=1.7)
 #' nevents.cure(240,acc.per,add.fu,cure.rate=.38,med=1.7,haz.ratio=.667)
-#' 
+#'
 #' @export nevents.cure
 
 nevents.cure <- function(acc.rate, acc.per, add.fu, cure.rate,

@@ -1,8 +1,8 @@
 #' Compute Approximate Conditional Power
-#' 
+#'
 #' Computes an approximation to the conditional power of a sequential test
 #' based on the asymptotic normality of the statistic.
-#' 
+#'
 #' @details
 #' Computes an approximation to the conditional probability of the test being
 #' rejected at the final analysis (i.e., that the test statistic will be >
@@ -11,24 +11,24 @@
 #' based on asymptotic joint normality of the test statistic at the current and
 #' final analysis, and on the increment in the information being independent of
 #' the current data.
-#' 
+#'
 #' @param za standard normal critical value at final analysis
 #' @param power the overall planned power of the sequential test
 #' @param zs value of the test statistic on the standard normal scale at the
 #' current interim analysis
 #' @param infr information fraction (proportion of total information) at the
 #' current interim analysis
-#' 
+#'
 #' @return The approximate conditional power (a scalar).
-#' 
+#'
 #' @seealso
 #' \code{\link{condpow}}; \code{\link{condpowcure}}
-#' 
+#'
 #' @keywords design
-#' 
+#'
 #' @examples
 #' acondpow(2.0, 0.85, 0.32, 0.41)
-#' 
+#'
 #' @export
 
 acondpow <- function(za, power, zs, infr) {

@@ -1,10 +1,10 @@
 #' Compute Group Sequential Use Function Boundaries
-#' 
+#'
 #' Computes the one-sided group sequential boundary for a specified use
 #' function at specified analysis times.  Optionally, also computes an
 #' asymmetric lower boundary based on repeated confidence interval (RCI)
 #' monitoring for early stopping in favor of the null hypothesis.
-#' 
+#'
 #' @details
 #' Calculates the group sequential boundaries for repeated significance tests
 #' in group sequential analysis of clinical trials.  The algorithm is based on
@@ -13,13 +13,13 @@
 #' time corresponds to the proportion of statistical information, which is the
 #' essentially the same as the number of failures in a proportional hazards
 #' model for failure time endpoints.
-#' 
+#'
 #' For the truncated O-F boundary (\code{use=6}), first the regular O-F
 #' boundary is computed, but if the critical value is larger than the specified
 #' truncation value, the truncated value is used instead.  The actual error
 #' spent is computed, and the early over-spending is made up as quickly as
 #' possible, after which the boundary is similar to the ordinary O-F boundary.
-#' 
+#'
 #' With asymmetric monitoring, the study is stopped early in favor of the null
 #' hypothesis if a `lower boundary' is crossed.  Here the lower boundary is
 #' based on a repeated confidence interval on the log hazard ratio (see
@@ -36,7 +36,7 @@
 #' parameters specified for the lower boundary.  It is quite easy to specify
 #' incompatible combinations for the upper and lower boundary, especially if
 #' \code{alpha} or \code{alphal} is very large or if \code{eta} is small.
-#' 
+#'
 #' @param inf information times of analyses (length <= 30); must be positive,
 #' increasing and <= 1
 #' @param alpha one-sided significance level of the group sequential test
@@ -54,7 +54,7 @@
 #' truncated (upper boundary)
 #' @param oftrl The significance level at which the truncated O-F boundary is
 #' truncated (RCI lower boundary)
-#' 
+#'
 #' @return a matrix with \code{length(inf)} rows giving the critical values on
 #' the standard normal scale at the specified information times.  If
 #' \code{alphal<=0}, there is a single column giving the critical values for
@@ -66,24 +66,24 @@
 #' @note Interface to the Fortran code for the program \code{sequse}, which was
 #' written by Kyungmann Kim and modified for truncated O-F boundaries and
 #' asymmetric lower boundaries by Bob Gray
-#' 
+#'
 #' @seealso
 #' \code{\link{seqopr}}; \code{\link{lr.inf}}; \code{\link{seqp}}
-#' 
-#' @references 
+#'
+#' @references
 #' Lan and DeMets (1983). \emph{Biometrika}.
-#' 
+#'
 #' Kim and DeMets (1987). \emph{Biometrika}.
-#' 
+#'
 #' Jennison and Turnbull (1990). \emph{Statistical Science} \strong{5}:299-317.
-#' 
+#'
 #' @keywords design
-#' 
+#'
 #' @examples
 #' sequse((1:4) / 4)
 #' sequse((1:4) / 4, use = 6)
 #' sequse((1:4) / 4, use = 6, alphal = 0.025, eta = 2)
-#' 
+#'
 #' @export sequse
 
 sequse <- function(inf, alpha = 0.025, use = 6, eta = 0, alphal = 0,

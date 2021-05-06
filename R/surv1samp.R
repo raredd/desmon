@@ -1,8 +1,8 @@
 #' Sample Size Calculation for a One-Sample Exponential
-#' 
+#'
 #' Computes the sample size for a given size and power for the test for a
 #' specified improvement in the exponential rate parameter.
-#' 
+#'
 #' @details
 #' Accrual is assumed to be uniform over the accrual period, so censoring is
 #' uniform on the interval \code{add.fu} to \code{acc.per + add.fu}. The power
@@ -10,13 +10,13 @@
 #' \code{nonpar=TRUE}, in which case the test is based on the nonparametric
 #' estimate of the cumulative hazard at \code{tp}. Simulations suggest that the
 #' distribution approximation to the latter test is anti-conservative, so the
-#' test (and the corresponding power caluclations should be used with extreme
-#' caution).  Exponential failures are assumed for the calculations, even for
+#' test (and the corresponding power calculations should be used with extreme
+#' caution). Exponential failures are assumed for the calculations, even for
 #' the nonparametric test.
-#' 
+#'
 #' Any combination of parameters determining the null and alternative event
 #' rates can be specified.
-#' 
+#'
 #' @param control.rate The hazard rate under the null hypothesis
 #' @param pct.imp The percent improvement in the median failure time under the
 #' alternative
@@ -36,23 +36,23 @@
 #' @param alt.rate The hazard rate under the alternative
 #' @param alt.med The median under the alternative
 #' @param alt.survp The survival probability at \code{tp} under the alternative
-#' 
+#'
 #' @return
 #' A vector giving the sample size (n), the number of failures needed
 #' (nd), the proportion of failures (fail.prob), the hazard ratio of the null
 #' to alternative hazard rates (haz.ratio), the input values of \code{pct.imp}
 #' and \code{control.rate}, the hazard rate under the alternative (alt.rate)
 #' and the input values of \code{alpha} and \code{beta}.
-#' 
+#'
 #' @keywords design survival
-#' 
+#'
 #' @examples
 #' surv1samp(-1.333 * log(0.96) / 5, 33.3, 4, 3, alpha = 0.1, power = 0.95)
 #' surv1samp(-log(0.95) / 5, 100 * (log(0.95) / log(0.96) - 1), 4, 3,
 #'           alpha = 0.1, power = 0.95)
 #' surv1samp(-log(0.955) / 5, 100 * (log(0.955) / log(0.965) - 1), 4, 3,
 #'           alpha = 0.1, power = 0.95)
-#' 
+#'
 #' @export surv1samp
 
 surv1samp <- function(control.rate = NULL, pct.imp = NULL, acc.per, add.fu,
@@ -117,7 +117,7 @@ surv1samp <- function(control.rate = NULL, pct.imp = NULL, acc.per, add.fu,
     nd <- ((qnorm(1 - alpha) + qnorm(power)) / log(ratio)) ^ 2
     n <- nd / pfail
   }
-  
+
   c(n = n, nd = nd, fail.prob = pfail, haz.ratio = ratio, pct.imp = pct.imp,
     control.rate = control.rate, alt.rate = alt.rate, alpha = alpha, power = power)
 }

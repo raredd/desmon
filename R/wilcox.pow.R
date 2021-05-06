@@ -1,8 +1,8 @@
 #' Compute Power for the Wilcoxon and T Tests
-#' 
+#'
 #' Computes an approximation to the power of the Wilcoxon signed rank or
 #' two-sample Wilcoxon rank sum test and one- or two-sample t-tests
-#' 
+#'
 #' @details
 #' Uses an approximations given in Lehman, Nonparametrics: Statistical Methods
 #' Based on Ranks, for the power of the Wilcoxon signed rank and two-sample
@@ -10,30 +10,30 @@
 #' distributed with constant variances.  The difference \code{del} is a
 #' location shift on this transformed scale, expressed as a fraction of the
 #' common standard deviation.
-#' 
+#'
 #' The critical value from the t-distribution with n1-1 (one-sample) or n1+n2-2
 #' (two-sample) degrees of freedom can be used instead of the standard normal
-#' by specifying \code{tdist=TRUE}.  However, the rejectiion probability is
+#' by specifying \code{tdist=TRUE}.  However, the rejection probability is
 #' still computed using the normal distribution.
-#' 
+#'
 #' @param n1 sample size in group 1
 #' @param n2 Sample size in group 2. If NULL, assumes a 1-sample test.
 #' @param del difference as a fraction of the population standard deviation
 #' @param alpha2 two-sided significance level
 #' @param tdist if TRUE, uses t distribution for the critical value; if FALSE,
 #' uses a normal critical value
-#' 
+#'
 #' @return
-#' A vector of length two giving the power for the Wilcoxon (frist component)
+#' A vector of length two giving the power for the Wilcoxon (first component)
 #' and t (second component) tests.
-#' 
+#'
 #' @keywords design
-#' 
+#'
 #' @examples
 #' wilcox.pow(24, 24, 1)
 #' wilcox.pow(24, 10, 1)
 #' wilcox.pow(10, NULL, 0.5) ## one-sample test
-#' 
+#'
 #' @export
 
 wilcox.pow <- function(n1, n2 = NULL, del, alpha2 = 0.05, tdist = FALSE) {

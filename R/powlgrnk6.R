@@ -1,10 +1,10 @@
 #' Calculate the Power of a Group Sequential Logrank Test
-#' 
+#'
 #' Performs a simulation to calculate the power of a group sequential logrank
 #' test using an error spending rate function upper boundary with repeated
 #' confidence intervals for early stopping in favor of the null hypothesis.
 #' Assumes exponential distributions for the failure times.
-#' 
+#'
 #' @details
 #' Performs a simulation to estimate the rejection probability under the
 #' specified failure rates of a group sequential logrank test. \code{2*Npg}
@@ -24,7 +24,7 @@
 #' the target difference falls outside the RCI).  The confidence level and the
 #' shape of the boundary of the RCI can be different in the RCI than in the
 #' upper boundary.
-#' 
+#'
 #' The truncated boundary with \code{use=6} is different (and probably
 #' preferred) to the default settings with \code{use=1} and
 #' \code{trunc=alpha/50}.  The latter takes the standard O'Brien-Fleming
@@ -33,19 +33,19 @@
 #' negligible, though (see Freidlin, Korn and George, 1999). Using \code{use=6}
 #' truncates the boundary at \code{alpha/50} (do not specify a larger value of
 #' trunc), but adjusts the rest of the boundary to give the correct size.
-#' 
+#'
 #' Failure distributions other than the exponential can be used by providing a
 #' function to generate samples from the desired distribution via the
 #' \code{gft} argument.  This function will be called as
 #' \code{gft(rx,control.rate,test.rate,...)}, where \code{rx} is a vector of
 #' length \code{2*Npg}, coded 0 for the control group and 1 for the
 #' experimental treatment group, \code{control.rate} and \code{test.rate} are
-#' the values given in the call to \code{powlgrnk6}, and \code{\ldots{}} can be
+#' the values given in the call to \code{powlgrnk6}, and \code{...} can be
 #' used to pass additional arguments to \code{gft()}.  While any distributions
 #' can be used, it should be noted that the logrank test and RCI methodology
 #' are probably only appropriate when the study is targeting a proportional
 #' hazards alternative.
-#' 
+#'
 #' @param Npg Planned number of subjects in the each treatment group (control
 #' and experimental)
 #' @param control.rate Exponential failure rate for the control group
@@ -77,7 +77,7 @@
 #' exponential distributions with rates \code{control.rate} for the control
 #' group and \code{test.rate} for the experimental treatment group
 #' @param ... Additional arguments to \code{gft()}
-#' 
+#'
 #' @return
 #' Returns a \code{5 x nsamp} matrix giving the results for each sample in
 #' the corresponding column, of class `powlgrnk6'.  The first row gives a
@@ -89,19 +89,19 @@
 #' of time units from the start of the study until the study was stopped, and
 #' the 5th gives the total number of interim analyses performed (including at
 #' full information, if reached).
-#' 
+#'
 #' @seealso
 #' \code{\link{sequse}}; \code{\link{rci}}; \code{\link{print.powlgrnk6}};
 #' \code{\link{seqopr}}; \code{\link{seqss}}
-#' 
+#'
 #' @references
 #' Freidlin, Korn and George, 1999. \emph{Controlled Clinical  Trials}
 #' \strong{20}:395-407.
-#' 
+#'
 #' Jennison and Turnbull, 1990, Statistical Science 5:299-317.
-#' 
+#'
 #' @keywords design survival
-#' 
+#'
 #' @examples
 #' ## power under the alternative; 7 years accrual, analyses every 1/2 year
 #' ## one-sided 0.025 test, with an 80% RCI used for early stopping in
@@ -111,25 +111,25 @@
 #' table(out[1, ]) / ncol(out)
 #' apply(out[3:5, ], 1, mean)
 #' out
-#' 
+#'
 #' ## size under H0; note specification of ratio to keep the stopping rule
 #' ## the same as under the alternative
 #' out <- powlgrnk6(210, 0.11889, 0.11889, 7, 233, 0.5, nsamp = 10,
 #'                  conf = 0.80, ratio = 1.5)
 #' table(out[1, ]) / ncol(out)
 #' apply(out[3:5, ], 1, mean)
-#' 
+#'
 #' ## power without RCI
 #' out <- powlgrnk6(210, 0.11889, 0.11889 / 1.5, 7, 233, 0.5, nsamp = 10, conf = 1)
 #' table(out[1, ]) / ncol(out)
 #' apply(out[3:5, ], 1, mean)
-#' 
+#'
 #' ## size without truncation
 #' out <- powlgrnk6(210, 0.11889, 0.11889, 7, 233, 0.5, nsamp = 10,
 #'                  conf = 0.80, ratio = 1.5, trunc=0)
 #' table(out[1, ]) / ncol(out)
 #' apply(out[3:5, ], 1, mean)
-#' 
+#'
 #' @export
 
 powlgrnk6 <- function(Npg, control.rate, test.rate, acc.per, total.inf,
@@ -194,25 +194,25 @@ powlgrnk6 <- function(Npg, control.rate, test.rate, acc.per, total.inf,
 }
 
 #' Print a summary of the output from powlgrnk6
-#' 
+#'
 #' Prints a summary of the output from \code{\link{powlgrnk6}}.
-#' 
+#'
 #' @details
 #' Prints the proportion of samples rejecting the null, the proportion stopping
 #' in favor of the null, the average information and calendar times at
 #' termination, and the distribution of the total number of analyses.
-#' 
+#'
 #' @param x A matrix of class \code{\link{powlgrnk6}}
 #' @param ... Not used
-#' 
+#'
 #' @return
 #' No value is returned - used for side-effect of printing to console.
-#' 
+#'
 #' @seealso
 #' \code{\link{powlgrnk6}}
-#' 
+#'
 #' @keywords design survival
-#' 
+#'
 #' @export
 
 print.powlgrnk6 <- function(x, ...) {
