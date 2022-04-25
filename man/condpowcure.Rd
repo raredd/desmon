@@ -58,7 +58,7 @@ will be accrued}
 }
 \value{
 Returns the proportion of samples where the upper boundary was
-crossed, and its simulation standard error.  Also prints the value of the
+crossed, and its simulation standard error. Also prints the value of the
 logrank statistic for the current data.
 }
 \description{
@@ -68,25 +68,25 @@ model.
 }
 \details{
 Adds \code{add.acc} cases and generates additional follow-up for subjects
-already entered but censored in the current data.  Failure times are
+already entered but censored in the current data. Failure times are
 generated from exponential cure rate models, with fractions
 \code{control.cure} and \code{test.cure} that will never fail and
 exponential distributions for the failure times of those who will eventually
 fail.
 
-Additional interim analyses are performed when \code{inf.time *total.inf} 
-failures are observed.  The critical values used for rejecting
+Additional interim analyses are performed when \code{inf.time * total.inf}
+failures are observed. The critical values used for rejecting
 the null at these additional interim analyses are specified in
-\code{crit.value}.  The number of additional analyses is the length of
-\code{inf.time} and \code{crit.value}.  The information of the current data
-should not be included.  Full information (\code{inf.time = 1}) must be
-explicitly included.  Information times should be in increasing order.
+\code{crit.value}. The number of additional analyses is the length of
+\code{inf.time} and \code{crit.value}. The information of the current data
+should not be included. Full information (\code{inf.time = 1}) must be
+explicitly included. Information times should be in increasing order.
 
 After generating the additional data, the function performs the interim
 analyses, and determines whether the upper boundary is crossed.  This is
 repeated \code{nsamp} times, giving an estimate of the probability of
 eventually rejecting the null under the specified distributions, conditional
-on the current data.  Low conditional power under the target alternative for
+on the current data. Low conditional power under the target alternative for
 the study might be justification for stopping early.
 
 It is very important that consistent time units be used for all arguments
@@ -114,7 +114,7 @@ condpowcure(ft, fi, rx, nsamp = 10, crit.val = critv, control.cure = 0.4,
 condpowcure(ft, fi, rx, nsamp = 1000, crit.val = critv, control.cure = 0.4,
             control.rate = 1, test.cure = 0.6, test.rate = 0.75,
             inf.time = c(0.7, 1), total.inf = 200, add.acc = 200, add.acc.period = 1)
-## Observed Z =  1.43
+## Observed Z = 1.43
 ## [1] 0.958
 }
 

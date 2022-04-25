@@ -73,8 +73,8 @@ is based on the Wald test for the log failure rate parameter unless
 \code{nonpar=TRUE}, in which case the test is based on the nonparametric
 estimate of the cumulative hazard at \code{tp}. Simulations suggest that the
 distribution approximation to the latter test is anti-conservative, so the
-test (and the corresponding power caluclations should be used with extreme
-caution).  Exponential failures are assumed for the calculations, even for
+test (and the corresponding power calculations should be used with extreme
+caution). Exponential failures are assumed for the calculations, even for
 the nonparametric test.
 
 Any combination of parameters determining the null and alternative event

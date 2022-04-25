@@ -124,7 +124,7 @@ function to generate samples from the desired distribution via the
 \code{gft(rx,control.rate,test.rate,...)}, where \code{rx} is a vector of
 length \code{2*Npg}, coded 0 for the control group and 1 for the
 experimental treatment group, \code{control.rate} and \code{test.rate} are
-the values given in the call to \code{powlgrnk6}, and \code{\ldots{}} can be
+the values given in the call to \code{powlgrnk6}, and \code{...} can be
 used to pass additional arguments to \code{gft()}.  While any distributions
 can be used, it should be noted that the logrank test and RCI methodology
 are probably only appropriate when the study is targeting a proportional

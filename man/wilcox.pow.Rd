@@ -36,7 +36,7 @@ common standard deviation.
 
 The critical value from the t-distribution with n1-1 (one-sample) or n1+n2-2
 (two-sample) degrees of freedom can be used instead of the standard normal
-by specifying \code{tdist=TRUE}.  However, the rejectiion probability is
+by specifying \code{tdist=TRUE}.  However, the rejection probability is
 still computed using the normal distribution.
 }
 \examples{

@@ -43,12 +43,12 @@ boundary was crossed, and coded 0 if neither was (only the first boundary
 crossing is recorded).
 }
 \description{
-Performs a simulation to estimate the power of Fisher's Exect under group
+Performs a simulation to estimate the power of Fisher's Exact under group
 sequential monitoring.
 }
 \details{
-Calls \code{\link{fisher.test}}. If the experimental group (2) has a higher 
-event rate than the control group (1), then 'less' is the appropriate 
+Calls \code{\link{fisher.test}}. If the experimental group (2) has a higher
+event rate than the control group (1), then 'less' is the appropriate
 direction for a one-sided test.
 }
 \examples{

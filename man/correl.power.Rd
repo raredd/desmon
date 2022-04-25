@@ -42,7 +42,7 @@ correl.power(
 \item{greater}{logical; if \code{TRUE}, find the ratio greater than 1 with
 the specified \code{power}}
 
-\item{less}{logical; if \code{TRUE}, find the ratio less than 1 with the 
+\item{less}{logical; if \code{TRUE}, find the ratio less than 1 with the
 specified \code{power}}
 }
 \value{

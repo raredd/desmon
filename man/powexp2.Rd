@@ -54,7 +54,7 @@ under proportional hazards.
 Computes the power for a stratified test in the two sample exponential
 problem.  The test is actually based on the optimally weighted average of
 the log hazard ratio estimates from each stratum.  Unlike other sample size
-functions, any of the input paramaters (except alpha2) can take different
+functions, any of the input parameters (except alpha2) can take different
 values for different strata.  For example, the proportion in each stratum
 can be specified through either prop.strat or by giving difference accrual
 rates for each stratum, and the follow-up time can be different for

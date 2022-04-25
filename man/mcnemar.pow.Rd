@@ -41,7 +41,7 @@ of these parameters, the input quantities are \code{pdisc} = p12+p21 and
 \code{delta} = p12-p21.  If an alternative with p21>p12 is of interest, then
 \code{delta} should be negative.
 
-McNemar's test is a conditional test of H0: p12=p21 (or equivalently the the
+McNemar's test is a conditional test of H0: p12=p21 (or equivalently the
 marginal probabilities p11+p12 = p11+p21) based on the discordant pairs.
 For the exact conditional test of one-sided size \code{alpha}, this function
 uses the marginal distribution of the number of discordant pairs under the

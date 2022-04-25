@@ -76,15 +76,15 @@ analyses are specified in \code{crit.value}. The number of additional
 analyses is the length of \code{inf.time} and \code{crit.value}. The
 information of the current data should not be included. Full information
 (\code{inf.time = 1}) must be explicitly included.  Information times should
-be in increasing order. 
+be in increasing order.
 
-After generating the additional data, the function performs the interim 
-analyses, and determines whether the upper boundary is crossed (note that 
-all analyses are performed, to calculate additional quantities, even if the 
-boundary is crossed at an early analysis). This is repeated \code{nsamp} 
-times, giving an estimate of the probability of eventually rejecting the 
-null under the specified distributions, conditional on the current data. 
-Low conditional power under the target alternative for the study might be 
+After generating the additional data, the function performs the interim
+analyses, and determines whether the upper boundary is crossed (note that
+all analyses are performed, to calculate additional quantities, even if the
+boundary is crossed at an early analysis). This is repeated \code{nsamp}
+times, giving an estimate of the probability of eventually rejecting the
+null under the specified distributions, conditional on the current data.
+Low conditional power under the target alternative for the study might be
 justification for stopping early.
 
 It is very important that consistent time units be used for all arguments

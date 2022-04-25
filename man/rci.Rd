@@ -74,7 +74,7 @@ rci(ft, fi, rx, crit = 2.4)
 
 }
 \references{
-Jennison and Turnbull (1990). \emph{Statistical Science} 
+Jennison and Turnbull (1990). \emph{Statistical Science}
 \strong{5}:299-317.
 }
 \seealso{

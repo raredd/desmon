@@ -48,11 +48,11 @@ response probabilities in groups 1 and 2 corresponding to the difference
 with lower response in group 1.
 }
 \description{
-Calculates power (\code{b2p}) and sample size (\code{b2n}) for a two sample 
-binomial test based on a normal approximation with and without continuity 
-correction. \code{b2p} also computes the exact power of Fisher's exact test 
-and the exact UMP unbiased test.  Given combined sample size and response 
-probability, \code{b2diff} calculates the difference corresponding to a 
+Calculates power (\code{b2p}) and sample size (\code{b2n}) for a two sample
+binomial test based on a normal approximation with and without continuity
+correction. \code{b2p} also computes the exact power of Fisher's exact test
+and the exact UMP unbiased test. Given combined sample size and response
+probability, \code{b2diff} calculates the difference corresponding to a
 specified power.
 }
 \details{
@@ -65,23 +65,23 @@ formed by combining the one-sided rejection regions of size \code{alpha} in
 each direction. This function does not give correct results for more
 general two-sided exact tests that divide the error asymmetrically between
 the two tails unless the correct one-sided error corresponding to the
-asymmetric test is used.  The normal approximations are based on formulas
+asymmetric test is used. The normal approximations are based on formulas
 from Fleiss (Statistical Methods for Rates and Proportions, 2nd ed, 1981).
 
 \code{b2diff} is intended for facilitating power calculations when a new
-(binary) marker will be measured on an existing sample.  Then the combined
-samples size \code{n} and overall response rate is known.  \code{r} gives
+(binary) marker will be measured on an existing sample. Then the combined
+samples size \code{n} and overall response rate is known. \code{r} gives
 the expected proportion of the sample in group 1 (defined by the new
 marker). \code{b2diff} then calculates the response probabilities in the
 two groups that give a difference for which the two-sample comparison will
 have the specified power, subject to the overall response probability and
-sample size constraints.  The probabilities are computed for the one-sided
+sample size constraints. The probabilities are computed for the one-sided
 tests in each direction (higher response rates in group 1 and lower response
 rates in group 1)
 
 The uniformly most powerful unbiased test uses a randomized rejection rule
 on the boundary of the critical region to give the exact type I error rate
-specified.  This is generally not regarded as an appropriate procedure in
+specified. This is generally not regarded as an appropriate procedure in
 practice.
 }
 \examples{

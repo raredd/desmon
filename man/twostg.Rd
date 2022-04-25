@@ -28,7 +28,7 @@ probability of \code{r1} or fewer in the first stage}
 of being declared ineffective overall and at the first stage.
 }
 \description{
-Calculates the operating characteristics of single arm, two-stage phase II 
+Calculates the operating characteristics of single arm, two-stage phase II
 designs.
 }
 \details{

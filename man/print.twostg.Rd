@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{An object of class \code{twostg} (output of \code{twostg})}
 
-\item{\dots}{included for compatibility with generic.  Any additional
+\item{...}{included for compatibility with generic.  Any additional
 arguments are ignored.}
 }
 \value{

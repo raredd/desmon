@@ -73,20 +73,20 @@ For a Cox model with two binary factors (x=treatment and z=biologic marker),
 tests for no interaction. Constant hazards are assumed within each of the 4
 covariate combinations.
 
-Let \code{p(x,z)} be the sample proportion and \code{h(x,z)} be the hazard 
-for treatment \code{x} in marker group \code{z}. Treatment is assumed 
-independent of the marker, so the proportion of the sample in the 4 
+Let \code{p(x,z)} be the sample proportion and \code{h(x,z)} be the hazard
+for treatment \code{x} in marker group \code{z}. Treatment is assumed
+independent of the marker, so the proportion of the sample in the 4
 combinations is \code{p(0,0)=(1-prx)*(1-prz),
 p(0,1)=(1-prx)*prz, p(1,0)=prx*(1-prz), p(1,1)=prx*prz}.
 
-The hazards can either be given explicitly (argument \code{hazs}) or 
+The hazards can either be given explicitly (argument \code{hazs}) or
 through the ratios and the overall average hazard. The ratios are defined by
 \code{ri=h(1,1)*h(0,0)/(h(0,1)*h(1,0))},
 \code{rt=((1-prz)*h(1,0)+prz*h(1,1))/((1-prz)*h(0,0)+prz*h(0,1))}, and
 \code{rf=((1-prx)*h(0,1)+prx*h(1,1))/((1-prx)*h(0,0)+prx*h(1,0))}.
 
 Given a set of ratios and an average hazard \code{l0}, \code{hazsf} computes
-the hazards in the individual groups to give the specified ratios and to 
+the hazards in the individual groups to give the specified ratios and to
 satisfy the constraint
 \code{p(0,0)*h(0,0)+p(0,1)*h(0,1)+p(1,0)*h(1,0)+p(1,1)*h(1,1)=l0}.
 \code{hazsf} is called by \code{intpow} if \code{hazs} is not specified.
@@ -96,17 +96,17 @@ the period \code{(0,acc.per)} and an additional \code{add.fu} units of
 follow-up after completion of accrual. Thus censoring is assumed uniform on
 \code{(add.fu, add.fu+acc.per)}.
 
-\code{expinf} computes the expected information matrix (per subject) from 
-the Cox partial likelihood containing the covariates \code{x}, \code{z}, 
+\code{expinf} computes the expected information matrix (per subject) from
+the Cox partial likelihood containing the covariates \code{x}, \code{z},
 and \code{x*z}.
 
-\code{siminf} calculates the Wald statistic for the interaction test and 
-the partial likelihood variance estimate of the variance of the interaction 
-coefficient for a single simulated sample from this model. 
+\code{siminf} calculates the Wald statistic for the interaction test and
+the partial likelihood variance estimate of the variance of the interaction
+coefficient for a single simulated sample from this model.
 
 \code{intpow} calculates the power for the Wald test for the null hypothesis
-that coefficient of the interaction term = 0 using the large sample normal 
-approximation. In large samples, this test is equivalent to the score and 
+that coefficient of the interaction term = 0 using the large sample normal
+approximation. In large samples, this test is equivalent to the score and
 partial likelihood ratio tests for this hypothesis.
 }
 \examples{

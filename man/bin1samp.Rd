@@ -37,10 +37,10 @@ binomial test with specified alpha (type I) and beta (type II) errors
 \details{
 Loops over sample sizes starting with \code{n.min}, determines the critical
 value for the exact test of size alpha, and calculates the type II error.
-If the type II error is larger than \code{beta}, increments the sample size 
+If the type II error is larger than \code{beta}, increments the sample size
 by 1 and tries again.
 
-\code{\link{print.bin1samp}} is a print method for the output of 
+\code{\link{print.bin1samp}} is a print method for the output of
 \code{bin1samp}.
 }
 \examples{

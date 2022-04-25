@@ -31,9 +31,9 @@ probability of crossing the upper and lower boundary at each analysis.  The
 probability at each analysis is the probability of not crossing either
 boundary at earlier analyses and crossing at the current analysis.
 
-\code{eta} should be 0 to compute probabilites under the null, and should be
+\code{eta} should be 0 to compute probabilities under the null, and should be
 set to a value which is a function of the alternative on a transformed scale
-to compute probabilties under the alternative.  For survival studies, eta
+to compute probabilities under the alternative.  For survival studies, eta
 can be computed using the functions \code{seqopr} or \code{lr.inf}.
 (\code{eta} is the mean of Y(1), where Y(t) is the partial sum process
 standardized to have variance 1 at t=1.)

@@ -2,7 +2,9 @@
 % Please edit documentation in R/nevents.R
 \name{nevents}
 \alias{nevents}
-\title{Calculates the expected number of events exponential failure models}
+\title{Given a uniform accrual period, specified accrual rate and follow-up period,
+and specified parameters for the exponential failure distribution, computes
+the expected number of failures}
 \usage{
 nevents(acc.rate, acc.per, add.fu, haz = NULL, med = NULL)
 }
