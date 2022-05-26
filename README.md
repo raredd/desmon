@@ -10,10 +10,10 @@ endpoints and two-stage and randomized phase II studies.
 
 # Installing
 
-## via binaries
+## binary packages
 
-The `desmon` R package (current and older binaries) can be found on the DS Unix
-servers under `~gray/R` and `~rredd/r.packages/desmon`
+The `desmon` R package (current and older binaries) can be found on the DS
+servers under `~gray/R` and `~rredd/r.packages/desmon`.
 
 ## from source
 
@@ -34,7 +34,7 @@ Users will require [RTools](https://cran.r-project.org/bin/windows/Rtools)
 for building R packages from source on Windows. This includes GNU
 [gcc](https://gcc.gnu.org) as well as a full build system and package manager
 to build, install, and distribute external c/c++/fortran libraries needed by
-R packages ([source](https://cran.r-project.org/bin/windows/Rtools).
+R packages ([source](https://cran.r-project.org/bin/windows/Rtools)).
 
 ### macOS
 
