@@ -110,6 +110,7 @@ b2p <- function(p1, p2, n1, n2, alpha = 0.025, exact = TRUE) {
   } else c(approx.cor = b2, approx.unc = b1, fisher = NULL, UMPU = NULL)
 }
 
+#' @rdname b2p
 #' @export
 b2n <- function(p1, p2, power = 0.8, r = 0.5, alpha = 0.025) {
   if (min(r, p1, p2, alpha, power) <= 0 | max(p1, p2, r, alpha, power) >= 1)
@@ -135,6 +136,7 @@ b2n <- function(p1, p2, power = 0.8, r = 0.5, alpha = 0.025) {
   c(cont.cor = s2, uncor = s1)
 }
 
+#' @rdname b2p
 #' @export
 b2diff <- function(p, r, n, alpha = .025, power = .8, exact = TRUE) {
   # given sample size and overall response prob,

@@ -7,6 +7,10 @@
 \title{Power for Comparing Two Binomials}
 \usage{
 b2p(p1, p2, n1, n2, alpha = 0.025, exact = TRUE)
+
+b2n(p1, p2, power = 0.8, r = 0.5, alpha = 0.025)
+
+b2diff(p, r, n, alpha = 0.025, power = 0.8, exact = TRUE)
 }
 \arguments{
 \item{p1}{Success probability in group 1}
