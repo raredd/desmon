@@ -10,11 +10,17 @@ powlgrnk(
   add.fu,
   alpha = 0.025,
   p.con = 0.5,
-  hazcon = function(x, lc, pc, ...) {     u <- (1 - pc) * exp(-lc * x)     lc * u/(pc +
-    u) },
+  hazcon = function(x, lc, pc, ...) {
+     u <- (1 - pc) * exp(-lc * x)
+     lc * u/(pc +
+    u)
+ },
   survcon = function(x, lc, pc, ...) pc + (1 - pc) * exp(-lc * x),
-  haztst = function(x, lt, pt, ...) {     u <- (1 - pt) * exp(-lt * x)     lt * u/(pt +
-    u) },
+  haztst = function(x, lt, pt, ...) {
+     u <- (1 - pt) * exp(-lt * x)
+     lt * u/(pt +
+    u)
+ },
   survtst = function(x, lt, pt, ...) pt + (1 - pt) * exp(-lt * x),
   control.rate = NULL,
   test.rate = NULL,
